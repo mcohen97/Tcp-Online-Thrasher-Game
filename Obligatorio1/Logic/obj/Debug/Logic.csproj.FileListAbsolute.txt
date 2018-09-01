@@ -1,0 +1,7 @@
+C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\Logic\bin\Debug\Logic.dll
+C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\Logic\bin\Debug\Logic.pdb
+C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\Logic\bin\Debug\LogicExceptions.dll
+C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\Logic\bin\Debug\LogicExceptions.pdb
+C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\Logic\obj\Debug\Logic.csprojResolveAssemblyReference.cache
+C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\Logic\obj\Debug\Logic.dll
+C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\Logic\obj\Debug\Logic.pdb

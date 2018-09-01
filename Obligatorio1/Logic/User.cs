@@ -1,4 +1,5 @@
 ﻿using System;
+using LogicExceptions;
 
 namespace Logic
 {
@@ -8,7 +9,8 @@ namespace Logic
         private string nickname;
         public string Nickname { get { return nickname; } set { SetNickname(value); } }
 
-        public string Path { get; private set; }
+        private string path;
+        public string Path { get { return path; }  set { SetPath(value); } }
 
         public User(string aNickname, string aPath)
         {
@@ -19,13 +21,32 @@ namespace Logic
         private void SetNickname(string aNickname)
         {
             if (String.IsNullOrWhiteSpace(aNickname)) {
-                
+                throw new InvalidUserDataException("Invalid nickname");
             }
             nickname = aNickname;   
         }
 
-        private void SetPath(string aPath) {
+        private void SetPath(string aPath)
+        {
+            if (String.IsNullOrWhiteSpace(aPath))
+            {
+                throw new InvalidUserDataException("Invalid photo path");
+            }
+            path = aPath;
+        }
 
+        public override bool Equals(object obj)
+        {
+            bool equals;
+            if (obj == null || !obj.GetType().Equals(GetType()))
+            {
+                equals = false;
+            }
+            else {
+                User known = (User)obj;
+                equals = Nickname.Equals(known.Nickname);
+            }
+            return equals;
         }
 
 
