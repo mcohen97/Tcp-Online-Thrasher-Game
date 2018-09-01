@@ -16,14 +16,16 @@ namespace Logic
             Path = aPath;
         }
         
-
         private void SetNickname(string aNickname)
         {
             if (String.IsNullOrWhiteSpace(aNickname)) {
                 
-
             }
             nickname = aNickname;   
+        }
+
+        private void SetPath(string aPath) {
+
         }
 
 
