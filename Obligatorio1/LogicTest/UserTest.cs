@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using Logic;
 namespace LogicTest
 {
     [TestClass]
@@ -10,7 +10,7 @@ namespace LogicTest
         public void NickNameTest()
         {
             User fake = new User("nickname", "path");
-            Assert.AreEqual(fake.Name,"nickname");
+            Assert.AreEqual(fake.Nickname,"nickname");
         }
 
         [TestMethod]
