@@ -3,7 +3,7 @@ using LogicExceptions;
 
 namespace Logic
 {
-    internal class User
+    public class User
     {
 
         private string nickname;
