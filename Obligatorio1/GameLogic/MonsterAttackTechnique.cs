@@ -7,7 +7,7 @@ namespace GameLogic
     {
         private int hitPoints;
         private bool[] isAbleToAttackRole;
-        public const int DEFAULT_MONSTER_HITPOINTS = 10;
+        public static readonly int DEFAULT_MONSTER_HITPOINTS = 10;
 
         public MonsterAttackTechnique()
         {

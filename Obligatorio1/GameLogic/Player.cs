@@ -8,8 +8,7 @@ namespace GameLogic
 {
     public abstract class Player
     {
-        protected AttackTechnique attackTechnique;
-        public Role role;
+        public abstract Role Role { get; protected set; }
         public abstract int Health { get; protected set; }
         public virtual int HitPoints {
             get {
@@ -19,6 +18,15 @@ namespace GameLogic
 
             }
         }
+        public bool IsDead {
+            get {
+                return Health == 0;
+            }
+            private set {
+            }
+        }
+        public abstract Position Position { get; set; }
+        protected AttackTechnique attackTechnique;
 
         protected virtual void Damage(int hitPoints)
         {
@@ -28,10 +36,9 @@ namespace GameLogic
                 Health = 0;
             }
         }
-
         public virtual void Attack(Player objective)
         {
-            if (attackTechnique.CanAttack(objective.role))
+            if (attackTechnique.CanAttack(objective.Role))
             {
                 objective.Damage(attackTechnique.HitPoints);
             }

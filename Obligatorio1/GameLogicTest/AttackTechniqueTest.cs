@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace GameLogicTest
 {
-    class AttackTechniqueTest
+    [TestClass]
+    public class AttackTechniqueTest
     {
         //Constructor tests
         [TestMethod]

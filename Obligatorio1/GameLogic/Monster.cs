@@ -1,28 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace GameLogic
 {
-    public class Survivor:Player
+    public class Monster : Player
     {
-        public static readonly int DEFAULT_SURVIVOR_HEALTH = 20;
+        public static readonly int DEFAULT_MONSTER_HEALTH = 100;
         private Role role;
         private int health;
         private Position position;
 
-        public Survivor()
+        public Monster()
         {
-            this.health = DEFAULT_SURVIVOR_HEALTH;
-            base.attackTechnique = new SurvivorAttackTechnique();
-            this.role = Role.SURVIVOR;
+            this.health = DEFAULT_MONSTER_HEALTH;
+            base.attackTechnique = new MonsterAttackTechnique();
+            this.role = Role.MONSTER;
             this.position = new Position(0, 0);
-        }
 
-        public Survivor(Position initialPosition)
-        {
-            this.health = DEFAULT_SURVIVOR_HEALTH;
-            base.attackTechnique = new SurvivorAttackTechnique();
-            this.role = Role.SURVIVOR;
-            this.position = initialPosition;
         }
 
         public override int Health {
@@ -40,7 +37,7 @@ namespace GameLogic
                 return this.role;
             }
 
-            protected set {               
+            protected set {
             }
         }
 
@@ -50,7 +47,7 @@ namespace GameLogic
             }
 
             set {
-                position = value;
+                this.position = value;
             }
         }
     }

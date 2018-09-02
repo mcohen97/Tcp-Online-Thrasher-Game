@@ -4,7 +4,7 @@
     {
         private int hitPoints;
         private bool[] isAbleToAttackRole;
-        public const int DEFAULT_SURVIVOR_HITPOINTS = 5;
+        public static readonly int DEFAULT_SURVIVOR_HITPOINTS = 5;
 
         public SurvivorAttackTechnique()
         {
@@ -15,7 +15,7 @@
 
         private void SetRolesAbleToAttack()
         {
-            isAbleToAttackRole[(int)Role.SURVIVOR] = false;
+            isAbleToAttackRole[(int)Role.MONSTER] = true;
         }
 
         public override int HitPoints {

@@ -8,14 +8,15 @@ using System.Threading.Tasks;
 
 namespace GameLogicTest
 {
-    class RoleMethodsTest
+    [TestClass]
+    public class RoleMethodsTest
     {
         [TestMethod]
         public void GetRolesTest()
         {
             bool[] roles = RoleMethods.GetBooleanArrayOfRoles();
             int maxRoleEnumValue = (int)Enum.GetValues(typeof(Role)).Cast<Role>().Max();
-            Assert.AreEqual(maxRoleEnumValue, roles.Length);
+            Assert.AreEqual(maxRoleEnumValue + 1, roles.Length);
         }
     }
 }

@@ -41,7 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AttackTechnique.cs" />
+    <Compile Include="Monster.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="Position.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="MonsterAttackTechnique.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
