@@ -50,8 +50,16 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AttackTechniqueTest.cs" />
+    <Compile Include="RoleMethodsTest.cs" />
     <Compile Include="SurvivorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GameLogic\GameLogic.csproj">
+      <Project>{CD382591-EC53-46E1-BD7C-C1330B456505}</Project>
+      <Name>GameLogic</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

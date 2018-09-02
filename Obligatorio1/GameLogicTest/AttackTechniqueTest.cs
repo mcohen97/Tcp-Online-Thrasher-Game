@@ -45,28 +45,28 @@ namespace GameLogicTest
         public void MonsterAttackTechniqueCanAttackSurvivorTest()
         {
             AttackTechnique attackTechnique = new MonsterAttackTechnique();
-            Assert.IsTrue(attackTechnique.CanAttack(GameRole.SURVIVOR));
+            Assert.IsTrue(attackTechnique.CanAttack(Role.SURVIVOR));
         }
 
         [TestMethod]
         public void MonsterAttackTechniqueCanAttackMonsterTest()
         {
             AttackTechnique attackTechnique = new MonsterAttackTechnique();
-            Assert.IsTrue(attackTechnique.CanAttack(GameRole.SURVIVOR));
+            Assert.IsTrue(attackTechnique.CanAttack(Role.SURVIVOR));
         }
 
         [TestMethod]
         public void SurvivorAttackTechniqueCanAttackMonsterTest()
         {
             AttackTechnique attackTechnique = new SurvivorAttackTechnique();
-            Assert.IsTrue(attackTechnique.CanAttack(GameRole.MONSTER));
+            Assert.IsTrue(attackTechnique.CanAttack(Role.MONSTER));
         }
 
         [TestMethod]
         public void SurvivorAttackTechniqueCanAttackSurvivorTest()
         {
             AttackTechnique attackTechnique = new SurvivorAttackTechnique();
-            Assert.IsFalse(attackTechnique.CanAttack(GameRole.SURVIVOR));
+            Assert.IsFalse(attackTechnique.CanAttack(Role.SURVIVOR));
         }
 
     }

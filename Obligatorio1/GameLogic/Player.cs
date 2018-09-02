@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace GameLogic
 {
-    public enum GameRole
+    public class Player
     {
-        MONSTER,
-        SURVIVOR
+
     }
-
-
 }
