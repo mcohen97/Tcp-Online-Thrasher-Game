@@ -24,24 +24,6 @@ namespace GameLogicTest
         }
 
         [TestMethod]
-        public void DamageTest()
-        {
-            Survivor survivor = new Survivor();
-            int attackPoints = 10;
-            survivor.Damage(attackPoints);
-            Assert.AreEqual(10, survivor.Health);
-        }
-
-        [TestMethod]
-        public void TotalDamageTest()
-        {
-            Survivor survivor = new Survivor();
-            int attackPoints = 25;
-            survivor.Damage(attackPoints);
-            Assert.AreEqual(0, survivor.Health);
-        }
-
-        [TestMethod]
         public void AttackSurvivorTest()
         {
             Survivor survivorAttacking = new Survivor();

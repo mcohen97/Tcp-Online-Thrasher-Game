@@ -11,12 +11,12 @@ namespace GameLogic
         public static bool[] GetBooleanArrayOfRoles()
         {
             int maxRoleEnumValue = (int)Enum.GetValues(typeof(Role)).Cast<Role>().Max();
-            bool[] roles = new bool[maxRoleEnumValue];
+            bool[] roles = new bool[maxRoleEnumValue + 1];
             for (int i = 0; i < roles.Length; i++)
             {
                 roles[i] = false;
             }
-            return new bool[maxRoleEnumValue];
+            return roles;
         }
     }
 }
