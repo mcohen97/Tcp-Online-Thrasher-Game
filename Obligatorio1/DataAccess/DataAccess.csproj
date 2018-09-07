@@ -42,6 +42,9 @@
   <ItemGroup>
     <Compile Include="IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserAlreadyExistsException.cs" />
+    <Compile Include="UserNotFoundException.cs" />
+    <Compile Include="UsersInMemory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Logic\Logic.csproj">

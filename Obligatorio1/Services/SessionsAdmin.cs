@@ -33,7 +33,7 @@ namespace Services
         }
 
         public Session GetUserSession(User connected) {
-            return ActualSessions.First(u => u.UserLogged.Equals(connected));
+            return ActualSessions.First(u => u.Logged.Equals(connected));
         }
     }
 }

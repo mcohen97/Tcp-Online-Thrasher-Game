@@ -12,5 +12,7 @@ namespace DataAccess
         void AddUser(User newUser);
 
         User GetUser(string nickname);
+
+        ICollection<User> GetAllUsers();
     }
 }
