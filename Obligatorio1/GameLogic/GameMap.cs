@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using GameLogic;
 using GameLogicException;
 
@@ -38,26 +39,26 @@ namespace GameLogicTest
 
         public void AddPlayerToPosition(Player player, Position initialPosition)
         {
-            if (!IsPositionValid(initialPosition))
+            if (!IsValidPosition(initialPosition))
                 throw new InvalidPositionException();
 
-            if (!IsPositionEmpty(initialPosition))
+            if (!IsEmptyPosition(initialPosition))
                 throw new OccupiedPositionException();
 
             map[initialPosition.Row, initialPosition.Column] = player;
             player.Position = initialPosition;
             playerCount++;
-            
+
         }
 
         public void MovePlayer(Position from, Position to)
         {
-            if (!IsPositionEmpty(from))
+            if (!IsEmptyPosition(from))
             {
-                if (!IsPositionValid(to))
+                if (!IsValidPosition(to))
                     throw new InvalidPositionException();
 
-                if (!IsPositionEmpty(to))
+                if (!IsEmptyPosition(to))
                     throw new OccupiedPositionException();
 
                 Player playerMoved = map[from.Row, from.Column];
@@ -69,7 +70,7 @@ namespace GameLogicTest
 
         public void RemovePlayer(Position position)
         {
-            if (!IsPositionValid(position))
+            if (!IsValidPosition(position))
                 throw new InvalidPositionException();
 
             map[position.Row, position.Column] = null;
@@ -78,20 +79,20 @@ namespace GameLogicTest
 
         public Player GetPlayer(Position position)
         {
-            if (!IsPositionValid(position))
+            if (!IsValidPosition(position))
                 throw new InvalidPositionException();
 
             return map[position.Row, position.Column];
         }
 
-        public bool IsPositionEmpty(Position position)
+        public bool IsEmptyPosition(Position position)
         {
-            if (!IsPositionValid(position)) return false;
+            if (!IsValidPosition(position)) return false;
 
             return map[position.Row, position.Column] == null;
         }
 
-        private bool IsPositionValid(Position position)
+        private bool IsValidPosition(Position position)
         {
 
             if (position.Row >= height || position.Row < 0)
@@ -100,6 +101,23 @@ namespace GameLogicTest
                 return false;
 
             return true;
+        }
+
+        public ICollection<Player> GetPlayersNearPosition(Position position)
+        {
+            ICollection<Player> playersNearPosition = new List<Player>();
+            for (int row = position.Row - 1; row <= position.Row + 1; row++)
+            {
+                for (int column = position.Column - 1; column <= position.Column + 1; column++)
+                {
+                    Position actualPosition = new Position(row, column);
+
+                    if (IsValidPosition(actualPosition) && !IsEmptyPosition(actualPosition) && !actualPosition.Equals(position))
+                        playersNearPosition.Add(GetPlayer(actualPosition));
+                }
+            }
+
+            return playersNearPosition;
         }
     }
 }

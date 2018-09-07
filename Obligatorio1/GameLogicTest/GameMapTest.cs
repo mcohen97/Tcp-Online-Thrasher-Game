@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using GameLogic;
 using GameLogicException;
+using System.Collections.Generic;
 
 namespace GameLogicTest
 {
@@ -53,7 +54,7 @@ namespace GameLogicTest
             Player player = new Monster();
             Position position = new Position(0, 0);
             gameMap.AddPlayerToPosition(player, position);
-            Assert.IsFalse(gameMap.IsPositionEmpty(position));
+            Assert.IsFalse(gameMap.IsEmptyPosition(position));
         }
 
         [TestMethod]
@@ -64,7 +65,7 @@ namespace GameLogicTest
             Position position = new Position(0, 0);
             gameMap.AddPlayerToPosition(player, position);
             gameMap.RemovePlayer(player.Position);
-            Assert.IsTrue(gameMap.IsPositionEmpty(position));
+            Assert.IsTrue(gameMap.IsEmptyPosition(position));
         }
 
         [TestMethod]
@@ -81,6 +82,95 @@ namespace GameLogicTest
             gameMap.RemovePlayer(player3.Position);
 
             Assert.AreEqual(2, gameMap.PlayerCount);
+        }
+
+        [TestMethod]
+        public void PlayersNearPositionTest()
+        {
+            GameMap gameMap = new GameMap(8, 8);
+            Player player1 = new Monster();
+            Player player2 = new Survivor();
+            Player player3 = new Survivor();
+            Player player4 = new Survivor();
+            Player player5 = new Survivor();
+            Player player6 = new Survivor();
+            Player player7 = new Monster();
+            Player player8 = new Monster();
+
+            gameMap.AddPlayerToPosition(player1, new Position(3, 3));
+            gameMap.AddPlayerToPosition(player2, new Position(3, 4));
+            gameMap.AddPlayerToPosition(player3, new Position(3, 5));
+            gameMap.AddPlayerToPosition(player4, new Position(4, 3));
+            gameMap.AddPlayerToPosition(player5, new Position(4, 5));
+            gameMap.AddPlayerToPosition(player6, new Position(5, 3));
+            gameMap.AddPlayerToPosition(player7, new Position(5, 4));
+            gameMap.AddPlayerToPosition(player8, new Position(5, 5));
+
+            ICollection<Player> playersNearPosition = gameMap.GetPlayersNearPosition(new Position(4, 4));
+
+            Assert.AreEqual(8, playersNearPosition.Count);
+        }
+
+        [TestMethod]
+        public void PlayersNearPositionTest2()
+        {
+            GameMap gameMap = new GameMap(8, 8);
+            Player player1 = new Monster();
+            Player player2 = new Survivor();
+            Player player3 = new Survivor();
+            Player player4 = new Survivor();
+            Player player5 = new Survivor();
+            Player player6 = new Survivor();
+            Player player7 = new Monster();
+            Player player8 = new Monster();
+            Player playerInPosition = new Monster();
+
+            gameMap.AddPlayerToPosition(player1, new Position(3, 3));
+            gameMap.AddPlayerToPosition(player2, new Position(3, 4));
+            gameMap.AddPlayerToPosition(player3, new Position(3, 5));
+            gameMap.AddPlayerToPosition(player4, new Position(4, 3));
+            gameMap.AddPlayerToPosition(player5, new Position(4, 5));
+            gameMap.AddPlayerToPosition(player6, new Position(5, 3));
+            gameMap.AddPlayerToPosition(player7, new Position(5, 4));
+            gameMap.AddPlayerToPosition(player8, new Position(5, 5));
+            gameMap.AddPlayerToPosition(player8, new Position(4, 4));
+
+            ICollection<Player> playersNearPosition = gameMap.GetPlayersNearPosition(new Position(4, 4));
+
+            Assert.AreEqual(8, playersNearPosition.Count);
+        }
+
+        [TestMethod]
+        public void PlayersNearPositionTest3()
+        {
+            GameMap gameMap = new GameMap(8, 8);
+            Player player2 = new Survivor();
+            Player player4 = new Survivor();
+            Player player6 = new Survivor();
+            Player player7 = new Monster();
+            Player player8 = new Monster();
+            Player playerInPosition = new Monster();
+
+            gameMap.AddPlayerToPosition(player2, new Position(3, 4));
+            gameMap.AddPlayerToPosition(player4, new Position(4, 3));
+            gameMap.AddPlayerToPosition(player6, new Position(5, 3));
+            gameMap.AddPlayerToPosition(player7, new Position(5, 4));
+            gameMap.AddPlayerToPosition(player8, new Position(5, 5));
+            gameMap.AddPlayerToPosition(player8, new Position(4, 4));
+
+            ICollection<Player> playersNearPosition = gameMap.GetPlayersNearPosition(new Position(4, 4));
+
+            Assert.AreEqual(5, playersNearPosition.Count);
+        }
+
+        [TestMethod]
+        public void PlayersNearPositionTest4()
+        {
+            GameMap gameMap = new GameMap(8, 8);
+
+            ICollection<Player> playersNearPosition = gameMap.GetPlayersNearPosition(new Position(4, 4));
+
+            Assert.AreEqual(0, playersNearPosition.Count);
         }
 
         //Exceptions Tests
