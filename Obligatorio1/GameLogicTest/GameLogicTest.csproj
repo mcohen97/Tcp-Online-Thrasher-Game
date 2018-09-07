@@ -53,6 +53,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AttackTechniqueTest.cs" />
+    <Compile Include="GameMapTest.cs" />
     <Compile Include="MonsterTest.cs" />
     <Compile Include="RoleMethodsTest.cs" />
     <Compile Include="SurvivorTest.cs" />
