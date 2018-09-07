@@ -60,6 +60,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GameLogicException\GameLogicExceptions.csproj">
+      <Project>{2D38E395-1625-4800-A3F4-42DC7ECD1813}</Project>
+      <Name>GameLogicExceptions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GameLogic\GameLogic.csproj">
       <Project>{CD382591-EC53-46E1-BD7C-C1330B456505}</Project>
       <Name>GameLogic</Name>

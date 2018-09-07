@@ -3,3 +3,5 @@ C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-o
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\GameLogic\obj\Debug\GameLogic.csprojResolveAssemblyReference.cache
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\GameLogic\obj\Debug\GameLogic.dll
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\GameLogic\obj\Debug\GameLogic.pdb
+C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\GameLogic\bin\Debug\GameLogicException.dll
+C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\GameLogic\bin\Debug\GameLogicException.pdb

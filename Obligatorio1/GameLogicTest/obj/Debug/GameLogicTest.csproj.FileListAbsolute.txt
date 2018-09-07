@@ -5,3 +5,5 @@ C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-o
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\GameLogicTest\bin\Debug\GameLogic.pdb
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\GameLogicTest\obj\Debug\GameLogicTest.dll
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\GameLogicTest\obj\Debug\GameLogicTest.pdb
+C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\GameLogicTest\bin\Debug\GameLogicException.dll
+C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\GameLogicTest\bin\Debug\GameLogicException.pdb
