@@ -41,9 +41,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AttackTechnique.cs" />
+    <Compile Include="Direction.cs" />
     <Compile Include="GameMap.cs" />
     <Compile Include="Monster.cs" />
+    <Compile Include="Movement.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="PlayerControl.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="MonsterAttackTechnique.cs" />
