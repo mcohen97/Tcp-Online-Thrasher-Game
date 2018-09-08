@@ -11,20 +11,26 @@ namespace Protocol
         public static int MESSAGE_SIZE_MAX = 9999;
         public static int DATA_SIZE_MAX = MESSAGE_SIZE_MAX - Header.HEADER_LENGTH;
 
-        public Header Header { get; private set; }
-        public byte[] Data { get; private set; }
+        public Header Header { get; set; }
+        public byte[] Data { get; set; }
 
         public Package(string wholePackage) {
             Header = new Header(wholePackage);
+            string dataPart = wholePackage.Substring(Header.HEADER_LENGTH, Header.DataLength);
+            Data = Encoding.Default.GetBytes(dataPart);
+        }
+
+        public Package(Header aHeader) {
+            Header = aHeader;
         }
         public int DataLength()
         {
             return Header.DataLength - Header.HEADER_LENGTH;
         }
 
-        public bool Command()
+        public CommandType Command()
         {
-            throw new NotImplementedException();
+            return Header.Command;
         }
 
         public byte[] GetBytesToSend()

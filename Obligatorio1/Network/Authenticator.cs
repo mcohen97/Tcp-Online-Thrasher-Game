@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
-using DataAccess;
+using DataAccessInterface;
 using Protocol;
 using Logic;
 

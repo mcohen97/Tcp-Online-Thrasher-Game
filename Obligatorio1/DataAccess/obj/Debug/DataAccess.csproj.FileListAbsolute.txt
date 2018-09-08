@@ -9,3 +9,5 @@ C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\DataAccess\bin\
 C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\DataAccess\obj\Debug\DataAccess.csprojResolveAssemblyReference.cache
 C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\DataAccess\obj\Debug\DataAccess.dll
 C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\DataAccess\obj\Debug\DataAccess.pdb
+C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\DataAccess\bin\Debug\DataAccessInterface.dll
+C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\DataAccess\bin\Debug\DataAccessInterface.pdb

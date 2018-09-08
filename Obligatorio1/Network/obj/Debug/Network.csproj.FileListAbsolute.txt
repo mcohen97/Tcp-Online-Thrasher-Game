@@ -11,3 +11,7 @@ C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\Network\bin\Deb
 C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\Network\bin\Debug\LogicExceptions.pdb
 C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\Network\obj\Debug\Network.dll
 C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\Network\obj\Debug\Network.pdb
+C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\Network\bin\Debug\DataAccessInterface.dll
+C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\Network\bin\Debug\Services.dll
+C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\Network\bin\Debug\DataAccessInterface.pdb
+C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\Network\bin\Debug\Services.pdb

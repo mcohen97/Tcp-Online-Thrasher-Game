@@ -11,6 +11,8 @@ namespace Protocol
         AUTHENTICATE,
         ENTER_OR_CREATE_GAME,
         ADD_USER,
-        LOG_OUT
+        LOG_OUT,
+        ERROR,
+        OK
     };
 }

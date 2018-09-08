@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protocol", "Protocol\Protoc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleServer", "ConsoleServer\ConsoleServer.csproj", "{0A59714F-C81C-4FE4-B409-444A48258DF8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessInterface", "DataAccessInterface\DataAccessInterface.csproj", "{7AE7F470-F30A-46BB-A30F-838BEE343D01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{DE5A225F-46D7-4716-9879-3DCF0287DAD4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +61,14 @@ Global
 		{0A59714F-C81C-4FE4-B409-444A48258DF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A59714F-C81C-4FE4-B409-444A48258DF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A59714F-C81C-4FE4-B409-444A48258DF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AE7F470-F30A-46BB-A30F-838BEE343D01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AE7F470-F30A-46BB-A30F-838BEE343D01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AE7F470-F30A-46BB-A30F-838BEE343D01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AE7F470-F30A-46BB-A30F-838BEE343D01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE5A225F-46D7-4716-9879-3DCF0287DAD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE5A225F-46D7-4716-9879-3DCF0287DAD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE5A225F-46D7-4716-9879-3DCF0287DAD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE5A225F-46D7-4716-9879-3DCF0287DAD4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -47,6 +47,10 @@
     <Compile Include="TCPConnection.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataAccessInterface\DataAccessInterface.csproj">
+      <Project>{7ae7f470-f30a-46bb-a30f-838bee343d01}</Project>
+      <Name>DataAccessInterface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataAccess\DataAccess.csproj">
       <Project>{3ea50ac5-8184-4342-8f3c-848f2cab1d1a}</Project>
       <Name>DataAccess</Name>
@@ -58,6 +62,10 @@
     <ProjectReference Include="..\Protocol\Protocol.csproj">
       <Project>{e0f8e2af-1558-42f8-9ccd-607090283875}</Project>
       <Name>Protocol</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Services\Services.csproj">
+      <Project>{6826ee4d-7aae-48dd-a31d-7af6938187cc}</Project>
+      <Name>Services</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

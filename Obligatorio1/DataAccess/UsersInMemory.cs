@@ -5,22 +5,28 @@ using System.Text;
 using System.Threading.Tasks;
 using Logic;
 
-namespace DataAccess
+namespace DataAccessInterface
 {
     public class UsersInMemory : IUserRepository
     {
         public static readonly Lazy<UsersInMemory> instance = new Lazy<UsersInMemory>(() => new UsersInMemory());
         private ICollection<User> Users;
-
+        public readonly object synLock;
         private UsersInMemory()
         {
             Users = new List<User>();
+            synLock = new object();
         }
         public void AddUser(User newUser)
         {
+            
             bool repeated = instance.Value.Users.Any(u => u.Nickname.Equals(newUser.Nickname));
-            if (repeated) {
-                throw new UserAlreadyExistsException();
+            lock (synLock)
+            {
+                if (repeated)
+                {
+                    throw new UserAlreadyExistsException("El nombre de usuario ya fue tomado");
+                }
             }
             instance.Value.Users.Add(newUser);
         }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Logic;
 
-namespace DataAccess
+namespace DataAccessInterface
 {
     public interface IUserRepository
     {

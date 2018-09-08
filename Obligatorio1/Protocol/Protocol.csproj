@@ -43,6 +43,7 @@
     <Compile Include="CommandType.cs" />
     <Compile Include="Header.cs" />
     <Compile Include="HeaderTranslator.cs" />
+    <Compile Include="HeaderType.cs" />
     <Compile Include="Package.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -14,3 +14,7 @@ C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\ConsoleServer\b
 C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\ConsoleServer\obj\Debug\ConsoleServer.csprojResolveAssemblyReference.cache
 C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\ConsoleServer\obj\Debug\ConsoleServer.exe
 C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\ConsoleServer\obj\Debug\ConsoleServer.pdb
+C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\ConsoleServer\bin\Debug\DataAccessInterface.dll
+C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\ConsoleServer\bin\Debug\Services.dll
+C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\ConsoleServer\bin\Debug\DataAccessInterface.pdb
+C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\ConsoleServer\bin\Debug\Services.pdb

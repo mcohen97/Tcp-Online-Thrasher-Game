@@ -5,10 +5,11 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using DataAccess;
+using DataAccessInterface;
 using Logic;
 using System.Threading;
 using Protocol;
+using Services;
 
 namespace Network
 {
@@ -17,77 +18,51 @@ namespace Network
         private Socket listener;
         private static readonly int MAX_SIMULTANEOUS_REQUESTS = 5;
         private bool serverWorking;
-
+        private Game slasher;
         public Server()
         {
             listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             System.Net.IPEndPoint address = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 1234);
             listener.Bind(address);
+            slasher = new Game();
             serverWorking = true;
         }
 
-        public void HandleClients()
+        public void ListenToRequests()
         {
             listener.Listen(MAX_SIMULTANEOUS_REQUESTS);
 
             while (serverWorking) {
                 try
                 {
-                    AcceptClient();
+                    Socket connection = listener.Accept();
+                    CreateThread(connection);                
                 }
                 catch (Exception) {
 
                 }
-
-
-
-
             }
         }
 
-        private void AcceptClient()
-        {
-            Socket connection = listener.Accept();
-            Console.Write("hay conexion");
-            IUserRepository users = UsersInMemory.instance.Value;
-            IConnection somebodyUnknown = new TCPConnection(connection);
-            somebodyUnknown.SendMessageToClient(new Package("REQ010012dfsdfsf"));
-            Authenticator userValidator = new Authenticator(somebodyUnknown, users);
-            TryToLogIn(userValidator,somebodyUnknown);
-           
-        }
-
-        private void TryToLogIn(Authenticator userValidator, IConnection somebody)
-        {
-            try
-            {
-                Session knownUser = userValidator.LogIn();
-                LunchGame(knownUser);
-            }
-            catch (UserNotFoundException ex)
-            {
-                somebody.Close();
-            }
-
-        }
-
-        private void LunchGame(Session knownUser)
+        private void CreateThread(Socket connection)
         {
             Thread thread = new Thread(new ThreadStart(() =>
             {
-                try
-                {
-                    GameLobby toLunch = new GameLobby(knownUser);
-                    toLunch.Start();
-                    knownUser.SendToClient(new Package("hola gil"));
-                }
-                catch (Exception)
-                {
-                
-                };
+                HandleClient(connection);
             }));
-            
-
+            thread.Start();
         }
+
+        private void HandleClient(Socket connection)
+        {
+            Console.WriteLine("hay conexion");
+            IConnection somebodyUnknown = new TCPConnection(connection);
+            IUserRepository users = UsersInMemory.instance.Value;
+            GameController toLunch = new GameController(somebodyUnknown, slasher, users);
+            toLunch.Start();
+           
+        }
+
+       
     }
 }

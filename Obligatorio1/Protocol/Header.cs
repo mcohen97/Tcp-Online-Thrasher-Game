@@ -10,14 +10,15 @@ namespace Protocol
     {
         public static readonly int HEADER_LENGTH = 9;
 
-        public enum HeaderEnum { REQUEST, RESPONSE }
-        public HeaderEnum HeaderType { get; private set; }
-
-        public enum CommandEnum { }
-        public CommandEnum Command { get; private set; }
+        
+        public HeaderType Type { get; set; }
+       
+        public CommandType Command { get; set; }
 
         public int DataLength { get; set; }
 
+        public Header() {
+        }
         public Header(string headerString)
         {
             GetInfoFromString(headerString);
@@ -36,11 +37,11 @@ namespace Protocol
 
             if (typeStr.Equals("REQ"))
             {
-                this.HeaderType = HeaderEnum.REQUEST;
+                this.Type = HeaderType.REQUEST;
             }
             else if (typeStr.Equals("RES"))
             {
-                this.HeaderType = HeaderEnum.RESPONSE;
+                this.Type = HeaderType.RESPONSE;
             }
             else
             {
@@ -52,7 +53,7 @@ namespace Protocol
         {
             string commadString = str.Substring(3, 2);
             int commandInt = int.Parse(commadString);
-            this.Command = (CommandEnum)commandInt;
+            this.Command = (CommandType)commandInt;
         }
         private void ExtractDataLength(string str)
         {
@@ -67,7 +68,7 @@ namespace Protocol
             string commandFormat = "00";
             string lengthFormat = "0000";
 
-            string ret = HeaderType == HeaderEnum.REQUEST ? "REQ" : "RES";
+            string ret = Type == HeaderType.REQUEST ? "REQ" : "RES";
             ret += ((int)Command).ToString(commandFormat);
             ret += DataLength.ToString(lengthFormat);
 

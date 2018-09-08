@@ -9,5 +9,8 @@ namespace Logic
         Package WaitForClientMessage();
 
         void Close();
+
+        void SendErrorMessage(string message);
+        void SendOkMessage(string message);
     }
 }

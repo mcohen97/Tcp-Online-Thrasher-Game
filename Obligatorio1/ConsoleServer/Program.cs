@@ -14,7 +14,7 @@ namespace ConsoleServer
         {
             Console.WriteLine("Inicializando servidor...");
             Server s = new Server();
-            s.HandleClients();
+            s.ListenToRequests();
         }
     }
 }
