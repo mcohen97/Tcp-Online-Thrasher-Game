@@ -8,6 +8,6 @@ namespace GameLogic
 {
     public enum Movement
     {
-        FORWARD, BACKWARD
+        FORWARD = 1, BACKWARD = -1
     }
 }

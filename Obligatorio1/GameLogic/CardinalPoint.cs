@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace GameLogic
 {
-    interface IPlayerController
+    public enum CardinalPoint
     {
-        void Move(Movement movement);
-        void Turn(Direction direction);
+        NORTH, EAST, SOUTH, WEST
     }
 }

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameLogic;
 using GameLogicException;
 
-namespace GameLogicTest
+namespace GameLogic
 {
     public class GameMap
     {
@@ -47,6 +46,7 @@ namespace GameLogicTest
 
             map[initialPosition.Row, initialPosition.Column] = player;
             player.Position = initialPosition;
+            player.Map = this;
             playerCount++;
 
         }
@@ -73,8 +73,11 @@ namespace GameLogicTest
             if (!IsValidPosition(position))
                 throw new InvalidPositionException();
 
-            map[position.Row, position.Column] = null;
-            playerCount--;
+            if (map[position.Row, position.Column] != null)
+            {
+                map[position.Row, position.Column] = null;
+                playerCount--;
+            }
         }
 
         public Player GetPlayer(Position position)

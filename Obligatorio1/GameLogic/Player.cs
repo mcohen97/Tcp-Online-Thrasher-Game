@@ -12,7 +12,7 @@ namespace GameLogic
         public abstract int Health { get; protected set; }
         public virtual int HitPoints {
             get {
-                return attackTechnique.HitPoints;
+                return AttackTechnique.HitPoints;
             }
             protected set {
 
@@ -26,22 +26,69 @@ namespace GameLogic
             }
         }
         public abstract Position Position { get; set; }
-        protected AttackTechnique attackTechnique;
+        protected IPlayerController playerController;
+        protected abstract AttackTechnique AttackTechnique { get; set; }
+        public abstract GameMap Map { get; set; }
+
+        public Player()
+        {
+            playerController = new TankMovementController(CardinalPoint.NORTH);
+            Map = new GameMap(1, 1);
+        }
 
         protected virtual void Damage(int hitPoints)
         {
             Health -= hitPoints;
-            if(Health < 0)
+            if(Health <= 0)
             {
                 Health = 0;
+                Map.RemovePlayer(Position);
             }
         }
-        public virtual void Attack(Player objective)
+
+        public virtual void Attack(Player target)
         {
-            if (attackTechnique.CanAttack(objective.Role))
+            if (AttackTechnique.CanAttack(target.Role))
             {
-                objective.Damage(attackTechnique.HitPoints);
+                target.Damage(AttackTechnique.HitPoints);
             }
         }
+
+        public void AttackZone()
+        {
+            ICollection<Player> targets = Map.GetPlayersNearPosition(Position);
+            foreach (Player target in targets)
+            {
+                Attack(target);
+            }
+        }
+
+        public CardinalPoint CompassDirection {
+            get {
+                return playerController.ActualCompassDirection();
+            }
+
+            set {
+                playerController.Turn(value);
+            }
+        }
+
+        public void Move(Movement movement)
+        {
+            Position newPosition = playerController.Move(this.Position, movement, 1);
+            Map.MovePlayer(this.Position, newPosition);
+        }
+
+        public void Turn(CardinalPoint direction)
+        {
+            playerController.Turn(direction);
+        }
+
+        public void MoveFast(Movement movement)
+        {
+            Position newPosition = playerController.Move(this.Position, movement, 2);
+            Map.MovePlayer(this.Position, newPosition);
+        }
+
     }
 }

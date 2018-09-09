@@ -8,19 +8,22 @@ namespace GameLogic
         private Role role;
         private int health;
         private Position position;
+        private AttackTechnique attackTechnique;
+        private GameMap map;
 
         public Survivor()
         {
             this.health = DEFAULT_SURVIVOR_HEALTH;
-            base.attackTechnique = new SurvivorAttackTechnique();
             this.role = Role.SURVIVOR;
             this.position = new Position(0, 0);
+            this.attackTechnique = new SurvivorAttackTechnique();
+
         }
 
         public Survivor(Position initialPosition)
         {
             this.health = DEFAULT_SURVIVOR_HEALTH;
-            base.attackTechnique = new SurvivorAttackTechnique();
+            this.attackTechnique = new SurvivorAttackTechnique();
             this.role = Role.SURVIVOR;
             this.position = initialPosition;
         }
@@ -51,6 +54,26 @@ namespace GameLogic
 
             set {
                 position = value;
+            }
+        }
+
+        protected override AttackTechnique AttackTechnique {
+            get {
+                return attackTechnique;
+            }
+
+            set {
+                attackTechnique = value;
+            }
+        }
+
+        public override GameMap Map {
+            get {
+                return map;
+            }
+
+            set {
+                map = value;
             }
         }
     }
