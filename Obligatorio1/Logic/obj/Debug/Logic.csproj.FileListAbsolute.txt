@@ -5,6 +5,7 @@ C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\Logic\bin\Debug
 C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\Logic\obj\Debug\Logic.csprojResolveAssemblyReference.cache
 C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\Logic\obj\Debug\Logic.dll
 C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\Logic\obj\Debug\Logic.pdb
+<<<<<<< HEAD
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\Logic\bin\Debug\Logic.dll
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\Logic\bin\Debug\Logic.pdb
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\Logic\bin\Debug\LogicExceptions.dll
@@ -12,3 +13,7 @@ C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-o
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\Logic\obj\Debug\Logic.csprojResolveAssemblyReference.cache
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\Logic\obj\Debug\Logic.dll
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\Logic\obj\Debug\Logic.pdb
+=======
+C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\Logic\bin\Debug\Protocol.dll
+C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\Logic\bin\Debug\Protocol.pdb
+>>>>>>> origin/experimental
