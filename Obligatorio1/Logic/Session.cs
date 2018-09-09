@@ -19,11 +19,11 @@ namespace Logic
         }
 
         public void SendToClient(Package message) {
-            userConnection.SendMessageToClient(message);
+            userConnection.SendMessage(message);
         }
 
         public Package WaitForClientMessage() {
-            return userConnection.WaitForClientMessage();
+            return userConnection.WaitForMessage();
         }       
     }
 }

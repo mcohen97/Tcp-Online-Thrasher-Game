@@ -4,13 +4,18 @@ namespace Logic
 {
     public interface IConnection
     {
-        void SendMessageToClient(Package message);
+        void SendMessage(Package message);
 
-        Package WaitForClientMessage();
+        Package WaitForMessage();
 
         void Close();
 
         void SendErrorMessage(string message);
+
         void SendOkMessage(string message);
+
+        void SendLogOutMessage();
+
+        void StartGame();
     }
 }

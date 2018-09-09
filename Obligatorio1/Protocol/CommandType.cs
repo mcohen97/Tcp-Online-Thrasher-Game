@@ -9,10 +9,13 @@ namespace Protocol
     public enum CommandType
     {
         AUTHENTICATE,
-        ENTER_OR_CREATE_GAME,
+        ENTER_OR_CREATE_MATCH,
         ADD_USER,
         LOG_OUT,
         ERROR,
+        CHOOSE_MONSTER,
+        CHOOSE_SURVIVOR,
+        RETURN_TO_MENU,
         OK
     };
 }

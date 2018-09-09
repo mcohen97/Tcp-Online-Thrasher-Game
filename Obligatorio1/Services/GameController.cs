@@ -28,16 +28,20 @@ namespace Services
 
             while (!endGame)
             {
-                command = Current.WaitForClientMessage();
+                command = Current.WaitForMessage();
                 switch (command.Command())
                 {
-
                     case CommandType.ADD_USER:
                         AddUser(command.Data);
                         break;
-                    case CommandType.ENTER_OR_CREATE_GAME:
+                    case CommandType.AUTHENTICATE:
+
+                        break;
+                    case CommandType.ENTER_OR_CREATE_MATCH:
+                        PlayMatch();
                         break;
                     case CommandType.LOG_OUT:
+                        Current.Close();
                         endGame = true;
                         break;
                     default:
@@ -45,6 +49,40 @@ namespace Services
                         break;
                 }
             }
+        }
+
+        private void PlayMatch()
+        {
+            Current.SendOkMessage("Debe ingresar como usuario primero");
+            Authenticator logger = new Authenticator(Current, users);
+            Session justLogged = logger.LogIn();
+            ChoosePlayer();
+        }
+
+        private void ChoosePlayer()
+        {
+            bool optionEntered = false;
+
+            while (!optionEntered) {
+                Package election = Current.WaitForMessage();
+
+                switch (election.Command()) {
+                    case CommandType.CHOOSE_MONSTER:
+                        optionEntered = true;
+                        break;
+                    case CommandType.CHOOSE_SURVIVOR:
+                        optionEntered = true;
+                        break;
+                    case CommandType.RETURN_TO_MENU:
+                        optionEntered = true;
+                        break;
+                    default:
+                        Current.SendErrorMessage("opcion incorrecta");
+                        break;
+                }
+            }
+            
+            
         }
 
         private void AddUser(byte[] data)

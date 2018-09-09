@@ -16,13 +16,13 @@ namespace Network
         {
             connection = link;
         }
-        public void SendMessageToClient(Package message)
+        public void SendMessage(Package message)
         {
             byte[] infoEnviar = message.GetBytesToSend();
             connection.Send(infoEnviar, 0, infoEnviar.Length, 0);
         }
 
-        public Package WaitForClientMessage()
+        public Package WaitForMessage()
         {
             byte[] ByRec = new byte[255];
             int a = connection.Receive(ByRec, 0, ByRec.Length, 0);
@@ -40,7 +40,7 @@ namespace Network
             error.Data= Encoding.Default.GetBytes(message);
             header.DataLength = message.Length;
 
-            SendMessageToClient(error);
+            SendMessage(error);
         }
 
         public void SendOkMessage(string message)
@@ -52,12 +52,36 @@ namespace Network
             okMessage.Data = Encoding.Default.GetBytes(message);
             header.DataLength = message.Length;
 
-            SendMessageToClient(okMessage);
+            SendMessage(okMessage);
         }
 
         public void Close()
         {
-            throw new NotImplementedException();
-        }        
+            connection.Shutdown(SocketShutdown.Both);
+            connection.Close();
+        }
+
+        public void SendLogOutMessage()
+        {
+            Header header = new Header();
+            header.Command = CommandType.LOG_OUT;
+            header.Type = HeaderType.REQUEST;
+            Package logOutMessage = new Package(header);
+            header.DataLength = 0;
+
+            SendMessage(logOutMessage);
+
+        }
+
+        public void StartGame()
+        {
+            Header header = new Header();
+            header.Command = CommandType.ENTER_OR_CREATE_MATCH;
+            header.Type = HeaderType.REQUEST;
+            Package startMatchMessage = new Package(header);
+            header.DataLength = 0;
+
+            SendMessage(startMatchMessage);
+        }
     }
 }

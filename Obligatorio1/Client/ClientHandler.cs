@@ -19,6 +19,7 @@ namespace Client
             IPEndPoint myAddress = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 12345);
             toConnect.Bind(myAddress);
             IPEndPoint serverAddress = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 1234);
+            Console.Write("Conectando..");
             toConnect.Connect(serverAddress);
             connection = new TCPConnection(toConnect);
         }
@@ -41,13 +42,20 @@ namespace Client
                         Play();
                         break;
                     case 3:
+                        Disconnect();
                         EndGame = true;
                         break;
-
                 }
 
             }
+            Console.Write("Conexión finalizada");
+            connection.Close();
 
+        }
+
+        private void Disconnect()
+        {
+            connection.SendLogOutMessage();
         }
 
         private void Play()
@@ -67,8 +75,8 @@ namespace Client
             Package toSend = new Package(info);
             toSend.Data = Encoding.Default.GetBytes(nickname);
 
-            connection.SendMessageToClient(toSend);
-            Package response = connection.WaitForClientMessage();
+            connection.SendMessage(toSend);
+            Package response = connection.WaitForMessage();
             string message = Encoding.Default.GetString(response.Data);
             if (response.Command().Equals(CommandType.ERROR))
             {
@@ -81,7 +89,7 @@ namespace Client
             Console.ReadKey();
         }
 
-        private int ReadInteger(int v, int length)
+        private int ReadInteger(int min, int max)
         {
             bool correct = false;
             int input = 0;
@@ -93,9 +101,9 @@ namespace Client
                 try
                 {
                     input = int.Parse(line);
-                    if (input > length || input < v)
+                    if (input > max || input < min)
                     {
-                        Console.WriteLine("Debe ingresar un numero entre " + v + " y " + length);
+                        Console.WriteLine("Debe ingresar un numero entre " + min + " y " + max);
                     }
                     else
                     {
@@ -104,7 +112,7 @@ namespace Client
                 }
                 catch (FormatException e)
                 {
-                    Console.WriteLine("Debe ingresar un numero entre " + v + " y " + length);
+                    Console.WriteLine("Debe ingresar un numero entre " + min + " y " + max);
                 }
             }
             return input;

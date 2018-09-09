@@ -4,7 +4,7 @@ using DataAccessInterface;
 using Protocol;
 using Logic;
 
-namespace Network
+namespace Services
 {
     internal class Authenticator
     {
@@ -18,7 +18,7 @@ namespace Network
 
         public Session LogIn()
         {
-            Package authentication = connection.WaitForClientMessage();
+            Package authentication = connection.WaitForMessage();
             User fetched;
 
             if (authentication.Command().Equals(CommandType.AUTHENTICATE))
