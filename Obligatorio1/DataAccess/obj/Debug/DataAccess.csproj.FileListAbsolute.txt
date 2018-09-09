@@ -23,3 +23,5 @@ C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\DataAccess\obj\
 C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\DataAccess\bin\Debug\DataAccessInterface.dll
 C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\DataAccess\bin\Debug\DataAccessInterface.pdb
 >>>>>>> origin/experimental
+C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\DataAccess\bin\Debug\DataAccessInterface.dll
+C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\DataAccess\bin\Debug\DataAccessInterface.pdb
