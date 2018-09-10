@@ -65,8 +65,8 @@ namespace GameLogicTest
         public void GetPosition()
         {
             Survivor survivor = new Survivor();
-            survivor.Position = new Position(1, 1);
-            Assert.AreEqual(survivor.Position, new Position(1, 1));
+            survivor.ActualPosition = new Position(1, 1);
+            Assert.AreEqual(survivor.ActualPosition, new Position(1, 1));
         }
     }
 }

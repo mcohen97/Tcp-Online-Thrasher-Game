@@ -69,8 +69,8 @@ namespace GameLogicTest
         public void GetPosition()
         {
             Monster monster = new Monster();
-            monster.Position = new Position(1, 1);
-            Assert.AreEqual(monster.Position, new Position(1, 1));
+            monster.ActualPosition = new Position(1, 1);
+            Assert.AreEqual(monster.ActualPosition, new Position(1, 1));
         }
 
         [TestMethod]
@@ -81,7 +81,7 @@ namespace GameLogicTest
             map.AddPlayerToPosition(monster, new Position(1, 1));
             monster.CompassDirection = CardinalPoint.SOUTH;
             monster.Move(Movement.FORWARD);
-            Assert.AreEqual(monster.Position, new Position(2, 1));
+            Assert.AreEqual(monster.ActualPosition, new Position(2, 1));
         }
 
         [TestMethod]
@@ -92,7 +92,7 @@ namespace GameLogicTest
             map.AddPlayerToPosition(monster, new Position(1, 1));
             monster.CompassDirection = CardinalPoint.NORTH;
             monster.Move(Movement.FORWARD);
-            Assert.AreEqual(monster.Position, new Position(0, 1));
+            Assert.AreEqual(monster.ActualPosition, new Position(0, 1));
         }
 
         [TestMethod]
@@ -103,7 +103,7 @@ namespace GameLogicTest
             map.AddPlayerToPosition(monster, new Position(1, 1));
             monster.CompassDirection = CardinalPoint.EAST;
             monster.Move(Movement.FORWARD);
-            Assert.AreEqual(monster.Position, new Position(1, 2));
+            Assert.AreEqual(monster.ActualPosition, new Position(1, 2));
         }
 
         [TestMethod]
@@ -114,7 +114,7 @@ namespace GameLogicTest
             map.AddPlayerToPosition(monster, new Position(1, 1));
             monster.CompassDirection = CardinalPoint.WEST;
             monster.Move(Movement.FORWARD);
-            Assert.AreEqual(monster.Position, new Position(1, 0));
+            Assert.AreEqual(monster.ActualPosition, new Position(1, 0));
         }
 
         [TestMethod]
@@ -125,7 +125,7 @@ namespace GameLogicTest
             map.AddPlayerToPosition(monster, new Position(1, 1));
             monster.CompassDirection = CardinalPoint.SOUTH;
             monster.Move(Movement.BACKWARD);
-            Assert.AreEqual(monster.Position, new Position(0, 1));
+            Assert.AreEqual(monster.ActualPosition, new Position(0, 1));
         }
 
         [TestMethod]
@@ -137,7 +137,7 @@ namespace GameLogicTest
             monster.CompassDirection = CardinalPoint.SOUTH;
             monster.Turn(CardinalPoint.EAST);
             monster.Move(Movement.FORWARD);
-            Assert.AreEqual(monster.Position, new Position(1, 2));
+            Assert.AreEqual(monster.ActualPosition, new Position(1, 2));
         }
 
         [TestMethod]
@@ -149,7 +149,7 @@ namespace GameLogicTest
             monster.CompassDirection = CardinalPoint.SOUTH;
             monster.Turn(CardinalPoint.WEST);
             monster.Move(Movement.FORWARD);
-            Assert.AreEqual(monster.Position, new Position(1, 0));
+            Assert.AreEqual(monster.ActualPosition, new Position(1, 0));
         }
 
         [TestMethod]
@@ -161,7 +161,7 @@ namespace GameLogicTest
             monster.CompassDirection = CardinalPoint.SOUTH;
             monster.Turn(CardinalPoint.NORTH);
             monster.Move(Movement.FORWARD);
-            Assert.AreEqual(monster.Position, new Position(0, 1));
+            Assert.AreEqual(monster.ActualPosition, new Position(0, 1));
         }
 
         [TestMethod]
@@ -172,7 +172,7 @@ namespace GameLogicTest
             map.AddPlayerToPosition(monster, new Position(1, 1));
             monster.CompassDirection = CardinalPoint.SOUTH;
             monster.MoveFast(Movement.FORWARD);
-            Assert.AreEqual(monster.Position, new Position(3, 1));
+            Assert.AreEqual(monster.ActualPosition, new Position(3, 1));
         }
 
         [TestMethod]
@@ -202,7 +202,7 @@ namespace GameLogicTest
             monster.AttackZone();
             monster.AttackZone();
 
-            Assert.AreEqual(0, gameMap.GetPlayersNearPosition(monster.Position).Count);
+            Assert.AreEqual(0, gameMap.GetPlayersNearPosition(monster.ActualPosition).Count);
         }
 
         [TestMethod]

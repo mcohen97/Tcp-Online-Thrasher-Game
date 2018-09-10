@@ -1,28 +1,13 @@
-C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\LogicTest\bin\Debug\LogicTest.dll
-C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\LogicTest\bin\Debug\LogicTest.pdb
-C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\LogicTest\bin\Debug\Logic.dll
-C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\LogicTest\bin\Debug\LogicExceptions.dll
-C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\LogicTest\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
-C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\LogicTest\bin\Debug\LogicExceptions.pdb
-C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\LogicTest\bin\Debug\Logic.pdb
-C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\LogicTest\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
-C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\LogicTest\bin\Debug\es\Microsoft.VisualStudio.QualityTools.UnitTestFramework.resources.dll
-C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\LogicTest\obj\Debug\LogicTest.csprojResolveAssemblyReference.cache
-C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\LogicTest\obj\Debug\LogicTest.dll
-C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\LogicTest\obj\Debug\LogicTest.pdb
-<<<<<<< HEAD
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\LogicTest\bin\Debug\LogicTest.dll
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\LogicTest\bin\Debug\LogicTest.pdb
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\LogicTest\bin\Debug\Logic.dll
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\LogicTest\bin\Debug\LogicExceptions.dll
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\LogicTest\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\LogicTest\bin\Debug\Protocol.dll
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\LogicTest\bin\Debug\LogicExceptions.pdb
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\LogicTest\bin\Debug\Logic.pdb
+C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\LogicTest\bin\Debug\Protocol.pdb
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\LogicTest\bin\Debug\es\Microsoft.VisualStudio.QualityTools.UnitTestFramework.resources.dll
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\LogicTest\obj\Debug\LogicTest.csprojResolveAssemblyReference.cache
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\LogicTest\obj\Debug\LogicTest.dll
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\LogicTest\obj\Debug\LogicTest.pdb
-=======
-C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\LogicTest\bin\Debug\Protocol.dll
-C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\LogicTest\bin\Debug\Protocol.pdb
->>>>>>> origin/experimental

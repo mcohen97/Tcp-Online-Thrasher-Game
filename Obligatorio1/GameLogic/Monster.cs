@@ -11,24 +11,24 @@ namespace GameLogic
         public static readonly int DEFAULT_MONSTER_HEALTH = 100;
         private Role role;
         private int health;
-        private Position position;
-        private AttackTechnique attackTechnique;
+        private Position actualPosition;
+        private AttackTechnique technique;
         private GameMap map;
 
         public Monster()
         {
             this.health = DEFAULT_MONSTER_HEALTH;
             this.role = Role.MONSTER;
-            this.position = new Position(0, 0);
-            this.attackTechnique = new MonsterAttackTechnique();
+            this.actualPosition = new Position(0, 0);
+            this.technique = new MonsterAttackTechnique();
         }
 
         public Monster(Position initialPosition)
         {
             this.health = DEFAULT_MONSTER_HEALTH;
             this.role = Role.MONSTER;
-            this.position = initialPosition;
-            this.attackTechnique = new MonsterAttackTechnique();
+            this.actualPosition = initialPosition;
+            this.technique = new MonsterAttackTechnique();
         }
 
         public override int Health {
@@ -50,23 +50,23 @@ namespace GameLogic
             }
         }
 
-        public override Position Position {
+        public override Position ActualPosition {
             get {
-                return this.position;
+                return this.actualPosition;
             }
 
             set {
-                this.position = value;
+                this.actualPosition = value;
             }
         }
 
-        protected override AttackTechnique AttackTechnique {
+        protected override AttackTechnique Technique {
             get {
-                return attackTechnique;
+                return technique;
             }
 
             set {
-                attackTechnique = value;
+                technique = value;
             }
         }
 
@@ -80,6 +80,11 @@ namespace GameLogic
             }
         }
 
-        
+        public override void Join(Game game, Position initialPosition)
+        {
+            Map = game.Map;
+            ActualPosition = initialPosition;
+            game.MonsterCount++;
+        }
     }
 }

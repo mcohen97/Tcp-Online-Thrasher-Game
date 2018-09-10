@@ -3,6 +3,7 @@ using System.Net.Sockets;
 using DataAccessInterface;
 using Protocol;
 using Logic;
+using ServiceExceptions;
 
 namespace Services
 {

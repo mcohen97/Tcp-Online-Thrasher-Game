@@ -10,6 +10,7 @@ using Logic;
 using System.Threading;
 using Protocol;
 using Services;
+using GameLogic;
 
 namespace Network
 {

@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NotExistingUserException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="TCPConnection.cs" />
@@ -54,6 +53,10 @@
       <Project>{3ea50ac5-8184-4342-8f3c-848f2cab1d1a}</Project>
       <Name>DataAccess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GameLogic\GameLogic.csproj">
+      <Project>{cd382591-ec53-46e1-bd7c-c1330b456505}</Project>
+      <Name>GameLogic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Logic\Logic.csproj">
       <Project>{1d6032d2-c6da-435c-9c5d-17edf7a8d102}</Project>
       <Name>Logic</Name>
@@ -63,7 +66,7 @@
       <Name>Protocol</Name>
     </ProjectReference>
     <ProjectReference Include="..\Services\Services.csproj">
-      <Project>{6826ee4d-7aae-48dd-a31d-7af6938187cc}</Project>
+      <Project>{6826EE4D-7AAE-48DD-A31D-7AF6938187CC}</Project>
       <Name>Services</Name>
     </ProjectReference>
   </ItemGroup>

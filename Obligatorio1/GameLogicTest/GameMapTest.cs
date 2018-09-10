@@ -32,7 +32,7 @@ namespace GameLogicTest
             Player player = new Monster();
             Position initialPosition = new Position(0, 0);
             gameMap.AddPlayerToPosition(player, initialPosition);
-            Assert.AreEqual(player.Position, initialPosition);
+            Assert.AreEqual(player.ActualPosition, initialPosition);
         }
 
         [TestMethod]
@@ -44,7 +44,7 @@ namespace GameLogicTest
             gameMap.AddPlayerToPosition(player, initialPosition);
             Position finalPosition = new Position(1, 1);
             gameMap.MovePlayer(initialPosition, finalPosition);
-            Assert.AreEqual(player.Position, finalPosition);
+            Assert.AreEqual(player.ActualPosition, finalPosition);
         }
 
         [TestMethod]
@@ -64,7 +64,7 @@ namespace GameLogicTest
             Player player = new Monster();
             Position position = new Position(0, 0);
             gameMap.AddPlayerToPosition(player, position);
-            gameMap.RemovePlayer(player.Position);
+            gameMap.RemovePlayer(player.ActualPosition);
             Assert.IsTrue(gameMap.IsEmptyPosition(position));
         }
 
@@ -79,7 +79,7 @@ namespace GameLogicTest
             gameMap.AddPlayerToPosition(player1, new Position(0, 0));
             gameMap.AddPlayerToPosition(player2, new Position(0, 1));
             gameMap.AddPlayerToPosition(player3, new Position(0, 2));
-            gameMap.RemovePlayer(player3.Position);
+            gameMap.RemovePlayer(player3.ActualPosition);
 
             Assert.AreEqual(2, gameMap.PlayerCount);
         }
@@ -209,7 +209,7 @@ namespace GameLogicTest
             GameMap gameMap = new GameMap(8, 8);
             Player player = new Monster();
             gameMap.AddPlayerToPosition(player, new Position(0, 0));
-            gameMap.MovePlayer(player.Position, new Position(-1, 0));
+            gameMap.MovePlayer(player.ActualPosition, new Position(-1, 0));
         }
 
         [TestMethod]
@@ -219,7 +219,7 @@ namespace GameLogicTest
             GameMap gameMap = new GameMap(8, 8);
             Player player = new Monster();
             gameMap.AddPlayerToPosition(player, new Position(0, 0));
-            gameMap.MovePlayer(player.Position, new Position(10, 0)); //GameMap doesnt have the responsability of control game rules
+            gameMap.MovePlayer(player.ActualPosition, new Position(10, 0)); //GameMap doesnt have the responsability of control game rules
         }
 
         [TestMethod]
@@ -229,7 +229,7 @@ namespace GameLogicTest
             GameMap gameMap = new GameMap(8, 8);
             Player player = new Monster();
             gameMap.AddPlayerToPosition(player, new Position(0, 0));
-            gameMap.MovePlayer(player.Position, new Position(2, 10));
+            gameMap.MovePlayer(player.ActualPosition, new Position(2, 10));
         }
 
         [TestMethod]

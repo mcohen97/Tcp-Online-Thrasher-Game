@@ -43,6 +43,7 @@
     <Compile Include="AttackTechnique.cs" />
     <Compile Include="CardinalPoint.cs" />
     <Compile Include="Direction.cs" />
+    <Compile Include="Game.cs" />
     <Compile Include="GameMap.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="Movement.cs" />

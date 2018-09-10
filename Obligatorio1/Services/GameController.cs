@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using Protocol;
 using Logic;
 using DataAccessInterface;
+using GameLogic;
 
 namespace Services
 {
-    internal class GameController
+    public class GameController
     {
         public IConnection Current { get; private set; }
         private Game slasher;

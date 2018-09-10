@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Network
+namespace ServiceExceptions
 {
     [Serializable]
-    internal class NotExistingUserException : Exception
+    public class NotExistingUserException : Exception
     {
         public NotExistingUserException()
         {

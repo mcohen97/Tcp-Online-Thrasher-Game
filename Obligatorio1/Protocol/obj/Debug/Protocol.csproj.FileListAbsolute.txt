@@ -2,3 +2,8 @@ C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\Protocol\bin\De
 C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\Protocol\bin\Debug\Protocol.pdb
 C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\Protocol\obj\Debug\Protocol.dll
 C:\Users\Marcel\Desktop\programacion-de-redes-obl-1\Obligatorio1\Protocol\obj\Debug\Protocol.pdb
+C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\Protocol\bin\Debug\Protocol.dll
+C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\Protocol\bin\Debug\Protocol.pdb
+C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\Protocol\obj\Debug\Protocol.dll
+C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\Protocol\obj\Debug\Protocol.pdb
+C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\Protocol\obj\Debug\Protocol.csprojResolveAssemblyReference.cache

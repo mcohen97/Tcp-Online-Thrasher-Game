@@ -1,0 +1,5 @@
+C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\ServiceExceptions\bin\Debug\ServiceExceptions.dll
+C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\ServiceExceptions\bin\Debug\ServiceExceptions.pdb
+C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\ServiceExceptions\obj\Debug\ServiceExceptions.dll
+C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\ServiceExceptions\obj\Debug\ServiceExceptions.pdb
+C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\ServiceExceptions\obj\Debug\ServiceExceptions.csprojResolveAssemblyReference.cache

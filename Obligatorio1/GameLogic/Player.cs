@@ -12,7 +12,7 @@ namespace GameLogic
         public abstract int Health { get; protected set; }
         public virtual int HitPoints {
             get {
-                return AttackTechnique.HitPoints;
+                return Technique.HitPoints;
             }
             protected set {
 
@@ -25,9 +25,9 @@ namespace GameLogic
             private set {
             }
         }
-        public abstract Position Position { get; set; }
+        public abstract Position ActualPosition { get; set; }
         protected IPlayerController playerController;
-        protected abstract AttackTechnique AttackTechnique { get; set; }
+        protected abstract AttackTechnique Technique { get; set; }
         public abstract GameMap Map { get; set; }
 
         public Player()
@@ -42,21 +42,21 @@ namespace GameLogic
             if(Health <= 0)
             {
                 Health = 0;
-                Map.RemovePlayer(Position);
+                Map.RemovePlayer(ActualPosition);
             }
         }
 
         public virtual void Attack(Player target)
         {
-            if (AttackTechnique.CanAttack(target.Role))
+            if (Technique.CanAttack(target.Role))
             {
-                target.Damage(AttackTechnique.HitPoints);
+                target.Damage(Technique.HitPoints);
             }
         }
 
         public void AttackZone()
         {
-            ICollection<Player> targets = Map.GetPlayersNearPosition(Position);
+            ICollection<Player> targets = Map.GetPlayersNearPosition(ActualPosition);
             foreach (Player target in targets)
             {
                 Attack(target);
@@ -75,8 +75,8 @@ namespace GameLogic
 
         public void Move(Movement movement)
         {
-            Position newPosition = playerController.Move(this.Position, movement, 1);
-            Map.MovePlayer(this.Position, newPosition);
+            Position newPosition = playerController.Move(this.ActualPosition, movement, 1);
+            Map.MovePlayer(this.ActualPosition, newPosition);
         }
 
         public void Turn(CardinalPoint direction)
@@ -86,9 +86,11 @@ namespace GameLogic
 
         public void MoveFast(Movement movement)
         {
-            Position newPosition = playerController.Move(this.Position, movement, 2);
-            Map.MovePlayer(this.Position, newPosition);
+            Position newPosition = playerController.Move(this.ActualPosition, movement, 2);
+            Map.MovePlayer(this.ActualPosition, newPosition);
         }
+
+        public abstract void Join(Game game, Position initialPosition);
 
     }
 }
