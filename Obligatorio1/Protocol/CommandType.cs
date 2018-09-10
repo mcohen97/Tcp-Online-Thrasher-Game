@@ -16,6 +16,7 @@ namespace Protocol
         CHOOSE_MONSTER,
         CHOOSE_SURVIVOR,
         RETURN_TO_MENU,
+        PLAYER_ACTION,
         OK
     };
 }
