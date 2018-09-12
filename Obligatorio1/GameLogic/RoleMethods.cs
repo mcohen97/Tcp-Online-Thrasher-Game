@@ -20,7 +20,26 @@ namespace GameLogic
             return roles;
         }
 
-       
+       public static string RoleToString(Role role)
+        {
+            string roleString = "";
+            switch (role)
+            {
+                case Role.MONSTER:
+                    roleString = "Monster";
+                    break;
+                case Role.SURVIVOR:
+                    roleString = "Survivor";
+                    break;
+                case Role.NEUTRAL:
+                    roleString = "Neutral";
+                    break;
+                default:
+                    break;
+            }
+
+            return roleString;
+        }
     }
 
     

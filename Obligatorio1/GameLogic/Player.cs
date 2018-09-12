@@ -8,6 +8,11 @@ namespace GameLogic
 {
     public abstract class Player
     {
+        protected string name;
+        public string Name {
+            get { return name; }
+            protected set { name = value; }
+        }
         public abstract Role Role { get; protected set; }
         public abstract int Health { get; protected set; }
         public virtual int HitPoints {
@@ -29,11 +34,13 @@ namespace GameLogic
         protected IPlayerController playerController;
         protected abstract AttackTechnique Technique { get; set; }
         public abstract GameMap Map { get; set; }
+        public Action<string> Notify { get; set; }
 
         public Player()
         {
             playerController = new TankMovementController(CardinalPoint.NORTH);
             Map = new GameMap(1, 1);
+            name = "Unidentified Player";
         }
 
         protected virtual void Damage(int hitPoints)
@@ -43,6 +50,7 @@ namespace GameLogic
             {
                 Health = 0;
                 Map.RemovePlayer(ActualPosition);
+                this.Notify("RIP - you are dead");
             }
         }
 
@@ -51,6 +59,8 @@ namespace GameLogic
             if (Technique.CanAttack(target.Role))
             {
                 target.Damage(Technique.HitPoints);
+                target.Notify("You are being ATTACKED by this MOTHERFUCKER" + this.ToString() + "!!! Your HP: " + this.Health);
+                this.Notify("Enemy " + target.ToString() + " has been hit. Enemy HP: " + target.Health);
             }
         }
 
@@ -94,8 +104,29 @@ namespace GameLogic
 
         public ICollection<Player> SpotNearbyPlayers()
         {
-            return Map.GetPlayersNearPosition(ActualPosition);
+            ICollection<Player> playersSpotted = Map.GetPlayersNearPosition(ActualPosition);
+            foreach (Player player in playersSpotted)
+            {
+                player.Notify("You've been SPOTTED by "+this.ToString());
+                this.Notify(player+ " is close to you");
+            }
+            return playersSpotted;
         }
 
+        public override string ToString()
+        {
+            return name + " ("+RoleMethods.RoleToString(this.Role)+")";
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+            if (!(obj is Player))
+                return false;
+            Player parameter = (Player)obj;
+            return this.ToString() == parameter.ToString();
+        }
     }
+
 }

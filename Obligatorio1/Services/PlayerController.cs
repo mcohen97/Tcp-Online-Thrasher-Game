@@ -21,6 +21,7 @@ namespace Services
             clientSession = session;
             game = gameJoined;
             player = PlayerFactory.CreatePlayer(selectedRole);
+            player.Notify = SendNotificationToClient;
             game.AddPlayer(player);
         }
 
@@ -81,6 +82,17 @@ namespace Services
                 default:
                     throw new NotPlayerCommandException();
             }
+        }
+
+        private void SendNotificationToClient(string notification)
+        {
+            Header info = new Header();
+            info.Type = HeaderType.RESPONSE;
+            info.Command = CommandType.PLAYER_ACTION;
+            info.DataLength = notification.Length;
+            Package toSend = new Package(info);
+            toSend.Data = Encoding.Default.GetBytes(notification);
+            clientSession.SendToClient(toSend);
         }
     }
 }
