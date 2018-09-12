@@ -92,5 +92,10 @@ namespace GameLogic
 
         public abstract void Join(Game game, Position initialPosition);
 
+        public ICollection<Player> SpotNearbyPlayers()
+        {
+            return Map.GetPlayersNearPosition(ActualPosition);
+        }
+
     }
 }

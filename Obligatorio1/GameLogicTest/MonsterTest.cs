@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using GameLogic;
 using GameLogicException;
+using System.Collections.Generic;
 
 namespace GameLogicTest
 {
@@ -76,9 +77,10 @@ namespace GameLogicTest
         [TestMethod]
         public void MoveForwardSouthTest()
         {
-            Monster monster = new Monster();
+            Position position = new Position(1, 1);
+            Monster monster = new Monster(position);
             GameMap map = new GameMap(8, 8);
-            map.AddPlayerToPosition(monster, new Position(1, 1));
+            map.AddPlayerToPosition(monster, position);
             monster.CompassDirection = CardinalPoint.SOUTH;
             monster.Move(Movement.FORWARD);
             Assert.AreEqual(monster.ActualPosition, new Position(2, 1));
@@ -87,9 +89,10 @@ namespace GameLogicTest
         [TestMethod]
         public void MoveForwardNorthTest()
         {
-            Monster monster = new Monster();
+            Position position = new Position(1, 1);
+            Monster monster = new Monster(position);
             GameMap map = new GameMap(8, 8);
-            map.AddPlayerToPosition(monster, new Position(1, 1));
+            map.AddPlayerToPosition(monster, position);
             monster.CompassDirection = CardinalPoint.NORTH;
             monster.Move(Movement.FORWARD);
             Assert.AreEqual(monster.ActualPosition, new Position(0, 1));
@@ -98,9 +101,10 @@ namespace GameLogicTest
         [TestMethod]
         public void MoveForwardEastTest()
         {
-            Monster monster = new Monster();
+            Position position = new Position(1, 1);
+            Monster monster = new Monster(position);
             GameMap map = new GameMap(8, 8);
-            map.AddPlayerToPosition(monster, new Position(1, 1));
+            map.AddPlayerToPosition(monster, position);
             monster.CompassDirection = CardinalPoint.EAST;
             monster.Move(Movement.FORWARD);
             Assert.AreEqual(monster.ActualPosition, new Position(1, 2));
@@ -109,9 +113,10 @@ namespace GameLogicTest
         [TestMethod]
         public void MoveForwardWestTest()
         {
-            Monster monster = new Monster();
+            Position position = new Position(1, 1);
+            Monster monster = new Monster(position);
             GameMap map = new GameMap(8, 8);
-            map.AddPlayerToPosition(monster, new Position(1, 1));
+            map.AddPlayerToPosition(monster, position);
             monster.CompassDirection = CardinalPoint.WEST;
             monster.Move(Movement.FORWARD);
             Assert.AreEqual(monster.ActualPosition, new Position(1, 0));
@@ -120,9 +125,10 @@ namespace GameLogicTest
         [TestMethod]
         public void MoveBackwardTest()
         {
-            Monster monster = new Monster();
+            Position position = new Position(1, 1);
+            Monster monster = new Monster(position);
             GameMap map = new GameMap(8, 8);
-            map.AddPlayerToPosition(monster, new Position(1, 1));
+            map.AddPlayerToPosition(monster, position);
             monster.CompassDirection = CardinalPoint.SOUTH;
             monster.Move(Movement.BACKWARD);
             Assert.AreEqual(monster.ActualPosition, new Position(0, 1));
@@ -167,9 +173,10 @@ namespace GameLogicTest
         [TestMethod]
         public void MoveFastTest()
         {
-            Monster monster = new Monster();
+            Position position = new Position(1, 1);
+            Monster monster = new Monster(position);
             GameMap map = new GameMap(8, 8);
-            map.AddPlayerToPosition(monster, new Position(1, 1));
+            map.AddPlayerToPosition(monster, position);
             monster.CompassDirection = CardinalPoint.SOUTH;
             monster.MoveFast(Movement.FORWARD);
             Assert.AreEqual(monster.ActualPosition, new Position(3, 1));
@@ -206,12 +213,32 @@ namespace GameLogicTest
         }
 
         [TestMethod]
+        public void SpotPlayersTest()
+        {
+            GameMap gameMap = new GameMap();
+            Player player1 = new Survivor(new Position(0, 0));
+            Player player2 = new Survivor(new Position(1, 0));
+            Player player3 = new Monster(new Position(1, 1));
+            Player player4 = new Survivor(new Position(0, 1));
+
+            gameMap.AddPlayerToPosition(player1, player1.ActualPosition);
+            gameMap.AddPlayerToPosition(player2, player2.ActualPosition);
+            gameMap.AddPlayerToPosition(player3, player3.ActualPosition);
+            gameMap.AddPlayerToPosition(player4, player4.ActualPosition);
+
+            ICollection<Player> playersNearby = player1.SpotNearbyPlayers();
+
+            Assert.AreEqual(3, playersNearby.Count);
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(InvalidPositionException))]
         public void InvalidPositionMovementTest()
         {
             GameMap map = new GameMap(8, 8);
             Monster player = new Monster();
-            map.AddPlayerToPosition(player, new Position(1, 1));
+            player.ActualPosition = new Position(1, 1);
+            map.AddPlayerToPosition(player, player.ActualPosition);
             player.CompassDirection = CardinalPoint.NORTH;
             player.MoveFast(Movement.FORWARD);
         }
@@ -221,12 +248,14 @@ namespace GameLogicTest
         public void OccupiedPositionMovementTest()
         {
             GameMap map = new GameMap(8, 8);
-            Monster player = new Monster();
-            Monster player2 = new Monster();
+            Monster player = new Monster(new Position(1,1));
+            Monster player2 = new Monster(new Position(1,2));
             map.AddPlayerToPosition(player, new Position(1, 1));
             map.AddPlayerToPosition(player2, new Position(1, 2));
             player.CompassDirection = CardinalPoint.EAST;
             player.Move(Movement.FORWARD);
         }
+
+
     }
 }

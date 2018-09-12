@@ -58,6 +58,8 @@ namespace GameLogic
                 throw new OccupiedPositionException();
 
             map[initialPosition.Row, initialPosition.Column] = player;
+            player.Map = this;
+            player.ActualPosition = initialPosition;
             playerCount++;
 
         }

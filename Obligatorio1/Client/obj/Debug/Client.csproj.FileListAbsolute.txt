@@ -40,3 +40,7 @@ C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-o
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\Client\obj\Debug\Client.pdb
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\Client\bin\Debug\ServiceExceptions.dll
 C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\Client\bin\Debug\ServiceExceptions.pdb
+C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\Client\bin\Debug\GameLogic.dll
+C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\Client\bin\Debug\GameLogicException.dll
+C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\Client\bin\Debug\GameLogic.pdb
+C:\Users\USER\Desktop\Obligatorio programación de redes\programacion-de-redes-obl-1\Obligatorio1\Client\bin\Debug\GameLogicException.pdb
