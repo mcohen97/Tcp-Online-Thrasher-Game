@@ -39,7 +39,7 @@ namespace Services
                             PerformAction(action);
                         else
                         {
-                            //notify client that his player is dead
+                            SendNotificationToClient("You are dead, sorry dude, wait for next match!");
                         }
                         break;
                     default:

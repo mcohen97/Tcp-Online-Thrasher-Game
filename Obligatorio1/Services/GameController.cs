@@ -57,21 +57,26 @@ namespace Services
             Current.SendOkMessage("Debe ingresar como usuario primero");
             Authenticator logger = new Authenticator(Current, users);
             Session justLogged = logger.LogIn();
-            ChoosePlayer();
+            Role selectedRole = ChoosePlayer();
+            PlayerController userPlayer = new PlayerController(justLogged, slasher, selectedRole);
+            userPlayer.Play();
         }
 
-        private void ChoosePlayer()
+        private Role ChoosePlayer()
         {
             bool optionEntered = false;
+            Role roleReturned = Role.NEUTRAL;
 
             while (!optionEntered) {
                 Package election = Current.WaitForMessage();
 
                 switch (election.Command()) {
                     case CommandType.CHOOSE_MONSTER:
+                        roleReturned = Role.MONSTER;
                         optionEntered = true;
                         break;
                     case CommandType.CHOOSE_SURVIVOR:
+                        roleReturned = Role.SURVIVOR;
                         optionEntered = true;
                         break;
                     case CommandType.RETURN_TO_MENU:
@@ -82,8 +87,8 @@ namespace Services
                         break;
                 }
             }
-            
-            
+
+            return roleReturned;
         }
 
         private void AddUser(byte[] data)
