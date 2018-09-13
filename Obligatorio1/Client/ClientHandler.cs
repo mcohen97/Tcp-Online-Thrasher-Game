@@ -60,7 +60,43 @@ namespace Client
 
         private void Play()
         {
-            throw new NotImplementedException();
+            Header info = new Header();
+            info.Type = HeaderType.REQUEST;
+            info.Command = CommandType.ENTER_OR_CREATE_MATCH;
+
+            Package wantToPlay = new Package(info);
+            connection.SendMessage(wantToPlay);
+
+            Package ok = connection.WaitForMessage();
+            Console.WriteLine(ok.Message());
+            Authenticate();
+        }
+
+        private void Authenticate()
+        {
+            string nick =GetInput("Ingrese nickname del jugador");
+            Header info = new Header();
+            info.Command = CommandType.AUTHENTICATE;
+            info.Type = HeaderType.REQUEST;
+            Package login = new Package(info);
+            login.Data = Encoding.Default.GetBytes(nick);
+
+            connection.SendMessage(login);
+            Package response = connection.WaitForMessage();
+            Console.WriteLine(response.Message());
+            Console.ReadKey();
+        }
+
+        private void InformAndWaitForKey(string message)
+        {
+            Console.WriteLine(message);
+            Console.ReadKey();
+        }
+
+        private string GetInput(string message)
+        {
+            Console.WriteLine(message);
+            return Console.ReadLine();
         }
 
         private void Register()
@@ -78,13 +114,10 @@ namespace Client
             connection.SendMessage(toSend);
             Package response = connection.WaitForMessage();
             string message = Encoding.Default.GetString(response.Data);
-            if (response.Command().Equals(CommandType.ERROR))
-            {
-                Console.WriteLine(message);
-            }
-            else {
-                Console.WriteLine(message);
-            }
+            
+            Console.WriteLine(message);
+            
+            
             Console.WriteLine("Presione una tecla para continuar");
             Console.ReadKey();
         }
