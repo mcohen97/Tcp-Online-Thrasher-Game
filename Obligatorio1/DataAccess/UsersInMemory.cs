@@ -11,17 +11,19 @@ namespace DataAccessInterface
     {
         public static readonly Lazy<UsersInMemory> instance = new Lazy<UsersInMemory>(() => new UsersInMemory());
         private ICollection<User> Users;
-        public readonly object synLock;
+        
+        public readonly object synAddLock;
+
         private UsersInMemory()
         {
             Users = new List<User>();
-            synLock = new object();
+            synAddLock = new object();
         }
         public void AddUser(User newUser)
         {
             
             bool repeated = instance.Value.Users.Any(u => u.Nickname.Equals(newUser.Nickname));
-            lock (synLock)
+            lock (synAddLock)
             {
                 if (repeated)
                 {
@@ -40,7 +42,7 @@ namespace DataAccessInterface
             }
             catch (InvalidOperationException)
             {
-                throw new UserNotFoundException();
+                throw new UserNotFoundException("El nombre de usuario no existe");
             }
             return query;
         }

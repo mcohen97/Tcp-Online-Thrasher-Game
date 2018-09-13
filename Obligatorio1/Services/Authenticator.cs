@@ -12,9 +12,10 @@ namespace Services
         private IConnection connection;
         private IUserRepository storage;
 
-        public Authenticator(IConnection connection, IUserRepository userStorage)
+        public Authenticator(IConnection aConnection, IUserRepository userStorage)
         {
-            this.connection = connection;
+            connection = aConnection;
+            storage = userStorage;
         }
 
         public Session LogIn()
@@ -24,10 +25,10 @@ namespace Services
 
             if (authentication.Command().Equals(CommandType.AUTHENTICATE))
             {
-                fetched = storage.GetUser(authentication.Data.ToString());
+                fetched = storage.GetUser(authentication.Message());
             }
             else {
-                throw new NotExistingUserException();
+                throw new NotExistingUserException("No se encontro el usuario");
             }
             return new Session(connection, fetched);
         }
