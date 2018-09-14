@@ -33,7 +33,7 @@ namespace Services
                 switch (command.Command())
                 {
                     case CommandType.ADD_USER:
-                        AddUser(command.Data);
+                        AddUser(command);
                         break;
                     case CommandType.ENTER_OR_CREATE_MATCH:
                         PlayMatch();
@@ -91,9 +91,9 @@ namespace Services
             
         }
 
-        private void AddUser(byte[] data)
+        private void AddUser(Package command)
         {
-            string nickname = Encoding.Default.GetString(data);
+            string nickname = command.Message();
             User toAdd = new User(nickname, "path");
             try
             {

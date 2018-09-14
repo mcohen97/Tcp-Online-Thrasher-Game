@@ -61,8 +61,6 @@ namespace Protocol
             this.DataLength = int.Parse(lengthStr);
         }
 
-        
-
         public byte[] GetBytes()
         {
             string commandFormat = "00";

@@ -60,8 +60,7 @@ namespace Network
             IConnection somebodyUnknown = new TCPConnection(connection);
             IUserRepository users = UsersInMemory.instance.Value;
             GameController toLunch = new GameController(somebodyUnknown, slasher, users);
-            toLunch.Start();
-           
+            toLunch.Start();           
         }
 
        

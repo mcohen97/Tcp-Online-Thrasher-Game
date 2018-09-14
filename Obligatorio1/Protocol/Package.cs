@@ -11,19 +11,19 @@ namespace Protocol
         public static int MESSAGE_SIZE_MAX = 9999;
         public static int DATA_SIZE_MAX = MESSAGE_SIZE_MAX - Header.HEADER_LENGTH;
 
-        public Header Header { get; set; }
+        private Header header;
 
         private byte[] data;
         public byte[] Data { get {return data; } set { SetData(value); } }
 
         public Package(string wholePackage) {
-            Header = new Header(wholePackage);
-            string dataPart = wholePackage.Substring(Header.HEADER_LENGTH, Header.DataLength);
+            header = new Header(wholePackage);
+            string dataPart = wholePackage.Substring(Header.HEADER_LENGTH, header.DataLength);
             Data = Encoding.Default.GetBytes(dataPart);
         }
 
         public Package(Header aHeader) {
-            Header = aHeader;
+            header = aHeader;
         }
 
         public string Message()
@@ -33,22 +33,25 @@ namespace Protocol
 
         private void SetData(byte[] message)
         {
-            Header.DataLength = message.Length;
+            header.DataLength = message.Length;
             data=message;
+        }
+        public HeaderType HeaderType() {
+            return header.Type;
         }
         public int DataLength()
         {
-            return Header.DataLength - Header.HEADER_LENGTH;
+            return header.DataLength - Header.HEADER_LENGTH;
         }
 
         public CommandType Command()
         {
-            return Header.Command;
+            return header.Command;
         }
 
         public byte[] GetBytesToSend()
         {
-            byte[] header = Header.GetBytes();
+            byte[] header = this.header.GetBytes();
 
             if (Data != null)
             {
@@ -67,7 +70,7 @@ namespace Protocol
             {
                 length = Data.Length;
             }
-            Header.DataLength = length + Header.HEADER_LENGTH;
+            header.DataLength = length + Header.HEADER_LENGTH;
         }
 
     }
