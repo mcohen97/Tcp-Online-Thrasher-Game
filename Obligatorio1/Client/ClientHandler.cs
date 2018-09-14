@@ -13,7 +13,8 @@ namespace Client
 {
     class ClientHandler
     {
-        IConnection connection;
+        private IConnection connection;
+        private ClientServices functionalities;
         public ClientHandler() {
             Socket toConnect = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPEndPoint myAddress = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 12345);
@@ -22,6 +23,7 @@ namespace Client
             Console.Write("Conectando..");
             toConnect.Connect(serverAddress);
             connection = new TCPConnection(toConnect);
+            functionalities = new ClientServices(connection);
         }
 
        public void Start() {
