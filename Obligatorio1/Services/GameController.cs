@@ -35,9 +35,6 @@ namespace Services
                     case CommandType.ADD_USER:
                         AddUser(command.Data);
                         break;
-                    case CommandType.AUTHENTICATE:
-
-                        break;
                     case CommandType.ENTER_OR_CREATE_MATCH:
                         PlayMatch();
                         break;
@@ -56,10 +53,17 @@ namespace Services
         {
             Current.SendOkMessage("Debe ingresar como usuario primero");
             Authenticator logger = new Authenticator(Current, users);
-            Session justLogged = logger.LogIn();
-            Role selectedRole = ChoosePlayer();
-            PlayerController userPlayer = new PlayerController(justLogged, slasher, selectedRole);
-            userPlayer.Play();
+            try
+            {
+                Session justLogged = logger.LogIn();
+                Current.SendOkMessage("ingresado correctamente, seleccione rol");
+                Role selectedRole = ChoosePlayer();
+                PlayerController userPlayer = new PlayerController(justLogged, slasher, selectedRole);
+                userPlayer.Play();
+            }
+            catch (UserNotFoundException e) {
+                Current.SendErrorMessage(e.Message);
+            }
         }
 
         private Role ChoosePlayer()

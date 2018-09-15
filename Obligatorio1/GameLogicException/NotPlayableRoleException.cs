@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace GameLogicException
 {
     [Serializable]
-    public class NotPlayableRoleException : Exception
+    public class NotPlayableRoleException : GameException
     {
         public NotPlayableRoleException()
         {

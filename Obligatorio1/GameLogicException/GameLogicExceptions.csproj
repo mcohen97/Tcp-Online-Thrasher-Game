@@ -40,7 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameIsFullException.cs" />
+    <Compile Include="GameException.cs" />
+    <Compile Include="MapIsFullException.cs" />
     <Compile Include="InvalidPositionException.cs" />
     <Compile Include="MatchAlreadyStartedException.cs" />
     <Compile Include="NotPlayableRoleException.cs" />

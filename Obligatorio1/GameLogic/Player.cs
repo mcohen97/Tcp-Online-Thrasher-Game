@@ -11,7 +11,7 @@ namespace GameLogic
         protected string name;
         public string Name {
             get { return name; }
-            protected set { name = value; }
+            set { name = value; }
         }
         public abstract Role Role { get; protected set; }
         public abstract int Health { get; protected set; }
@@ -59,7 +59,7 @@ namespace GameLogic
             if (Technique.CanAttack(target.Role))
             {
                 target.Damage(Technique.HitPoints);
-                target.Notify("You are being ATTACKED by this MOTHERFUCKER" + this.ToString() + "!!! Your HP: " + this.Health);
+                target.Notify("You are being ATTACKED by this MOTHERFUCKER " + this.ToString() + "!!! Your HP: " + target.Health + " / Enemy HP: " + this.Health);
                 this.Notify("Enemy " + target.ToString() + " has been hit. Enemy HP: " + target.Health);
             }
         }
@@ -87,22 +87,27 @@ namespace GameLogic
         {
             Position newPosition = playerController.Move(this.ActualPosition, movement, 1);
             Map.MovePlayer(this.ActualPosition, newPosition);
+            Notify("You moved to " + this.ActualPosition);
+            SpotNearbyPlayers();
         }
 
         public void Turn(CardinalPoint direction)
         {
             playerController.Turn(direction);
+            Notify("You are looking at " + Enum.GetName(typeof(CardinalPoint), direction));
         }
 
         public void MoveFast(Movement movement)
         {
             Position newPosition = playerController.Move(this.ActualPosition, movement, 2);
             Map.MovePlayer(this.ActualPosition, newPosition);
+            Notify("You moved to " + this.ActualPosition);
+            SpotNearbyPlayers();
         }
 
         public abstract void Join(Game game, Position initialPosition);
 
-        public ICollection<Player> SpotNearbyPlayers()
+        public void SpotNearbyPlayers()
         {
             ICollection<Player> playersSpotted = Map.GetPlayersNearPosition(ActualPosition);
             foreach (Player player in playersSpotted)
@@ -110,7 +115,6 @@ namespace GameLogic
                 player.Notify("You've been SPOTTED by "+this.ToString());
                 this.Notify(player+ " is close to you");
             }
-            return playersSpotted;
         }
 
         public override string ToString()

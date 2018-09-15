@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace GameLogicException
 {
     [Serializable]
-    public class OccupiedPositionException : Exception
+    public class OccupiedPositionException : GameException
     {
         public OccupiedPositionException()
         {

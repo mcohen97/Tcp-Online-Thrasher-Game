@@ -134,12 +134,13 @@ namespace GameLogic
 
         public void AddPlayer(Player player)
         {
-            if (activeMatch)
-                throw new MatchAlreadyStartedException();
+            //if (activeMatch)
+              //  throw new MatchAlreadyStartedException();
 
             Position initialPosition = Map.GetEmptyPosition();
             Map.AddPlayerToPosition(player, initialPosition);
             player.Join(this, initialPosition);
+            ActiveMatch = true;
         }
     }
 }

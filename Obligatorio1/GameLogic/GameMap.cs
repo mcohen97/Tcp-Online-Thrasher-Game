@@ -69,10 +69,10 @@ namespace GameLogic
             if (!IsEmptyPosition(from))
             {
                 if (!IsValidPosition(to))
-                    throw new InvalidPositionException();
+                    throw new InvalidPositionException("| Invalid move - map ends here |");
 
                 if (!IsEmptyPosition(to))
-                    throw new OccupiedPositionException();
+                    throw new OccupiedPositionException("| Invalid move - there's another player in that position ");
 
                 Player playerMoved = map[from.Row, from.Column];
                 map[to.Row, to.Column] = playerMoved;
@@ -103,9 +103,12 @@ namespace GameLogic
 
         public bool IsEmptyPosition(Position position)
         {
-            if (!IsValidPosition(position)) return false;
+            return IsValidPosition(position) && IsEmptyPosition(position.Row, position.Column);
+        }
 
-            return map[position.Row, position.Column] == null;
+        private bool IsEmptyPosition(int i, int j)
+        {
+            return map[i, j] == null;
         }
 
         private bool IsValidPosition(Position position)
@@ -146,12 +149,12 @@ namespace GameLogic
             if (IsFull())
                 throw new MapIsFullException();
 
-            Position emptyPosition = null;
+            Position emptyPosition = new Position(-1,-1);
             for (int i = 0; i < length; i++)
             {
                 for (int j = 0; j < height; j++)
                 {
-                    if(map[i,j] == null)
+                    if(IsEmptyPosition(i,j))
                     {
                         emptyPosition = new Position(i, j);
                         break;

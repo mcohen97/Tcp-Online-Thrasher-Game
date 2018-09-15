@@ -12,7 +12,9 @@ namespace Protocol
         public static int DATA_SIZE_MAX = MESSAGE_SIZE_MAX - Header.HEADER_LENGTH;
 
         public Header Header { get; set; }
-        public byte[] Data { get; set; }
+
+        private byte[] data;
+        public byte[] Data { get {return data; } set { SetData(value); } }
 
         public Package(string wholePackage) {
             Header = new Header(wholePackage);
@@ -22,6 +24,17 @@ namespace Protocol
 
         public Package(Header aHeader) {
             Header = aHeader;
+        }
+
+        public string Message()
+        {
+            return Encoding.Default.GetString(data);
+        }
+
+        private void SetData(byte[] message)
+        {
+            Header.DataLength = message.Length;
+            data=message;
         }
         public int DataLength()
         {
