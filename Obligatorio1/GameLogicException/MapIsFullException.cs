@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace GameLogicException
 {
     [Serializable]
-    public class MapIsFullException : Exception
+    public class MapIsFullException : GameException
     {
         public MapIsFullException()
         {

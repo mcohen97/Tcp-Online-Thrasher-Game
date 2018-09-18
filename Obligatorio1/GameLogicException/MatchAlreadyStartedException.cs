@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace GameLogicException
 {
     [Serializable]
-    public class MatchAlreadyStartedException : Exception
+    public class MatchAlreadyStartedException : GameException
     {
         public MatchAlreadyStartedException()
         {

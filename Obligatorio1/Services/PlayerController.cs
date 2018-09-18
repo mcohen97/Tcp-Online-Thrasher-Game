@@ -1,4 +1,5 @@
 ﻿using GameLogic;
+using GameLogicException;
 using Logic;
 using Protocol;
 using ServiceExceptions;
@@ -21,12 +22,15 @@ namespace Services
             clientSession = session;
             game = gameJoined;
             player = PlayerFactory.CreatePlayer(selectedRole);
+            player.Name = session.Logged.Nickname;
+            player.Notify = SendNotificationToClient;
             game.AddPlayer(player);
         }
 
         public void Play()
         {
             Package command;
+            SendNotificationToClient("You are in the game! play or die!");
             while (game.ActiveMatch)
             {
                 command = clientSession.WaitForClientMessage();
@@ -35,10 +39,17 @@ namespace Services
                     case CommandType.PLAYER_ACTION:
                         string action = Encoding.Default.GetString(command.Data);
                         if (!player.IsDead)
-                            PerformAction(action);
+                            try
+                            {
+                                PerformAction(action);
+                            }
+                            catch (GameException actionException)
+                            {
+                                SendNotificationToClient(actionException.Message);
+                            }
                         else
                         {
-                            //notify client that his player is dead
+                            SendNotificationToClient("You are dead, sorry dude, wait for next match!");
                         }
                         break;
                     default:
@@ -81,6 +92,17 @@ namespace Services
                 default:
                     throw new NotPlayerCommandException();
             }
+        }
+
+        private void SendNotificationToClient(string notification)
+        {
+            Header info = new Header();
+            info.Type = HeaderType.RESPONSE;
+            info.Command = CommandType.PLAYER_ACTION;
+            info.DataLength = notification.Length;
+            Package toSend = new Package(info);
+            toSend.Data = Encoding.Default.GetBytes(notification);
+            clientSession.SendToClient(toSend);
         }
     }
 }

@@ -8,6 +8,7 @@ using Logic;
 using Protocol;
 using System.Net.Sockets;
 using System.Net;
+using System.Threading;
 
 namespace Client
 {
@@ -17,7 +18,7 @@ namespace Client
         private ClientServices functionalities;
         public ClientHandler() {
             Socket toConnect = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IPEndPoint myAddress = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 12345);
+            IPEndPoint myAddress = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 6695);
             toConnect.Bind(myAddress);
             IPEndPoint serverAddress = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 1234);
             Console.Write("Conectando..");
@@ -47,6 +48,7 @@ namespace Client
                         Disconnect();
                         EndGame = true;
                         break;
+                        
                 }
 
             }
@@ -72,6 +74,35 @@ namespace Client
             Package ok = connection.WaitForMessage();
             Console.WriteLine(ok.Message());
             Authenticate();
+            ChooseRole();
+            PlayMatch();
+        }
+
+        private void ChooseRole()
+        {
+            string[] menu = { "Monster", "Survivor", "SALIR" };
+            Console.WriteLine("Seleccione el rol");
+            Console.Clear();
+            ShowMenu(menu);
+            int opcion = ReadInteger(1, menu.Length);
+            string response = "";
+            switch (opcion)
+            {
+                case 1:
+                    response = SendRequestPackage(CommandType.CHOOSE_MONSTER, "");
+                    break;
+                case 2:
+                    response = SendRequestPackage(CommandType.CHOOSE_SURVIVOR, "");
+                    break;
+                case 3:
+                    Disconnect();
+                    break;
+                default:
+                    break;
+            }
+
+            Console.WriteLine(response);
+
         }
 
         private void Authenticate()
@@ -86,7 +117,31 @@ namespace Client
             connection.SendMessage(login);
             Package response = connection.WaitForMessage();
             Console.WriteLine(response.Message());
-            Console.ReadKey();
+        }
+
+        private void PlayMatch()
+        {
+            bool EndGame = false;
+            Thread thread = new Thread(new ThreadStart(ListenToGame));
+            thread.Start();
+            while (!EndGame)
+            {
+                string command = GetInput("Play!");
+                SendPackage(CommandType.PLAYER_ACTION, command);
+            }
+            Console.Write("Conexión finalizada");
+            connection.Close();
+        }
+
+        private void ListenToGame()
+        {
+            bool EndGame = false;
+            while (!EndGame)
+            {
+                Package inGamePackage = connection.WaitForMessage();
+                string message = Encoding.Default.GetString(inGamePackage.Data);
+                Console.WriteLine(message);
+            }
         }
 
         private void InformAndWaitForKey(string message)
@@ -160,5 +215,36 @@ namespace Client
                 Console.WriteLine("" + (i + 1) + "-" + menu[i]);
             }
         }
+
+        private string SendRequestPackage(CommandType command, string data)
+        {
+
+            Header info = new Header();
+            info.Type = HeaderType.REQUEST;
+            info.Command = command;
+            info.DataLength = data.Length;
+            Package toSend = new Package(info);
+            toSend.Data = Encoding.Default.GetBytes(data);
+
+            connection.SendMessage(toSend);
+            Package response = connection.WaitForMessage();
+            string message = Encoding.Default.GetString(response.Data);
+
+            return message;
+        }
+
+        private void SendPackage(CommandType command, string data)
+        {
+
+            Header info = new Header();
+            info.Type = HeaderType.REQUEST;
+            info.Command = command;
+            info.DataLength = data.Length;
+            Package toSend = new Package(info);
+            toSend.Data = Encoding.Default.GetBytes(data);
+
+            connection.SendMessage(toSend);
+        }
+
     }
 }

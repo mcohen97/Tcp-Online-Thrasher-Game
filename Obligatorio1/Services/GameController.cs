@@ -56,27 +56,31 @@ namespace Services
             try
             {
                 Session justLogged = logger.LogIn();
-                Current.SendOkMessage("ingresado correctamente");
-                ChoosePlayer();
-                
+                Current.SendOkMessage("ingresado correctamente, seleccione rol");
+                Role selectedRole = ChoosePlayer();
+                PlayerController userPlayer = new PlayerController(justLogged, slasher, selectedRole);
+                userPlayer.Play();
             }
             catch (UserNotFoundException e) {
                 Current.SendErrorMessage(e.Message);
             }
         }
 
-        private void ChoosePlayer()
+        private Role ChoosePlayer()
         {
             bool optionEntered = false;
+            Role roleReturned = Role.NEUTRAL;
 
             while (!optionEntered) {
                 Package election = Current.WaitForMessage();
 
                 switch (election.Command()) {
                     case CommandType.CHOOSE_MONSTER:
+                        roleReturned = Role.MONSTER;
                         optionEntered = true;
                         break;
                     case CommandType.CHOOSE_SURVIVOR:
+                        roleReturned = Role.SURVIVOR;
                         optionEntered = true;
                         break;
                     case CommandType.RETURN_TO_MENU:
@@ -87,8 +91,8 @@ namespace Services
                         break;
                 }
             }
-            
-            
+
+            return roleReturned;
         }
 
         private void AddUser(Package command)

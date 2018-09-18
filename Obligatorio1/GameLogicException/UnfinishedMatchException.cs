@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace GameLogicException
 {
     [Serializable]
-    public class UnfinishedMatchException : Exception
+    public class UnfinishedMatchException : GameException
     {
         public UnfinishedMatchException()
         {
