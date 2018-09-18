@@ -19,16 +19,45 @@ namespace Network
         public void SendMessage(Package message)
         {
             byte[] infoEnviar = message.GetBytesToSend();
-            connection.Send(infoEnviar, 0, infoEnviar.Length, 0);
+            int pos = 0;
+            while (pos < infoEnviar.Length) {
+                int current = connection.Send(infoEnviar, pos, infoEnviar.Length-pos, 0);
+                if (current == 0) {
+                    throw new SocketException();
+                }
+                pos += current;
+            }
+            
         }
 
         public Package WaitForMessage()
         {
-            byte[] ByRec = new byte[255];
-            int a = connection.Receive(ByRec, 0, ByRec.Length, 0);
-            Array.Resize(ref ByRec, a);
+            int pos=0;
+
+            byte[] fixedPart = new byte[Header.HEADER_LENGTH];
+            while (pos < Header.HEADER_LENGTH) {
+                int current = connection.Receive(fixedPart, pos, Header.HEADER_LENGTH - pos, SocketFlags.None);
+                if (current == 0) {
+                    throw new SocketException();
+                }
+                pos += current;
+            }
+
+            Header info = new Header(Encoding.Default.GetString(fixedPart));
+            byte[] ByRec = new byte[info.DataLength];
+            pos = 0;
+            while (pos < ByRec.Length)
+            {
+                int current = connection.Receive(ByRec, pos, ByRec.Length-pos, SocketFlags.None);
+                if (current == 0)
+                {
+                    throw new SocketException();
+                }
+                pos += current;
+            }
+     
             string msj = Encoding.Default.GetString(ByRec);
-            return new Package(msj);
+            return new Package(info ,msj);
         }
 
         public void SendErrorMessage(string message)
