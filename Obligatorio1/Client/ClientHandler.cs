@@ -28,7 +28,7 @@ namespace Client
         }
 
        public void Start() {
-            string[] menu = { "REGISTRARSE", "JUGAR", "SALIR" };
+            string[] menu = { "REGISTRARSE", "JUGAR","JUGADORES REGISTRADOS","JUGADORES EN PARTIDA", "SALIR" };
             Console.WriteLine("Bienvenido al juego");
             bool EndGame = false;
             while (!EndGame)
@@ -45,6 +45,12 @@ namespace Client
                         Play();
                         break;
                     case 3:
+                        ShowRegisteredPlayers();
+                        break;
+                    case 4:
+                        ShowConnectedPlayers();
+                        break;
+                    case 5:
                         Disconnect();
                         EndGame = true;
                         break;
@@ -57,6 +63,16 @@ namespace Client
 
         }
 
+        private void ShowConnectedPlayers()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ShowRegisteredPlayers()
+        {
+            throw new NotImplementedException();
+        }
+
         private void Disconnect()
         {
             connection.SendLogOutMessage();
@@ -64,13 +80,14 @@ namespace Client
 
         private void Play()
         {
-            Header info = new Header();
-            info.Type = HeaderType.REQUEST;
-            info.Command = CommandType.ENTER_OR_CREATE_MATCH;
+            /* Header info = new Header();
+             info.Type = HeaderType.REQUEST;
+             info.Command = CommandType.ENTER_OR_CREATE_MATCH;
 
-            Package wantToPlay = new Package(info);
-            connection.SendMessage(wantToPlay);
-
+             Package wantToPlay = new Package(info);
+             connection.SendMessage(wantToPlay);
+             */
+            functionalities.Play();
             Package ok = connection.WaitForMessage();
             Console.WriteLine(ok.Message());
             Authenticate();
@@ -108,13 +125,14 @@ namespace Client
         private void Authenticate()
         {
             string nick =GetInput("Ingrese nickname del jugador");
-            Header info = new Header();
+            /*Header info = new Header();
             info.Command = CommandType.AUTHENTICATE;
             info.Type = HeaderType.REQUEST;
             Package login = new Package(info);
             login.Data = Encoding.Default.GetBytes(nick);
 
-            connection.SendMessage(login);
+            connection.SendMessage(login);*/
+            functionalities.Authenticate(nick);
             Package response = connection.WaitForMessage();
             Console.WriteLine(response.Message());
         }
@@ -158,17 +176,19 @@ namespace Client
 
         private void Register()
         {
-            Console.WriteLine("Ingrese nickname del usuario");
-            string nickname = Console.ReadLine();
+           // Console.WriteLine("Ingrese nickname del usuario");
+            string nickname = GetInput("Ingrese nickname del jugador");
 
-            Header info = new Header();
+
+            /*Header info = new Header();
             info.Type = HeaderType.REQUEST;
             info.Command = CommandType.ADD_USER;
             info.DataLength = nickname.Length;
             Package toSend = new Package(info);
             toSend.Data = Encoding.Default.GetBytes(nickname);
 
-            connection.SendMessage(toSend);
+            connection.SendMessage(toSend);*/
+            functionalities.Register(nickname);
             Package response = connection.WaitForMessage();
             string message = Encoding.Default.GetString(response.Data);
             
