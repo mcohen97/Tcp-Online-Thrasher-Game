@@ -16,7 +16,7 @@ namespace Client
         public ClientServices(IConnection aConnection) {
             connection = aConnection;
         }
-        private void Register(string nickname)
+        public void Register(string nickname)
         {
             Header info = new Header();
             info.Type = HeaderType.REQUEST;
@@ -27,7 +27,7 @@ namespace Client
             connection.SendMessage(toSend);
         }
 
-        private void Play()
+        public void Play()
         {
             Header info = new Header();
             info.Type = HeaderType.REQUEST;
@@ -36,7 +36,7 @@ namespace Client
             connection.SendMessage(wantToPlay);
         }
 
-        private void Authenticate(string nick)
+        public void Authenticate(string nick)
         {
             Header info = new Header();
             info.Command = CommandType.AUTHENTICATE;
@@ -46,7 +46,7 @@ namespace Client
             connection.SendMessage(login);
         }
 
-        private void Disconnect()
+        public void Disconnect()
         {
             connection.SendLogOutMessage();
         }
