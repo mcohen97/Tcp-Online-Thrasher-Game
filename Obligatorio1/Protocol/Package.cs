@@ -16,10 +16,13 @@ namespace Protocol
         private byte[] data;
         public byte[] Data { get {return data; } set { SetData(value); } }
 
-        public Package(string wholePackage) {
+        public Package(Header info, string message) {
+            /*byte[] data = Encoding.Default.GetBytes(wholePackage.Substring(0,Header.HEADER_LENGTH));
             header = new Header(wholePackage);
             string dataPart = wholePackage.Substring(Header.HEADER_LENGTH, header.DataLength);
-            Data = Encoding.Default.GetBytes(dataPart);
+            Data = Encoding.Default.GetBytes(dataPart);*/
+            header = info;
+            Data = Encoding.Default.GetBytes(message);
         }
 
         public Package(Header aHeader) {
