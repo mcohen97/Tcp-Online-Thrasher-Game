@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccessInterface;
 using Logic;
+using Logic.Exceptions;
 using System.Threading;
 using Protocol;
 using Services;
@@ -77,7 +78,20 @@ namespace Network
             IConnection somebodyUnknown = new TCPConnection(connection);
             IUserRepository users = UsersInMemory.instance.Value;
             GameController toLunch = new GameController(somebodyUnknown, slasher, users);
-            toLunch.Start();           
+            ExecuteService(toLunch);                      
+        }
+
+        private void ExecuteService(GameController toLunch)
+        {
+            try
+            {
+                toLunch.Start();
+            }
+            catch (ConnectionLostException e) {
+                Console.Clear();
+                Console.WriteLine(e.Message);
+                Console.ReadKey();
+            }
         }
 
         public void ServerManagement() {
