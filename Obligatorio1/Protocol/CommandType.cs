@@ -17,6 +17,7 @@ namespace Protocol
         CHOOSE_SURVIVOR,
         RETURN_TO_MENU,
         PLAYER_ACTION,
-        OK
+        OK,
+        REGISTERED_USERS
     };
 }
