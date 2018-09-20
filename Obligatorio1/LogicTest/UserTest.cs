@@ -22,6 +22,14 @@ namespace LogicTest
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidUserDataException))]
+        public void ReservedCharacterNameTest()
+        {
+            User fake = new User("na;me", "path");
+
+        }
+
+        [TestMethod]
         public void PathTest() {
             User fake = new User("nickname", "path");
             Assert.AreEqual(fake.Path, "path");
@@ -57,6 +65,12 @@ namespace LogicTest
         public void NotEqualsNullTest() {
             User fake1 = new User("nickname", "path1");
             Assert.IsFalse(fake1.Equals(null));
+        }
+
+        [TestMethod]
+        public void ToStringTest() {
+            User fake1 = new User("nickname", "path1");
+            Assert.AreEqual("nickname", fake1.ToString());
         }
     }
 }
