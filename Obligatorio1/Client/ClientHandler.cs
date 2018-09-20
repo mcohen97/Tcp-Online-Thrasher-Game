@@ -59,7 +59,6 @@ namespace Client
 
             }
             Console.Write("Conexión finalizada");
-            connection.Close();
 
         }
 
@@ -70,12 +69,22 @@ namespace Client
 
         private void ShowRegisteredPlayers()
         {
-            throw new NotImplementedException();
+            List<string> usersList = functionalities.ListOfRegisteredUsers();
+            ShowList(usersList);
+            Console.ReadKey();
+        }
+
+        private void ShowList(List<string> usersList)
+        {
+            for (int i = 0; i < usersList.Count; i++) {
+                Console.WriteLine(usersList[i]);
+            }
         }
 
         private void Disconnect()
         {
             connection.SendLogOutMessage();
+            connection.Close();
         }
 
         private void Play()

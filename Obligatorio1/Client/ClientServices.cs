@@ -46,6 +46,24 @@ namespace Client
             connection.SendMessage(login);
         }
 
+        public List<string> ListOfRegisteredUsers()
+        {
+            Header packageInfo = new Header();
+            packageInfo.Command = CommandType.REGISTERED_USERS;
+            packageInfo.Type = HeaderType.REQUEST;
+            Package askForUsers = new Package(packageInfo);
+            connection.SendMessage(askForUsers);
+            Package answer = connection.WaitForMessage();
+            string rawList = answer.Message();
+            List<string> list = MakeList(rawList);
+            return list;
+        }
+
+        private List<string> MakeList(string rawList)
+        {
+            return rawList.Split(new[] { Package.LIST_SEPARATOR_SIMBOL }, StringSplitOptions.None).ToList();
+        }
+
         public void Disconnect()
         {
             connection.SendLogOutMessage();
