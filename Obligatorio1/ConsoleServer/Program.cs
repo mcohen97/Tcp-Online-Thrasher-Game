@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Network;
 
@@ -12,9 +13,14 @@ namespace ConsoleServer
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Inicializando servidor...");
             Server s = new Server();
-            s.ListenToRequests();
+            Thread listen = new Thread(new ThreadStart(() =>
+            {
+                s.ListenToRequests();
+            }));
+            listen.IsBackground = true;
+            listen.Start();
+            s.ServerManagement();     
         }
     }
 }
