@@ -18,7 +18,9 @@ namespace Client
         private ClientServices functionalities;
         public ClientHandler() {
             Socket toConnect = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IPEndPoint myAddress = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 6695);
+            Random randomGenerator = new Random();
+            int randomPort = randomGenerator.Next(5000, 7000);
+            IPEndPoint myAddress = new IPEndPoint(IPAddress.Parse("127.0.0.2"), randomPort);
             toConnect.Bind(myAddress);
             IPEndPoint serverAddress = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 1234);
             Console.Write("Conectando..");
@@ -144,7 +146,7 @@ namespace Client
             thread.Start();
             while (!EndGame)
             {
-                string command = GetInput("Play!");
+                string command = GetInput("Command:");
                 SendPackage(CommandType.PLAYER_ACTION, command);
             }
             Console.Write("Conexión finalizada");

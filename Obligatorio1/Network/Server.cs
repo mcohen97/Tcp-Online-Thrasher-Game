@@ -26,7 +26,7 @@ namespace Network
             System.Net.IPEndPoint address = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 1234);
             listener.Bind(address);
             slasher = new Game();
-            slasher.StartMatch();
+            slasher.StartPreMatchTimer();
             serverWorking = true;
         }
 

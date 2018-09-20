@@ -30,8 +30,11 @@ namespace Services
         public void Play()
         {
             Package command;
-            SendNotificationToClient("You are in the game! play or die!");
-            while (game.ActiveMatch)
+            SendNotificationToClient("Connected to game");
+            while (!game.ActiveMatch);
+
+            SendNotificationToClient("Match started!!");
+            while (game.ActiveMatch && !player.IsDead)
             {
                 command = clientSession.WaitForClientMessage();
                 switch (command.Command())
@@ -56,6 +59,12 @@ namespace Services
                         break;
                 }
             }
+
+            SendNotificationToClient("Wait for winner confirmation");
+
+            while (game.ActiveMatch) ;
+
+            SendNotificationToClient("Winner is: " + RoleMethods.RoleToString(game.LastWinner));
         }
 
         private void PerformAction(string action)
@@ -90,7 +99,8 @@ namespace Services
                     player.AttackZone();
                     break;
                 default:
-                    throw new NotPlayerCommandException();
+                    SendNotificationToClient("Invalid command");
+                    break;
             }
         }
 

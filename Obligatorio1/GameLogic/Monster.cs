@@ -84,7 +84,7 @@ namespace GameLogic
         {
             Map = game.Map;
             ActualPosition = initialPosition;
-            game.MonsterCount++;
+            Map.MonsterCount++;
         }
     }
 }

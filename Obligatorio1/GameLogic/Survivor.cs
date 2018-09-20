@@ -81,7 +81,7 @@ namespace GameLogic
         {
             Map = game.Map;
             ActualPosition = initialPosition;
-            game.SurvivorCount++;
+            Map.SurvivorCount++;
         }
     }
 }

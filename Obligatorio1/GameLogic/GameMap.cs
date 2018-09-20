@@ -9,18 +9,34 @@ namespace GameLogic
         private int height;
         private int length;
         private Player[,] map;
-        private int playerCount;
+        private int monsterCount;
+        private int survivorCount;
         private int playerCapacity;
 
         public int PlayerCount {
             get {
-                return playerCount;
+                return monsterCount + survivorCount ;
             }
             private set {
-                playerCount = value;
+                ;
             }
         }
-
+        public int MonsterCount {
+            get {
+                return monsterCount;
+            }
+            set {
+                monsterCount = value;
+            }
+        }
+        public int SurvivorCount {
+            get {
+                return survivorCount;
+            }
+            set {
+                survivorCount = value;
+            }
+        }
         public int PlayerCapacity {
             get {
                 return playerCapacity;
@@ -30,6 +46,8 @@ namespace GameLogic
                 playerCapacity = value;
             }
         }
+        public Action CheckGame { get; set; }
+
 
         public GameMap()
         {
@@ -39,7 +57,6 @@ namespace GameLogic
             this.map = new Player[length, height];
             this.PlayerCount = 0;
         }
-
         public GameMap(int length, int height)
         {
             this.length = length;
@@ -60,8 +77,6 @@ namespace GameLogic
             map[initialPosition.Row, initialPosition.Column] = player;
             player.Map = this;
             player.ActualPosition = initialPosition;
-            playerCount++;
-
         }
 
         public void MovePlayer(Position from, Position to)
@@ -86,11 +101,17 @@ namespace GameLogic
             if (!IsValidPosition(position))
                 throw new InvalidPositionException();
 
+
             if (map[position.Row, position.Column] != null)
             {
+                Player playerRemoved = map[position.Row, position.Column];
+                if (playerRemoved.Role == Role.MONSTER)
+                    MonsterCount--;
+                if (playerRemoved.Role == Role.SURVIVOR)
+                    SurvivorCount--;                
                 map[position.Row, position.Column] = null;
-                playerCount--;
             }
+            CheckGame();
         }
 
         public Player GetPlayer(Position position)
@@ -141,7 +162,7 @@ namespace GameLogic
 
         public bool IsFull()
         {
-            return playerCount == playerCapacity;
+            return PlayerCount == PlayerCapacity;
         }
 
         public Position GetEmptyPosition()
