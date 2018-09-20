@@ -25,18 +25,6 @@ namespace Services
 
         public void Start()
         {
-            try {
-                ExecuteService();
-            }
-            catch (ConnectionLostException e) {
-                Console.Clear();
-                Console.WriteLine(e.Message);
-                Console.ReadKey();
-            }    
-        }
-
-        private void ExecuteService()
-        {
             bool endGame = false;
             Package command;
 
@@ -51,6 +39,9 @@ namespace Services
                     case CommandType.ENTER_OR_CREATE_MATCH:
                         PlayMatch();
                         break;
+                    case CommandType.REGISTERED_USERS:
+                        SendRegisteredPlayers();
+                        break;
                     case CommandType.LOG_OUT:
                         Current.Close();
                         endGame = true;
@@ -60,6 +51,27 @@ namespace Services
                         break;
                 }
             }
+        }
+
+        private void SendRegisteredPlayers()
+        {
+            ICollection<string> names = users.GetAllUsers().Select(u => u.ToString()).ToList();
+            string concat = ConcatAllNames(names);
+            Header packageInfo = new Header();
+            packageInfo.Command = CommandType.REGISTERED_USERS;
+            packageInfo.Type= HeaderType.RESPONSE;
+            Package usersList = new Package(packageInfo,concat);
+            Current.SendMessage(usersList);
+        }
+
+        private string ConcatAllNames(ICollection<string> names)
+        {
+            string concatenation = "";
+            foreach (string name in names) {
+                concatenation += ";";
+                concatenation += name;
+            }
+            return concatenation;
         }
 
         private void PlayMatch()
