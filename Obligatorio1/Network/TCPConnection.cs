@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Logic;
+using Logic.Exceptions;
 using Protocol;
 using System.Net.Sockets;
+
 
 namespace Network
 {
@@ -18,16 +20,24 @@ namespace Network
         }
         public void SendMessage(Package message)
         {
+            try
+            {
+                TryToSend(message);
+            }
+            catch (SocketException e) {
+                throw new ConnectionLostException("Se perdio la conexion");
+            }      
+        }
+
+        private void TryToSend(Package message)
+        {
             byte[] infoEnviar = message.GetBytesToSend();
             int pos = 0;
-            while (pos < infoEnviar.Length) {
-                int current = connection.Send(infoEnviar, pos, infoEnviar.Length-pos, 0);
-                if (current == 0) {
-                    throw new SocketException();
-                }
+            while (pos < infoEnviar.Length)
+            {
+                int current = connection.Send(infoEnviar, pos, infoEnviar.Length - pos, 0);
                 pos += current;
             }
-            
         }
 
         public Package WaitForMessage()
@@ -38,7 +48,7 @@ namespace Network
             while (pos < Header.HEADER_LENGTH) {
                 int current = connection.Receive(fixedPart, pos, Header.HEADER_LENGTH - pos, SocketFlags.None);
                 if (current == 0) {
-                    throw new SocketException();
+                    throw new ConnectionLostException("Se perdio la conexion");
                 }
                 pos += current;
             }

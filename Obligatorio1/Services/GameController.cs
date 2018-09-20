@@ -7,6 +7,7 @@ using Protocol;
 using Logic;
 using DataAccessInterface;
 using GameLogic;
+using Logic.Exceptions;
 
 namespace Services
 {
@@ -23,6 +24,18 @@ namespace Services
         }
 
         public void Start()
+        {
+            try {
+                ExecuteService();
+            }
+            catch (ConnectionLostException e) {
+                Console.Clear();
+                Console.WriteLine(e.Message);
+                Console.ReadKey();
+            }    
+        }
+
+        private void ExecuteService()
         {
             bool endGame = false;
             Package command;
@@ -52,17 +65,39 @@ namespace Services
         private void PlayMatch()
         {
             Current.SendOkMessage("Debe ingresar como usuario primero");
-            Authenticator logger = new Authenticator(Current, users);
             try
             {
-                Session justLogged = logger.LogIn();
+                Session justLogged = Login(Current, users);
                 Current.SendOkMessage("ingresado correctamente, seleccione rol");
                 Role selectedRole = ChoosePlayer();
                 PlayerController userPlayer = new PlayerController(justLogged, slasher, selectedRole);
+                TryToPlay(userPlayer);
+            }
+            catch (UserNotFoundException e1)
+            {
+                Current.SendErrorMessage(e1.Message);
+            }
+            catch (ConnectionLostException e2)
+            {
+                Current.SendErrorMessage(e2.Message);
+            }
+        }
+
+        private Session Login(IConnection current, IUserRepository users)
+        {
+            Authenticator logger = new Authenticator(Current, users);
+            Session justLogged = logger.LogIn();
+            return justLogged;
+        }
+
+        private void TryToPlay(PlayerController userPlayer)
+        {
+            try
+            {
                 userPlayer.Play();
             }
-            catch (UserNotFoundException e) {
-                Current.SendErrorMessage(e.Message);
+            catch (ConnectionLostException e) {
+                //connection lost with the client, thread finishes
             }
         }
 
