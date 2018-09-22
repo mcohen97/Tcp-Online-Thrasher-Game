@@ -98,6 +98,10 @@ namespace Services
             {
                 Current.SendErrorMessage(e2.Message);
             }
+            catch (GameException gameException)
+            {
+                Current.SendErrorMessage(gameException.Message);
+            }
         }
 
         private Session Login(IConnection current, IUserRepository users)
@@ -115,10 +119,6 @@ namespace Services
             }
             catch (ConnectionLostException e) {
                 //connection lost with the client, thread finishes
-            }
-            catch (GameException gameException)
-            {
-                Current.SendErrorMessage(gameException.Message);
             }
         }
 

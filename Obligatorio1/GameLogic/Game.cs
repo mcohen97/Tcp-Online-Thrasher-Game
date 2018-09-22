@@ -11,7 +11,7 @@ namespace GameLogic
 {
     public class Game
     {
-        public static readonly int PREMATCH_MILLISECONDS = 60000;
+        public static readonly int PREMATCH_MILLISECONDS = 5000;
         public static readonly int MATCH_MILLISECONDS = 180000;
 
         private Timer matchTimer;
@@ -26,7 +26,7 @@ namespace GameLogic
             }
 
             private set {
-
+                map = value;
             }
         }
         public bool ActiveMatch {
@@ -71,7 +71,7 @@ namespace GameLogic
 
         private void RestartMap()
         {
-            Map = new GameMap();
+            Map = new GameMap(8,8);
             Map.CheckGame += CheckEndMatch;
         }
 
@@ -87,6 +87,7 @@ namespace GameLogic
         }
         private void EndMatch()
         {
+            matchTimer.Stop();
             LastWinner = GetWinner();
             foreach (Player player in Map.GetPlayers())
             {
@@ -94,8 +95,8 @@ namespace GameLogic
             }
             activeMatch = false;
             activeGame = false;
-            Map = new GameMap(8, 8);
-            preMatchTimer.Start();
+            RestartMap();
+            StartPreMatchTimer();
         }
 
         public void PreMatchTimeOut(object sender, ElapsedEventArgs e)
