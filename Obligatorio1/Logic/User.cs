@@ -11,13 +11,13 @@ namespace Logic
         private string nickname;
         public string Nickname { get { return nickname; } set { SetNickname(value); } }
 
-        private byte[] photo;
-        public byte[] Photo { get { return photo; }  set { SetPhoto(value); } }
+        private string path;
+        public string Path { get; private set; }
 
-        public User(string aNickname, byte[] aPhoto)
+        public User(string aNickname, string aPath)
         {
             Nickname = aNickname;
-            Photo = aPhoto;
+            path = aPath;
         }
         
         private void SetNickname(string aNickname)
@@ -29,11 +29,6 @@ namespace Logic
                 throw new InvalidUserDataException("El nickname no puede contener el caracter ';'");
             }
             nickname = aNickname;   
-        }
-
-        private void SetPhoto(byte[] aPhoto)
-        {
-            photo = aPhoto;
         }
 
         public override bool Equals(object obj)
