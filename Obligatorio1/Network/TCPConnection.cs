@@ -148,10 +148,10 @@ namespace Network
         {
             using (Stream source = File.OpenRead(path))
             {
-                byte[] buffer = new byte[Package.DATA_SIZE_MAX];
+                byte[] buffer = new byte[Package.MESSAGE_SIZE_MAX];
                 int bytesRead = source.Read(buffer, 0, buffer.Length);
                
-                while ( bytesRead > Package.DATA_SIZE_MAX)
+                while ( bytesRead >= Package.MESSAGE_SIZE_MAX)
                 {
                     SendImageFragment(buffer);
                     bytesRead = source.Read(buffer, 0, buffer.Length);
