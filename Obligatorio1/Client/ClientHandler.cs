@@ -12,6 +12,7 @@ using System.Threading;
 using Logic.Exceptions;
 using System.Drawing;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Client
 {
@@ -213,7 +214,7 @@ namespace Client
         {
            // Console.WriteLine("Ingrese nickname del usuario");
             string nickname = GetInput("Ingrese nickname del jugador");
-
+            functionalities.SendNickname(nickname);
 
             /*Header info = new Header();
             info.Type = HeaderType.REQUEST;
@@ -223,40 +224,42 @@ namespace Client
             toSend.Data = Encoding.Default.GetBytes(nickname);
 
             connection.SendMessage(toSend);*/
-
-            byte[] img = GetImage();
-            
-            
-            functionalities.Register(nickname);
-            Package response = connection.WaitForMessage();
-
-            
-            string message = Encoding.Default.GetString(response.Data);
-            
-            Console.WriteLine(message);
-            
+            Package nickResponse = connection.WaitForMessage();
+            if (nickResponse.Command().Equals(CommandType.OK))
+            {
+                string imgPath = GetPath();
+                functionalities.SendImage(imgPath);
+                Package imgResponse = connection.WaitForMessage();
+                string message = imgResponse.Message();
+                Console.WriteLine(message);
+            }
+            else
+            {
+                Console.WriteLine(nickResponse);
+            }
             
             Console.WriteLine("Presione una tecla para continuar");
             Console.ReadKey();
         }
 
-        private byte[] GetImage()
-        {
-            byte[] img;
+        private string GetPath() {
+            string path;
             using (OpenFileDialog dlg = new OpenFileDialog())
             {
                 dlg.Title = "Open Image";
-                dlg.Filter = "bmp files (*.bmp)|*.bmp";
+                //dlg.Filter = "bmp files (*.bmp)|*.bmp";
+                dlg.Filter = "Image Files(*.BMP; *.JPG; *.GIF)| *.BMP; *.JPG; *.GIF | All files(*.*) | *.*";
 
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
-                    img =ConvertToBytes(new Bitmap(dlg.FileName));                  
+                    path = dlg.FileName;
                 }
-                else {
-                    img = new byte[0];
+                else
+                {
+                    path = string.Empty;
                 }
             }
-            return img;
+            return path;
         }
 
         private byte[] ConvertToBytes(Bitmap bmp) {
