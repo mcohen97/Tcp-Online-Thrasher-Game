@@ -57,7 +57,8 @@ namespace GameLogic
             this.height = 8;
             this.playerCapacity = length * height - EMPTY_SPACES;
             this.map = new Player[length, height];
-            this.PlayerCount = 0;
+            this.monsterCount = 0;
+            this.survivorCount = 0;
             this.CheckGame += () => { }; //Do nothing
         }
         public GameMap(int length, int height)
@@ -66,7 +67,8 @@ namespace GameLogic
             this.height = height;
             this.playerCapacity = length * height - EMPTY_SPACES;
             this.map = new Player[length, height];
-            this.PlayerCount = 0;
+            this.monsterCount = 0;
+            this.survivorCount = 0;
             this.CheckGame += () => { }; //Do nothing
 
         }
