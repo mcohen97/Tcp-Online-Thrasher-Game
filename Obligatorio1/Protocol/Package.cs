@@ -8,19 +8,18 @@ namespace Protocol
 {
     public class Package
     {
-        public static int MESSAGE_SIZE_MAX = 9999;
-        public static int DATA_SIZE_MAX = MESSAGE_SIZE_MAX - Header.HEADER_LENGTH;
+        public static readonly int MESSAGE_SIZE_MAX = 9999;
+        public static readonly int DATA_SIZE_MAX = MESSAGE_SIZE_MAX - Header.HEADER_LENGTH;
+        public static readonly string LIST_SEPARATOR_SIMBOL = ";";
+
 
         private Header header;
 
         private byte[] data;
         public byte[] Data { get {return data; } set { SetData(value); } }
 
+
         public Package(Header info, string message) {
-            /*byte[] data = Encoding.Default.GetBytes(wholePackage.Substring(0,Header.HEADER_LENGTH));
-            header = new Header(wholePackage);
-            string dataPart = wholePackage.Substring(Header.HEADER_LENGTH, header.DataLength);
-            Data = Encoding.Default.GetBytes(dataPart);*/
             header = info;
             Data = Encoding.Default.GetBytes(message);
         }

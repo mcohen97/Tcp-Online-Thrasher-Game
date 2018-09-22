@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccessInterface;
 using Logic;
+using Logic.Exceptions;
 using System.Threading;
 using Protocol;
 using Services;
@@ -16,6 +17,7 @@ namespace Network
 {
     public class Server
     {
+        private ICollection<Socket> clientConnections;
         private Socket listener;
         private static readonly int MAX_SIMULTANEOUS_REQUESTS = 5;
         private bool serverWorking;
@@ -28,6 +30,7 @@ namespace Network
             slasher = new Game();
             slasher.StartPreMatchTimer();
             serverWorking = true;
+            clientConnections = new List<Socket>();
         }
 
         public void ListenToRequests()
@@ -40,8 +43,8 @@ namespace Network
                     Socket connection = listener.Accept();
                     CreateThread(connection);                
                 }
-                catch (Exception) {
-
+                catch (SocketException) {
+                    //couldn't open one connection
                 }
             }
         }
@@ -50,9 +53,23 @@ namespace Network
         {
             Thread thread = new Thread(new ThreadStart(() =>
             {
+                AddConnection(connection);
                 HandleClient(connection);
+                RemoveConnection(connection);
+
             }));
             thread.Start();
+        }
+
+        private void AddConnection(Socket connection)
+        {
+            clientConnections.Add(connection);
+        }
+
+        private void RemoveConnection(Socket connection)
+        {
+            clientConnections.Remove(connection);
+            connection.Dispose();
         }
 
         private void HandleClient(Socket connection)
@@ -61,9 +78,57 @@ namespace Network
             IConnection somebodyUnknown = new TCPConnection(connection);
             IUserRepository users = UsersInMemory.instance.Value;
             GameController toLunch = new GameController(somebodyUnknown, slasher, users);
-            toLunch.Start();           
+            ExecuteService(toLunch);                      
         }
 
-       
+        private void ExecuteService(GameController toLunch)
+        {
+            try
+            {
+                toLunch.Start();
+            }
+            catch (ConnectionLostException e) {
+              //connection with the client was lost.
+            }
+        }
+
+        public void ServerManagement() {
+            bool shutDown = false;
+            while (!shutDown) {
+                WaitForX();
+                ShutDownEveryConnection();
+                serverWorking = false;
+                shutDown = true;
+            }
+
+        }
+
+        private string WaitForX()
+        {
+            bool isValid = false;
+            string toReturn="";
+            //toReturn won't leave while loop without being assigned
+            while (!isValid) {
+                Console.Clear();
+                Console.WriteLine("Servidor en linea, ingrese X para cerrarlo.");
+                string input = Console.ReadLine().ToUpper();
+                if (input.Equals("X"))
+                {
+                    isValid = true;
+                    toReturn = input;
+                }
+                else {
+                    Console.WriteLine("Comando invalido");
+                }
+            }
+            return toReturn;
+        }
+        private void ShutDownEveryConnection()
+        {
+            foreach (Socket active in clientConnections) {
+                active.Shutdown(SocketShutdown.Both);
+                active.Close();
+            }
+        }
     }
 }

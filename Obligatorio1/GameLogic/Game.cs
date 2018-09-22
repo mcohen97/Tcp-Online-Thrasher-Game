@@ -11,7 +11,7 @@ namespace GameLogic
 {
     public class Game
     {
-        public static readonly int PREMATCH_MILLISECONDS = 30000;
+        public static readonly int PREMATCH_MILLISECONDS = 60000;
         public static readonly int MATCH_MILLISECONDS = 180000;
 
         private Timer matchTimer;

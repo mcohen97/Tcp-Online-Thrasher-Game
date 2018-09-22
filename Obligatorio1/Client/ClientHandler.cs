@@ -9,6 +9,10 @@ using Protocol;
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
+using Logic.Exceptions;
+using System.Drawing;
+using System.Windows.Forms;
+using System.IO;
 
 namespace Client
 {
@@ -17,20 +21,43 @@ namespace Client
         private IConnection connection;
         private ClientServices functionalities;
         public ClientHandler() {
+            try {
+                TryToConnect();
+                Start();
+            }
+            catch (SocketException e) {
+                Console.WriteLine("No se pudo conectar al servidor");
+                Console.ReadKey();
+            }
+        }
+
+        private void TryToConnect()
+        {
             Socket toConnect = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             Random randomGenerator = new Random();
             int randomPort = randomGenerator.Next(5000, 7000);
             IPEndPoint myAddress = new IPEndPoint(IPAddress.Parse("127.0.0.2"), randomPort);
             toConnect.Bind(myAddress);
             IPEndPoint serverAddress = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 1234);
-            Console.Write("Conectando..");
             toConnect.Connect(serverAddress);
             connection = new TCPConnection(toConnect);
             functionalities = new ClientServices(connection);
+
         }
 
        public void Start() {
-            string[] menu = { "REGISTRARSE", "JUGAR","JUGADORES REGISTRADOS","JUGADORES EN PARTIDA", "SALIR" };
+            try
+            {
+                ExecuteClient();
+            }
+            catch (ConnectionLostException e) {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        private void ExecuteClient()
+        {
+            string[] menu = { "REGISTRARSE", "JUGAR", "JUGADORES REGISTRADOS", "JUGADORES EN PARTIDA", "SALIR" };
             Console.WriteLine("Bienvenido al juego");
             bool EndGame = false;
             while (!EndGame)
@@ -56,13 +83,11 @@ namespace Client
                         Disconnect();
                         EndGame = true;
                         break;
-                        
+
                 }
 
             }
             Console.Write("Conexión finalizada");
-            connection.Close();
-
         }
 
         private void ShowConnectedPlayers()
@@ -72,12 +97,23 @@ namespace Client
 
         private void ShowRegisteredPlayers()
         {
-            throw new NotImplementedException();
+            List<string> usersList = functionalities.ListOfRegisteredUsers();
+            ShowList(usersList);
+            Console.ReadKey();
+        }
+
+        private void ShowList(List<string> usersList)
+        {
+            for (int i = 0; i < usersList.Count; i++) {
+                Console.WriteLine(usersList[i]);
+            }
         }
 
         private void Disconnect()
         {
+            
             connection.SendLogOutMessage();
+            connection.Close();
         }
 
         private void Play()
@@ -180,7 +216,7 @@ namespace Client
         {
            // Console.WriteLine("Ingrese nickname del usuario");
             string nickname = GetInput("Ingrese nickname del jugador");
-
+            functionalities.SendNickname(nickname);
 
             /*Header info = new Header();
             info.Type = HeaderType.REQUEST;
@@ -190,15 +226,48 @@ namespace Client
             toSend.Data = Encoding.Default.GetBytes(nickname);
 
             connection.SendMessage(toSend);*/
-            functionalities.Register(nickname);
-            Package response = connection.WaitForMessage();
-            string message = Encoding.Default.GetString(response.Data);
-            
-            Console.WriteLine(message);
-            
+            Package nickResponse = connection.WaitForMessage();
+            if (nickResponse.Command().Equals(CommandType.OK))
+            {
+                string imgPath = GetPath();
+                functionalities.SendImage(imgPath);
+                Package imgResponse = connection.WaitForMessage();
+                string message = imgResponse.Message();
+                Console.WriteLine(message);
+            }
+            else
+            {
+                Console.WriteLine(nickResponse);
+            }
             
             Console.WriteLine("Presione una tecla para continuar");
             Console.ReadKey();
+        }
+
+        private string GetPath() {
+            string path;
+            using (OpenFileDialog dlg = new OpenFileDialog())
+            {
+                dlg.Title = "Open Image";
+                //dlg.Filter = "bmp files (*.bmp)|*.bmp";
+                dlg.Filter = "Image Files(*.BMP; *.JPG; *.GIF)| *.BMP; *.JPG; *.GIF | All files(*.*) | *.*";
+
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    path = dlg.FileName;
+                }
+                else
+                {
+                    path = string.Empty;
+                }
+            }
+            return path;
+        }
+
+        private byte[] ConvertToBytes(Bitmap bmp) {
+            ImageConverter converter = new ImageConverter();
+            byte[] imgInBytes = (byte[])converter.ConvertTo(bmp, typeof(byte[]));
+            return imgInBytes; 
         }
 
         private int ReadInteger(int min, int max)

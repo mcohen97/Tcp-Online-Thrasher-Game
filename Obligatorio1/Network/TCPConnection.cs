@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Logic;
+using Logic.Exceptions;
 using Protocol;
 using System.Net.Sockets;
+using System.IO;
 
 namespace Network
 {
@@ -18,46 +20,75 @@ namespace Network
         }
         public void SendMessage(Package message)
         {
+            try
+            {
+                TryToSend(message);
+            }
+            catch (SocketException e) {
+                throw new ConnectionLostException("Se perdio la conexion");
+            }      
+        }
+
+        private void TryToSend(Package message)
+        {
             byte[] infoEnviar = message.GetBytesToSend();
+            SendBytes(infoEnviar);
+        }
+
+        private void SendBytes(byte[] infoEnviar) {
             int pos = 0;
-            while (pos < infoEnviar.Length) {
-                int current = connection.Send(infoEnviar, pos, infoEnviar.Length-pos, 0);
-                if (current == 0) {
-                    throw new SocketException();
-                }
+            while (pos < infoEnviar.Length)
+            {
+                int current = connection.Send(infoEnviar, pos, infoEnviar.Length - pos, 0);
                 pos += current;
             }
-            
         }
 
         public Package WaitForMessage()
         {
-            int pos=0;
+            Package received;
+            try
+            {
+                received = TryToReceive();
+            }
+            catch (SocketException e) {
+                throw new ConnectionLostException("Se perdio la conexion");
+            }
+            return received;
+          
+        }
+
+        private Package TryToReceive()
+        {
+            int pos = 0;
 
             byte[] fixedPart = new byte[Header.HEADER_LENGTH];
-            while (pos < Header.HEADER_LENGTH) {
+            while (pos < Header.HEADER_LENGTH)
+            {
                 int current = connection.Receive(fixedPart, pos, Header.HEADER_LENGTH - pos, SocketFlags.None);
-                if (current == 0) {
-                    throw new SocketException();
+                if (current == 0)
+                {
+                    throw new ConnectionLostException("Se perdio la conexion");
                 }
                 pos += current;
             }
 
             Header info = new Header(Encoding.Default.GetString(fixedPart));
+
             byte[] ByRec = new byte[info.DataLength];
             pos = 0;
             while (pos < ByRec.Length)
             {
-                int current = connection.Receive(ByRec, pos, ByRec.Length-pos, SocketFlags.None);
+                int current = connection.Receive(ByRec, pos, ByRec.Length - pos, SocketFlags.None);
                 if (current == 0)
                 {
                     throw new SocketException();
                 }
                 pos += current;
             }
-     
+
             string msj = Encoding.Default.GetString(ByRec);
-            return new Package(info ,msj);
+            return new Package(info, msj);
         }
 
         public void SendErrorMessage(string message)
@@ -86,6 +117,7 @@ namespace Network
 
         public void Close()
         {
+            connection.LingerState = new LingerOption(true, 0);
             connection.Shutdown(SocketShutdown.Both);
             connection.Close();
         }
@@ -101,7 +133,6 @@ namespace Network
             SendMessage(logOutMessage);
 
         }
-
         public void StartGame()
         {
             Header header = new Header();
@@ -111,6 +142,37 @@ namespace Network
             header.DataLength = 0;
 
             SendMessage(startMatchMessage);
+        }
+
+        public void SendImage(string path)
+        {
+            using (Stream source = File.OpenRead(path))
+            {
+                byte[] buffer = new byte[Package.DATA_SIZE_MAX];
+                int bytesRead = source.Read(buffer, 0, buffer.Length);
+               
+                while ( bytesRead > Package.DATA_SIZE_MAX)
+                {
+                    SendImageFragment(buffer);
+                    bytesRead = source.Read(buffer, 0, buffer.Length);
+                }
+                //send the last piece
+                if (bytesRead > 0) {
+                    Array.Resize(ref buffer, bytesRead);
+                    SendImageFragment(buffer);
+                }
+      
+            }
+        }
+
+        private void SendImageFragment(byte[] buffer)
+        {
+            Header header = new Header();
+            header.Command = CommandType.IMG_JPG;
+            header.Type = HeaderType.RESPONSE;
+            Package imgPackage = new Package(header);
+            imgPackage.Data = buffer;
+            SendMessage(imgPackage);
         }
     }
 }

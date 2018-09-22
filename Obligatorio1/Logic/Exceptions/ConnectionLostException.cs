@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Client
+namespace Logic.Exceptions
 {
-    class Program
+    public class ConnectionLostException:Exception
     {
-        [STAThread]
-        static void Main(string[] args)
+        public ConnectionLostException(string msg) : base(msg)
         {
-            ClientHandler console = new ClientHandler();
         }
+
     }
 }
