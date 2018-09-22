@@ -53,6 +53,7 @@ namespace Services
             }
         }
 
+
         private void SendRegisteredPlayers()
         {
             ICollection<string> names = users.GetAllUsers().Select(u => u.ToString()).ToList();
@@ -145,17 +146,28 @@ namespace Services
         private void AddUser(Package command)
         {
             string nickname = command.Message();
-            User toAdd = new User(nickname, "path");
+            User toAdd = new User(nickname,"");
             try
             {
                 users.AddUser(toAdd);
                 Current.SendOkMessage("agregado exitosamente");
+                ReceiveImg(nickname);
             }
             catch (UserAlreadyExistsException ex)
             {
                 Current.SendErrorMessage(ex.Message);
             }
             
+        }
+
+        private void ReceiveImg(string nickname)
+        {
+            Package firstPart = Current.WaitForMessage();
+            if (firstPart.Command().Equals(CommandType.IMG_JPG)) {
+                ImageManager manager = new ImageManager();
+                manager.StoreImageStreaming(Current,nickname, firstPart);
+                Current.SendOkMessage("Imagen enviada correctamente");
+            }
         }
 
     }
