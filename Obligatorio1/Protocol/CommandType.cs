@@ -19,6 +19,6 @@ namespace Protocol
         PLAYER_ACTION,
         OK,
         REGISTERED_USERS,
-        SEND_IMG
+        IMG_JPG
     };
 }
