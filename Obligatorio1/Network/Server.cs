@@ -88,9 +88,7 @@ namespace Network
                 toLunch.Start();
             }
             catch (ConnectionLostException e) {
-                Console.Clear();
-                Console.WriteLine(e.Message);
-                Console.ReadKey();
+              //connection with the client was lost.
             }
         }
 
