@@ -43,7 +43,7 @@ namespace Protocol
         }
         public int DataLength()
         {
-            return header.DataLength - Header.HEADER_LENGTH;
+            return data.Length;
         }
 
         public CommandType Command()
