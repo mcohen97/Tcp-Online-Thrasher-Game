@@ -16,7 +16,9 @@ namespace Client
         public ClientServices(IConnection aConnection) {
             connection = aConnection;
         }
-        public void Register(string nickname)
+     
+
+        public void SendNickname(string nickname)
         {
             Header info = new Header();
             info.Type = HeaderType.REQUEST;
@@ -25,6 +27,10 @@ namespace Client
             Package toSend = new Package(info);
             toSend.Data = Encoding.Default.GetBytes(nickname);
             connection.SendMessage(toSend);
+        }
+
+        public void SendImage(string path) {
+            connection.SendImage(path);
         }
 
         public void Play()
