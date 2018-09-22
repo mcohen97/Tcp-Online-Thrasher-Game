@@ -8,6 +8,7 @@ namespace Client
 {
     class Program
     {
+        [STAThread]
         static void Main(string[] args)
         {
             ClientHandler console = new ClientHandler();
