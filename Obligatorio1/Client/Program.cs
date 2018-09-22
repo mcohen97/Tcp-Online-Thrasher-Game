@@ -11,7 +11,6 @@ namespace Client
         static void Main(string[] args)
         {
             ClientHandler console = new ClientHandler();
-            console.Start();
         }
     }
 }
