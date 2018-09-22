@@ -42,12 +42,28 @@ namespace Network
 
         public Package WaitForMessage()
         {
-            int pos=0;
+            Package received;
+            try
+            {
+                received = TryToReceive();
+            }
+            catch (SocketException e) {
+                throw new ConnectionLostException("Se perdio la conexion");
+            }
+            return received;
+          
+        }
+
+        private Package TryToReceive()
+        {
+            int pos = 0;
 
             byte[] fixedPart = new byte[Header.HEADER_LENGTH];
-            while (pos < Header.HEADER_LENGTH) {
+            while (pos < Header.HEADER_LENGTH)
+            {
                 int current = connection.Receive(fixedPart, pos, Header.HEADER_LENGTH - pos, SocketFlags.None);
-                if (current == 0) {
+                if (current == 0)
+                {
                     throw new ConnectionLostException("Se perdio la conexion");
                 }
                 pos += current;
@@ -58,16 +74,16 @@ namespace Network
             pos = 0;
             while (pos < ByRec.Length)
             {
-                int current = connection.Receive(ByRec, pos, ByRec.Length-pos, SocketFlags.None);
+                int current = connection.Receive(ByRec, pos, ByRec.Length - pos, SocketFlags.None);
                 if (current == 0)
                 {
                     throw new SocketException();
                 }
                 pos += current;
             }
-     
+
             string msj = Encoding.Default.GetString(ByRec);
-            return new Package(info ,msj);
+            return new Package(info, msj);
         }
 
         public void SendErrorMessage(string message)
@@ -96,6 +112,7 @@ namespace Network
 
         public void Close()
         {
+           // connection.LingerState = LingerOption
             connection.Shutdown(SocketShutdown.Both);
             connection.Close();
         }
@@ -111,6 +128,7 @@ namespace Network
             SendMessage(logOutMessage);
 
         }
+
 
         public void StartGame()
         {
