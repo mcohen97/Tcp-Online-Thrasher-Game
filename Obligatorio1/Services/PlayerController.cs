@@ -16,18 +16,21 @@ namespace Services
         private Session clientSession;
         private Player player;
         private Game game;
+        private bool matchEnded;
 
         public PlayerController(Session session, Game gameJoined, Player playerToControl)
         {
             clientSession = session;
             game = gameJoined;
             player = playerToControl;
+            matchEnded = false;
+            gameJoined.EndMatchEvent += MatchEnded;
         }
 
         public void Play()
         {
             Package command;
-            while (game.ActiveGame && !player.IsDead)
+            while (!matchEnded && game.ActiveGame && !player.IsDead)
             {
                 command = clientSession.WaitForClientMessage();
                 switch (command.Command())
@@ -90,6 +93,11 @@ namespace Services
                     player.Notify("Invalid command");
                     break;
             }
+        }
+
+        private void MatchEnded()
+        {
+            matchEnded = true;
         }
 
         

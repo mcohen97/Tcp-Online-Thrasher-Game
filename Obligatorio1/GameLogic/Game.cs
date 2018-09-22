@@ -55,6 +55,7 @@ namespace GameLogic
                 lastWinner = value;
             }
         }
+        public Action EndMatchEvent { get; set; }
 
         public Game()
         {
@@ -66,13 +67,14 @@ namespace GameLogic
             activeMatch = false;
             activeGame = true;
             lastWinner = Role.NEUTRAL;
-            map.CheckGame += CheckEndMatch;
+            map.PlayerRemovedEvent += CheckEndMatch;
+            EndMatchEvent += () => { }; //Do nothing
         }
 
         private void RestartMap()
         {
             Map = new GameMap(8,8);
-            Map.CheckGame += CheckEndMatch;
+            Map.PlayerRemovedEvent += CheckEndMatch;
         }
 
         public void StartPreMatchTimer()
@@ -95,6 +97,7 @@ namespace GameLogic
             }
             activeMatch = false;
             activeGame = false;
+            EndMatchEvent();
             RestartMap();
             StartPreMatchTimer();
         }

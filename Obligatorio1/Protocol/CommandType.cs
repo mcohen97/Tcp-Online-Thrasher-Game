@@ -19,6 +19,8 @@ namespace Protocol
         PLAYER_ACTION,
         OK,
         REGISTERED_USERS,
-        IMG_JPG
+        IMG_JPG,
+        END_MATCH,
+        NOTIFICATION
     };
 }

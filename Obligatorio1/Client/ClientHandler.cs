@@ -20,6 +20,8 @@ namespace Client
     {
         private IConnection connection;
         private ClientServices functionalities;
+        private bool playing;
+
         public ClientHandler() {
             try {
                 TryToConnect();
@@ -29,6 +31,7 @@ namespace Client
                 Console.WriteLine("No se pudo conectar al servidor");
                 Console.ReadKey();
             }
+            playing = false;
         }
 
         private void TryToConnect()
@@ -45,7 +48,7 @@ namespace Client
 
         }
 
-       public void Start() {
+        public void Start() {
             try
             {
                 ExecuteClient();
@@ -128,26 +131,42 @@ namespace Client
             functionalities.Play();
             Package ok = connection.WaitForMessage();
             Console.WriteLine(ok.Message());
-            Authenticate();
-            ChooseRole();
-            PlayMatch();
+            bool authenticateSuccess = Authenticate();
+            bool roleSelectionSuccess = ChooseRole();
+            if(authenticateSuccess && roleSelectionSuccess)
+                PlayMatch();
         }
 
-        private void ChooseRole()
+        private bool ChooseRole()
         {
             string[] menu = { "Monster", "Survivor", "SALIR" };
             Console.WriteLine("Seleccione el rol");
             Console.Clear();
             ShowMenu(menu);
             int opcion = ReadInteger(1, menu.Length);
-            string response = "";
+            bool okResponse = true;
+            Package response;
             switch (opcion)
             {
                 case 1:
                     response = SendRequestPackage(CommandType.CHOOSE_MONSTER, "");
+                    Console.WriteLine(response.Message());
+                    if (response.Command() == CommandType.ERROR)
+                    {
+                        Console.WriteLine("Presione una tecla para continuar");
+                        Console.ReadKey();
+                        okResponse = false;
+                    }
                     break;
                 case 2:
                     response = SendRequestPackage(CommandType.CHOOSE_SURVIVOR, "");
+                    Console.WriteLine(response.Message());
+                    if (response.Command() == CommandType.ERROR)
+                    {
+                        Console.WriteLine("Presione una tecla para continuar");
+                        Console.ReadKey();
+                        okResponse = false;
+                    }
                     break;
                 case 3:
                     Disconnect();
@@ -156,11 +175,10 @@ namespace Client
                     break;
             }
 
-            Console.WriteLine(response);
-
+            return okResponse;
         }
 
-        private void Authenticate()
+        private bool Authenticate()
         {
             string nick =GetInput("Ingrese nickname del jugador");
             /*Header info = new Header();
@@ -170,33 +188,39 @@ namespace Client
             login.Data = Encoding.Default.GetBytes(nick);
 
             connection.SendMessage(login);*/
+            bool success = true;
             functionalities.Authenticate(nick);
             Package response = connection.WaitForMessage();
             Console.WriteLine(response.Message());
+
+            if (response.Command() == CommandType.ERROR)
+                success = false;
+
+            return success;
         }
 
         private void PlayMatch()
         {
-            bool EndGame = false;
+            playing = true;
             Thread thread = new Thread(new ThreadStart(ListenToGame));
             thread.Start();
-            while (!EndGame)
+            while (playing)
             {
                 string command = GetInput("Command:");
                 SendPackage(CommandType.PLAYER_ACTION, command);
             }
-            Console.Write("Conexión finalizada");
-            connection.Close();
         }
 
         private void ListenToGame()
         {
-            bool EndGame = false;
-            while (!EndGame)
+            while (playing)
             {
                 Package inGamePackage = connection.WaitForMessage();
                 string message = Encoding.Default.GetString(inGamePackage.Data);
                 Console.WriteLine(message);
+
+                if (inGamePackage.Command() == CommandType.END_MATCH)
+                    playing = false;
             }
         }
 
@@ -307,7 +331,7 @@ namespace Client
             }
         }
 
-        private string SendRequestPackage(CommandType command, string data)
+        private Package SendRequestPackage(CommandType command, string data)
         {
 
             Header info = new Header();
@@ -319,9 +343,7 @@ namespace Client
 
             connection.SendMessage(toSend);
             Package response = connection.WaitForMessage();
-            string message = Encoding.Default.GetString(response.Data);
-
-            return message;
+            return response;
         }
 
         private void SendPackage(CommandType command, string data)

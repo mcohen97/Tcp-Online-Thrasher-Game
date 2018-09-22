@@ -48,7 +48,7 @@ namespace GameLogic
                 playerCapacity = value;
             }
         }
-        public Action CheckGame { get; set; }
+        public Action PlayerRemovedEvent { get; set; }
 
 
         public GameMap()
@@ -59,7 +59,7 @@ namespace GameLogic
             this.map = new Player[length, height];
             this.monsterCount = 0;
             this.survivorCount = 0;
-            this.CheckGame += () => { }; //Do nothing
+            this.PlayerRemovedEvent += () => { }; //Do nothing
         }
         public GameMap(int length, int height)
         {
@@ -69,7 +69,7 @@ namespace GameLogic
             this.map = new Player[length, height];
             this.monsterCount = 0;
             this.survivorCount = 0;
-            this.CheckGame += () => { }; //Do nothing
+            this.PlayerRemovedEvent += () => { }; //Do nothing
 
         }
 
@@ -108,17 +108,7 @@ namespace GameLogic
             if (!IsValidPosition(position))
                 throw new InvalidPositionException();
 
-
-            if (map[position.Row, position.Column] != null)
-            {
-                Player playerRemoved = map[position.Row, position.Column];
-                if (playerRemoved.Role == Role.MONSTER)
-                    MonsterCount--;
-                if (playerRemoved.Role == Role.SURVIVOR)
-                    SurvivorCount--;                
-                map[position.Row, position.Column] = null;
-            }
-            CheckGame();
+            map[position.Row, position.Column] = null;
         }
 
         public Player GetPlayer(Position position)

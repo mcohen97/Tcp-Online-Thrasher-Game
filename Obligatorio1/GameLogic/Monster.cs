@@ -101,6 +101,7 @@ namespace GameLogic
                 Health = 0;
                 Map.RemovePlayer(ActualPosition);
                 Map.MonsterCount--;
+                Map.PlayerRemovedEvent();
                 this.Notify("RIP - you are dead");
             }
         }

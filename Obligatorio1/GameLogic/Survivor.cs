@@ -97,6 +97,7 @@ namespace GameLogic
                 Health = 0;
                 Map.RemovePlayer(ActualPosition);
                 Map.SurvivorCount--;
+                Map.PlayerRemovedEvent();
                 this.Notify("RIP - you are dead");
             }
         }

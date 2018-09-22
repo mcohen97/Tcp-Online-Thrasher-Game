@@ -31,6 +31,7 @@ namespace Network
             slasher.StartPreMatchTimer();
             serverWorking = true;
             clientConnections = new List<Socket>();
+            GenerateTestUsers();
         }
 
         public void ListenToRequests()
@@ -76,7 +77,7 @@ namespace Network
         {
             Console.WriteLine("hay conexion");
             IConnection somebodyUnknown = new TCPConnection(connection);
-            IUserRepository users = UsersInMemory.instance.Value;
+            IUserRepository users = UsersInMemory.instance.Value;         
             GameController toLunch = new GameController(somebodyUnknown, slasher, users);
             ExecuteService(toLunch);                      
         }
@@ -129,6 +130,19 @@ namespace Network
                 active.Shutdown(SocketShutdown.Both);
                 active.Close();
             }
+        }
+
+        private void GenerateTestUsers()
+        {
+            IUserRepository repo = UsersInMemory.instance.Value;
+            User testUser;
+            for (int i = 0; i < 20; i++)
+            {
+                testUser = new User("p" + i, "photo");
+                repo.AddUser(testUser);
+            }
+            repo.AddUser(new User("cantu", "photo"));
+            repo.AddUser(new User("marcel", "photo"));
         }
     }
 }

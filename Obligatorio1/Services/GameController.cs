@@ -104,6 +104,7 @@ namespace Services
             }
         }
 
+
         private Session Login(IConnection current, IUserRepository users)
         {
             Authenticator logger = new Authenticator(Current, users);
@@ -116,6 +117,7 @@ namespace Services
             try
             {
                 userPlayer.Play();
+                SendEndMatch();
             }
             catch (ConnectionLostException e) {
                 //connection lost with the client, thread finishes
@@ -169,16 +171,29 @@ namespace Services
             
         }
 
+        private void SendEndMatch()
+        {
+            string message = "Thanks for playing!";
+            Header info = new Header();
+            info.Type = HeaderType.RESPONSE;
+            info.Command = CommandType.END_MATCH;
+            info.DataLength = message.Length;
+            Package toSend = new Package(info);
+            toSend.Data = Encoding.Default.GetBytes(message);
+            Current.SendMessage(toSend);
+        }
+
         private void SendNotificationToClient(string notification)
         {
             Header info = new Header();
             info.Type = HeaderType.RESPONSE;
-            info.Command = CommandType.PLAYER_ACTION;
+            info.Command = CommandType.NOTIFICATION;
             info.DataLength = notification.Length;
             Package toSend = new Package(info);
             toSend.Data = Encoding.Default.GetBytes(notification);
             Current.SendMessage(toSend);
         }
+
         private void ReceiveImg(string nickname)
         {
             Package firstPart = Current.WaitForMessage();
