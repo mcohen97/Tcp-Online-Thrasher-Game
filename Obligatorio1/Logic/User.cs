@@ -1,6 +1,7 @@
 ﻿using System;
 using LogicExceptions;
 using Protocol;
+using System.Drawing;
 
 namespace Logic
 {
@@ -10,13 +11,13 @@ namespace Logic
         private string nickname;
         public string Nickname { get { return nickname; } set { SetNickname(value); } }
 
-        private string path;
-        public string Path { get { return path; }  set { SetPath(value); } }
+        private byte[] photo;
+        public byte[] Photo { get { return photo; }  set { SetPhoto(value); } }
 
-        public User(string aNickname, string aPath)
+        public User(string aNickname, byte[] aPhoto)
         {
             Nickname = aNickname;
-            Path = aPath;
+            Photo = aPhoto;
         }
         
         private void SetNickname(string aNickname)
@@ -30,13 +31,9 @@ namespace Logic
             nickname = aNickname;   
         }
 
-        private void SetPath(string aPath)
+        private void SetPhoto(byte[] aPhoto)
         {
-            if (String.IsNullOrWhiteSpace(aPath))
-            {
-                throw new InvalidUserDataException("Invalid photo path");
-            }
-            path = aPath;
+            photo = aPhoto;
         }
 
         public override bool Equals(object obj)
