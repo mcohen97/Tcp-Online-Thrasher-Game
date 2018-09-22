@@ -9,6 +9,9 @@ using Protocol;
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
+using Logic.Exceptions;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace Client
 {
@@ -17,18 +20,41 @@ namespace Client
         private IConnection connection;
         private ClientServices functionalities;
         public ClientHandler() {
+            try {
+                TryToConnect();
+                Start();
+            }
+            catch (SocketException e) {
+                Console.WriteLine("No se pudo conectar al servidor");
+                Console.ReadKey();
+            }
+        }
+
+        private void TryToConnect()
+        {
             Socket toConnect = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPEndPoint myAddress = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 6695);
             toConnect.Bind(myAddress);
             IPEndPoint serverAddress = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 1234);
-            Console.Write("Conectando..");
             toConnect.Connect(serverAddress);
             connection = new TCPConnection(toConnect);
             functionalities = new ClientServices(connection);
+
         }
 
        public void Start() {
-            string[] menu = { "REGISTRARSE", "JUGAR","JUGADORES REGISTRADOS","JUGADORES EN PARTIDA", "SALIR" };
+            try
+            {
+                ExecuteClient();
+            }
+            catch (ConnectionLostException e) {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        private void ExecuteClient()
+        {
+            string[] menu = { "REGISTRARSE", "JUGAR", "JUGADORES REGISTRADOS", "JUGADORES EN PARTIDA", "SALIR" };
             Console.WriteLine("Bienvenido al juego");
             bool EndGame = false;
             while (!EndGame)
@@ -54,12 +80,11 @@ namespace Client
                         Disconnect();
                         EndGame = true;
                         break;
-                        
+
                 }
 
             }
             Console.Write("Conexión finalizada");
-
         }
 
         private void ShowConnectedPlayers()
@@ -83,6 +108,7 @@ namespace Client
 
         private void Disconnect()
         {
+            
             connection.SendLogOutMessage();
             connection.Close();
         }
@@ -197,8 +223,14 @@ namespace Client
             toSend.Data = Encoding.Default.GetBytes(nickname);
 
             connection.SendMessage(toSend);*/
+
+            byte[] img = GetImage();
+            
+            
             functionalities.Register(nickname);
             Package response = connection.WaitForMessage();
+
+            
             string message = Encoding.Default.GetString(response.Data);
             
             Console.WriteLine(message);
@@ -206,6 +238,31 @@ namespace Client
             
             Console.WriteLine("Presione una tecla para continuar");
             Console.ReadKey();
+        }
+
+        private byte[] GetImage()
+        {
+            byte[] img;
+            using (OpenFileDialog dlg = new OpenFileDialog())
+            {
+                dlg.Title = "Open Image";
+                dlg.Filter = "bmp files (*.bmp)|*.bmp";
+
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    img =ConvertToBytes(new Bitmap(dlg.FileName));                  
+                }
+                else {
+                    img = new byte[0];
+                }
+            }
+            return img;
+        }
+
+        private byte[] ConvertToBytes(Bitmap bmp) {
+            ImageConverter converter = new ImageConverter();
+            byte[] imgInBytes = (byte[])converter.ConvertTo(bmp, typeof(byte[]));
+            return imgInBytes;
         }
 
         private int ReadInteger(int min, int max)
