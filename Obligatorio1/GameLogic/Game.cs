@@ -5,16 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using GameLogicException;
 
 namespace GameLogic
 {
     public class Game
     {
-        private Queue<Player> preMatchMonsters;
-        private Queue<Player> preMatchSurvivors;
+        public static readonly int PREMATCH_MILLISECONDS = 30000;
+        public static readonly int MATCH_MILLISECONDS = 180000;
+
         private Timer matchTimer;
         private Timer preMatchTimer;
-        bool activeMatch;
+        private bool activeMatch;
+        private bool activeGame;
         private GameMap map;
         private Role lastWinner;
         public GameMap Map {
@@ -34,7 +37,15 @@ namespace GameLogic
             private set {
                 activeMatch = value;
             }
-        }
+        } //ActiveMatch means players are playing
+        public bool ActiveGame {
+            get {
+                return activeGame;
+            }
+            set {
+                activeGame = value;
+            }
+        }   //ActiveGame means players are in the Map
         public Role LastWinner {
             get {
                 return lastWinner;
@@ -48,32 +59,25 @@ namespace GameLogic
         public Game()
         {
             map = new GameMap(8, 8);
-            matchTimer = new Timer(180000);
+            matchTimer = new Timer(MATCH_MILLISECONDS);
             matchTimer.Elapsed += TimeOut;
-            preMatchTimer = new Timer(60000);
-            preMatchTimer.Elapsed += StartMatch;
+            preMatchTimer = new Timer(PREMATCH_MILLISECONDS);
+            preMatchTimer.Elapsed += PreMatchTimeOut;
             activeMatch = false;
+            activeGame = true;
             lastWinner = Role.NEUTRAL;
-            preMatchMonsters = new Queue<Player>();
-            preMatchSurvivors = new Queue<Player>();
             map.CheckGame += CheckEndMatch;
         }
-        public Game(GameMap map)
+
+        private void RestartMap()
         {
-            this.map = map;
-            matchTimer = new Timer(180000);
-            matchTimer.Elapsed += TimeOut;
-            preMatchTimer = new Timer(30000);
-            preMatchTimer.Elapsed += StartMatch;
-            activeMatch = false;
-            lastWinner = Role.NEUTRAL;
-            preMatchMonsters = new Queue<Player>();
-            preMatchSurvivors = new Queue<Player>();
-            map.CheckGame += CheckEndMatch;
+            Map = new GameMap();
+            Map.CheckGame += CheckEndMatch;
         }
 
         public void StartPreMatchTimer()
         {
+            activeGame = true;
             preMatchTimer.Start();
         }
 
@@ -84,61 +88,48 @@ namespace GameLogic
         private void EndMatch()
         {
             LastWinner = GetWinner();
+            foreach (Player player in Map.GetPlayers())
+            {
+                player.Notify("END MATCH - Winner is " + RoleMethods.RoleToString(LastWinner));
+            }
             activeMatch = false;
+            activeGame = false;
+            Map = new GameMap(8, 8);
             preMatchTimer.Start();
         }
 
-        public void StartMatch(object sender, ElapsedEventArgs e)
+        public void PreMatchTimeOut(object sender, ElapsedEventArgs e)
         {
-            if (preMatchMonsters.Count > 2)
-            {
-                preMatchTimer.Stop();
-                StartMatch();
-            }              
-            else
-                preMatchTimer.Start();
+            StartMatch();
         }
         private void StartMatch()
         {
-            Map = new GameMap(8, 8);
-            activeMatch = true;
-            while(!TooManyPlayers())
+            preMatchTimer.Stop();
+            if (ActiveGameConditions(Map.MonsterCount, Map.SurvivorCount))
             {
-                AddSurvivorToMap();
-                AddSurvivorToMap();
-                AddSurvivorToMap();
-                AddMonsterToMap();
+                activeMatch = true;
+                foreach (Player player in Map.GetPlayers())
+                {
+                    player.Notify("Match started!");
+                    player.EnabledAttackAction = true;
+                }
+                matchTimer.Start();
             }
-
-            foreach (Player player in Map.GetPlayers())
-            {
-                player.Notify("Game started!!");
-            }
-
-            matchTimer.Start();
+            else
+                preMatchTimer.Start();
         }
 
-        private void AddSurvivorToMap()
+        public bool TooManyPlayers()
         {
-            if(preMatchSurvivors.Any())
-            {
-                Position playerPosition = Map.GetEmptyPosition();
-                Player survivor = preMatchSurvivors.Dequeue();
-                Map.AddPlayerToPosition(survivor, playerPosition);
-            }
+            return Map.PlayerCount >= Map.PlayerCapacity;
         }
-        private void AddMonsterToMap()
+        public bool TooManyMonsters()
         {
-            if (preMatchMonsters.Any())
-            {
-                Position playerPosition = Map.GetEmptyPosition();
-                Player mosnter = preMatchMonsters.Dequeue();
-                Map.AddPlayerToPosition(mosnter, playerPosition);
-            }
+            return false;
         }
-        private bool TooManyPlayers()
+        public bool TooManySurvivors()
         {
-            return Map.PlayerCount + 20 >= Map.PlayerCapacity;
+            return Map.SurvivorCount == Map.PlayerCapacity - 1;
         }
 
         public Role GetWinner()
@@ -173,12 +164,14 @@ namespace GameLogic
 
         public void AddPlayer(Player player)
         {
-            if (player.Role == Role.MONSTER)
-                preMatchMonsters.Enqueue(player);
-            if (player.Role == Role.SURVIVOR)
-                preMatchSurvivors.Enqueue(player);
+            if (TooManyPlayers())
+                throw new MapIsFullException("Map is full. Try next match.");
+            if (ActiveMatch)
+                throw new MatchAlreadyStartedException("There is a match going on. Wait for next match.");
 
-            player.Notify("You've been added to the game queue. You'll be notified when your match starts. Stay alert!");
+            player.EnabledAttackAction = false;
+            player.Join(this);
+            player.Notify("You are in the map. Your attack action will be unlocked when match starts. Stay alert!");
         }
     }
 }

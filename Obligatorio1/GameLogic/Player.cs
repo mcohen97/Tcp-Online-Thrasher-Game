@@ -35,28 +35,24 @@ namespace GameLogic
         protected abstract AttackTechnique Technique { get; set; }
         public abstract GameMap Map { get; set; }
         public Action<string> Notify { get; set; }
+        public abstract bool EnabledAttackAction { get; set; }
 
         public Player()
         {
             playerController = new TankMovementController(CardinalPoint.NORTH);
             Map = new GameMap(1, 1);
             name = "Unidentified Player";
+            EnabledAttackAction = true;
+            Notify += (s) => { }; //Do nothing
         }
 
-        protected virtual void Damage(int hitPoints)
-        {
-            Health -= hitPoints;
-            if(Health <= 0)
-            {
-                Health = 0;
-                Map.RemovePlayer(ActualPosition);
-                this.Notify("RIP - you are dead");
-            }
-        }
+        protected abstract void Damage(int hitPoints);
 
         public virtual void Attack(Player target)
         {
-            if (Technique.CanAttack(target.Role))
+            if (!EnabledAttackAction)
+                Notify("Your attack is deactivated");
+            else if (Technique.CanAttack(target.Role))
             {
                 target.Damage(Technique.HitPoints);
                 target.Notify("You are being ATTACKED by this MOTHERFUCKER " + this.ToString() + "!!! Your HP: " + target.Health + " / Enemy HP: " + this.Health);
@@ -105,9 +101,9 @@ namespace GameLogic
             SpotNearbyPlayers();
         }
 
-        public abstract void Join(Game game, Position initialPosition);
+        public abstract void Join(Game game);
 
-        public void SpotNearbyPlayers()
+        public ICollection<Player> SpotNearbyPlayers()
         {
             ICollection<Player> playersSpotted = Map.GetPlayersNearPosition(ActualPosition);
             foreach (Player player in playersSpotted)
@@ -115,6 +111,8 @@ namespace GameLogic
                 player.Notify("You've been SPOTTED by "+this.ToString());
                 this.Notify(player+ " is close to you");
             }
+
+            return playersSpotted;
         }
 
         public override string ToString()

@@ -81,7 +81,7 @@ namespace GameLogicTest
             gameMap.AddPlayerToPosition(player3, new Position(0, 2));
             gameMap.RemovePlayer(player3.ActualPosition);
 
-            Assert.AreEqual(2, gameMap.PlayerCount);
+            Assert.AreEqual(2, gameMap.GetPlayers().Count);
         }
 
         [TestMethod]

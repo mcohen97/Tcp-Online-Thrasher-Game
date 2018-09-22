@@ -6,6 +6,8 @@ namespace GameLogic
 {
     public class GameMap
     {
+        public static readonly int EMPTY_SPACES = 20; //empty spaces so map isnt overpopulated
+
         private int height;
         private int length;
         private Player[,] map;
@@ -53,17 +55,20 @@ namespace GameLogic
         {
             this.length = 8;
             this.height = 8;
-            this.playerCapacity = length * height;
+            this.playerCapacity = length * height - EMPTY_SPACES;
             this.map = new Player[length, height];
             this.PlayerCount = 0;
+            this.CheckGame += () => { }; //Do nothing
         }
         public GameMap(int length, int height)
         {
             this.length = length;
             this.height = height;
-            this.playerCapacity = length * height;
+            this.playerCapacity = length * height - EMPTY_SPACES;
             this.map = new Player[length, height];
             this.PlayerCount = 0;
+            this.CheckGame += () => { }; //Do nothing
+
         }
 
         public void AddPlayerToPosition(Player player, Position initialPosition)

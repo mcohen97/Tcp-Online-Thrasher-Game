@@ -7,6 +7,7 @@ using Protocol;
 using Logic;
 using DataAccessInterface;
 using GameLogic;
+using GameLogicException;
 
 namespace Services
 {
@@ -58,11 +59,19 @@ namespace Services
                 Session justLogged = logger.LogIn();
                 Current.SendOkMessage("ingresado correctamente, seleccione rol");
                 Role selectedRole = ChoosePlayer();
-                PlayerController userPlayer = new PlayerController(justLogged, slasher, selectedRole);
+                Player player = PlayerFactory.CreatePlayer(justLogged.Logged.Nickname, SendNotificationToClient, selectedRole);
+                slasher.AddPlayer(player);
+                Current.SendOkMessage("You've been added to the game");
+                PlayerController userPlayer = new PlayerController(justLogged, slasher, player);
                 userPlayer.Play();
             }
-            catch (UserNotFoundException e) {
+            catch (UserNotFoundException e)
+            {
                 Current.SendErrorMessage(e.Message);
+            }
+            catch (GameException gameException)
+            {
+                Current.SendErrorMessage(gameException.Message);
             }
         }
 
@@ -78,6 +87,7 @@ namespace Services
                     case CommandType.CHOOSE_MONSTER:
                         roleReturned = Role.MONSTER;
                         optionEntered = true;
+
                         break;
                     case CommandType.CHOOSE_SURVIVOR:
                         roleReturned = Role.SURVIVOR;
@@ -109,6 +119,17 @@ namespace Services
                 Current.SendErrorMessage(ex.Message);
             }
             
+        }
+
+        private void SendNotificationToClient(string notification)
+        {
+            Header info = new Header();
+            info.Type = HeaderType.RESPONSE;
+            info.Command = CommandType.PLAYER_ACTION;
+            info.DataLength = notification.Length;
+            Package toSend = new Package(info);
+            toSend.Data = Encoding.Default.GetBytes(notification);
+            Current.SendMessage(toSend);
         }
 
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameLogicException;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ namespace GameLogic
         private Position actualPosition;
         private AttackTechnique technique;
         private GameMap map;
+        private bool enabledAttackAction;
 
         public Monster()
         {
@@ -80,10 +82,39 @@ namespace GameLogic
             }
         }
 
-        public override void Join(Game game, Position initialPosition)
+
+        public override bool EnabledAttackAction {
+            get {
+                return enabledAttackAction;
+            }
+
+            set {
+                enabledAttackAction = value;
+            }
+        }
+
+        protected override void Damage(int hitPoints)
         {
+            Health -= hitPoints;
+            if (Health <= 0)
+            {
+                Health = 0;
+                Map.RemovePlayer(ActualPosition);
+                Map.MonsterCount--;
+                this.Notify("RIP - you are dead");
+            }
+        }
+
+
+
+        public override void Join(Game game)
+        {
+            if (game.TooManyMonsters())
+                throw new MapIsFullException("There are too many monsters, join as survivor or wait");
+
             Map = game.Map;
-            ActualPosition = initialPosition;
+            ActualPosition = Map.GetEmptyPosition();
+            Map.AddPlayerToPosition(this, ActualPosition);
             Map.MonsterCount++;
         }
     }
