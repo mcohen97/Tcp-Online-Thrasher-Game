@@ -38,7 +38,7 @@ namespace Services
         }
 
         private bool IsMaxSize(Package aPackage) {
-            return aPackage.DataLength() == Package.DATA_SIZE_MAX;
+            return aPackage.DataLength() == Package.MESSAGE_SIZE_MAX;
         }
     }
 }
