@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="ClientHandler.cs" />
     <Compile Include="ClientServices.cs" />
+    <Compile Include="ConsoleAccess.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
