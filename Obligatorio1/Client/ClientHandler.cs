@@ -38,10 +38,10 @@ namespace Client
         {
             Socket toConnect = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             Random randomGenerator = new Random();
-            int randomPort = randomGenerator.Next(5000, 7000);
-            IPEndPoint myAddress = new IPEndPoint(IPAddress.Parse("127.0.0.2"), randomPort);
+            int randomPort = randomGenerator.Next(6000, 7000);
+            IPEndPoint myAddress = new IPEndPoint(IPAddress.Parse("172.29.1.185"), randomPort);
             toConnect.Bind(myAddress);
-            IPEndPoint serverAddress = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 1234);
+            IPEndPoint serverAddress = new IPEndPoint(IPAddress.Parse("172.29.3.111"), 6666);
             toConnect.Connect(serverAddress);
             connection = new TCPConnection(toConnect);
             functionalities = new ClientServices(connection);
