@@ -60,38 +60,41 @@ namespace Services
 
         private void PerformAction(string action)
         {
-            switch (action)
+            if (!matchEnded)
             {
-                case PlayerCommand.MOVE_FORWARD:
-                    player.Move(Movement.FORWARD);
-                    break;
-                case PlayerCommand.MOVE_BACKWARD:
-                    player.Move(Movement.BACKWARD);
-                    break;
-                case PlayerCommand.MOVE_FAST_FORWARD:
-                    player.MoveFast(Movement.FORWARD);
-                    break;
-                case PlayerCommand.MOVE_FAST_BACKWARD:
-                    player.MoveFast(Movement.BACKWARD);
-                    break;
-                case PlayerCommand.TURN_NORTH:
-                    player.Turn(CardinalPoint.NORTH);
-                    break;
-                case PlayerCommand.TURN_EAST:
-                    player.Turn(CardinalPoint.EAST);
-                    break;
-                case PlayerCommand.TURN_SOUTH:
-                    player.Turn(CardinalPoint.SOUTH);
-                    break;
-                case PlayerCommand.TURN_WEST:
-                    player.Turn(CardinalPoint.WEST);
-                    break;
-                case PlayerCommand.ATTACK:
-                    player.AttackZone();
-                    break;
-                default:
-                    player.Notify("Invalid command");
-                    break;
+                switch (action)
+                {
+                    case PlayerCommand.MOVE_FORWARD:
+                        player.Move(Movement.FORWARD);
+                        break;
+                    case PlayerCommand.MOVE_BACKWARD:
+                        player.Move(Movement.BACKWARD);
+                        break;
+                    case PlayerCommand.MOVE_FAST_FORWARD:
+                        player.MoveFast(Movement.FORWARD);
+                        break;
+                    case PlayerCommand.MOVE_FAST_BACKWARD:
+                        player.MoveFast(Movement.BACKWARD);
+                        break;
+                    case PlayerCommand.TURN_NORTH:
+                        player.Turn(CardinalPoint.NORTH);
+                        break;
+                    case PlayerCommand.TURN_EAST:
+                        player.Turn(CardinalPoint.EAST);
+                        break;
+                    case PlayerCommand.TURN_SOUTH:
+                        player.Turn(CardinalPoint.SOUTH);
+                        break;
+                    case PlayerCommand.TURN_WEST:
+                        player.Turn(CardinalPoint.WEST);
+                        break;
+                    case PlayerCommand.ATTACK:
+                        player.AttackZone();
+                        break;
+                    default:
+                        player.Notify("Invalid command");
+                        break;
+                }
             }
         }
 

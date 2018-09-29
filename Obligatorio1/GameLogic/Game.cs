@@ -20,6 +20,7 @@ namespace GameLogic
         private bool activeGame;
         private GameMap map;
         private Role lastWinner;
+
         public GameMap Map {
             get {
                 return map;
@@ -56,6 +57,7 @@ namespace GameLogic
             }
         }
         public Action EndMatchEvent { get; set; }
+        public readonly object gameAccess;
 
         public Game()
         {
@@ -69,6 +71,7 @@ namespace GameLogic
             lastWinner = Role.NEUTRAL;
             map.PlayerRemovedEvent += CheckEndMatch;
             EndMatchEvent += () => { }; //Do nothing
+            gameAccess = new object();
         }
 
         private void RestartMap()
@@ -89,17 +92,20 @@ namespace GameLogic
         }
         private void EndMatch()
         {
-            matchTimer.Stop();
-            LastWinner = GetWinner();
-            foreach (Player player in Map.GetPlayers())
+            lock (gameAccess)
             {
-                player.Notify("END MATCH - Winner is " + RoleMethods.RoleToString(LastWinner));
-            }
-            activeMatch = false;
-            activeGame = false;
-            EndMatchEvent();
-            RestartMap();
-            StartPreMatchTimer();
+                matchTimer.Stop();
+                LastWinner = GetWinner();
+                foreach (Player player in Map.GetPlayers())
+                {
+                    player.Notify("END MATCH - Winner is " + RoleMethods.RoleToString(LastWinner));
+                }
+                activeMatch = false;
+                activeGame = false;
+                EndMatchEvent();
+                RestartMap();
+                StartPreMatchTimer();
+            }          
         }
 
         public void PreMatchTimeOut(object sender, ElapsedEventArgs e)
@@ -108,19 +114,22 @@ namespace GameLogic
         }
         private void StartMatch()
         {
-            preMatchTimer.Stop();
-            if (ActiveGameConditions(Map.MonsterCount, Map.SurvivorCount))
+            lock (gameAccess)
             {
-                activeMatch = true;
-                foreach (Player player in Map.GetPlayers())
+                preMatchTimer.Stop();
+                if (ActiveGameConditions(Map.MonsterCount, Map.SurvivorCount))
                 {
-                    player.Notify("Match started!");
-                    player.EnabledAttackAction = true;
+                    activeMatch = true;
+                    foreach (Player player in Map.GetPlayers())
+                    {
+                        player.Notify("Match started!");
+                        player.EnabledAttackAction = true;
+                    }
+                    matchTimer.Start();
                 }
-                matchTimer.Start();
-            }
-            else
-                preMatchTimer.Start();
+                else
+                    preMatchTimer.Start();
+            }          
         }
 
         public bool TooManyPlayers()
@@ -168,14 +177,25 @@ namespace GameLogic
 
         public void AddPlayer(Player player)
         {
-            if (TooManyPlayers())
-                throw new MapIsFullException("Map is full. Try next match.");
-            if (ActiveMatch)
-                throw new MatchAlreadyStartedException("There is a match going on. Wait for next match.");
+            lock (gameAccess)
+            {
+                if (TooManyPlayers())
+                    throw new MapIsFullException("Map is full. Try next match.");
+                if (ActiveMatch)
+                    throw new MatchAlreadyStartedException("There is a match going on. Wait for next match.");
+                if (Map.IsPlayerInMap(player))
+                    throw new PlayerAlreadyInMatch("This player has already been taken, select other player");
 
-            player.EnabledAttackAction = false;
-            player.Join(this);
-            player.Notify("You are in the map. Your attack action will be unlocked when match starts. Stay alert!");
+                player.EnabledAttackAction = false;
+                player.Join(this);
+                player.Notify("You are in the map. Your attack action will be unlocked when match starts. Stay alert!");
+
+            }
+        }
+
+        public ICollection<Player> GetPlayers()
+        {
+            return map.GetPlayers();
         }
     }
 }

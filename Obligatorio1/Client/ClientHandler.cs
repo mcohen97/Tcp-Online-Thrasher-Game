@@ -103,7 +103,9 @@ namespace Client
 
         private void ShowConnectedPlayers()
         {
-            throw new NotImplementedException();
+            List<string> playersList = functionalities.ListOfInGamePlayers();
+            ShowList(playersList);
+            console.ReadKey();
         }
 
         private void ShowRegisteredPlayers()
@@ -143,6 +145,8 @@ namespace Client
             bool roleSelectionSuccess = ChooseRole();
             if(authenticateSuccess && roleSelectionSuccess)
                 PlayMatch();
+            console.WriteLine("Press any key to continue");
+            console.ReadKey();
         }
 
         private bool ChooseRole()
@@ -215,18 +219,19 @@ namespace Client
                 { 
                     ListenToGame(console);
                 }
-                catch (ConnectionLostException)
+                catch (ConnectionLostException e)
                 {
-
-                    console.WriteLine("Connection lost");
+                    console.WriteLine(e.Message);
                 }              
             }));
             thread.Start();
             while (playing)
             {
                 string command = GetInput("Command:");
-                SendPackage(CommandType.PLAYER_ACTION, command);
+                if(playing)
+                    SendPackage(CommandType.PLAYER_ACTION, command);
             }
+
         }
 
         private void ListenToGame(ConsoleAccess console)
@@ -235,7 +240,8 @@ namespace Client
             {
                 Package inGamePackage = connection.WaitForMessage();
                 string message = Encoding.Default.GetString(inGamePackage.Data);
-                console.WriteLine(message);
+                if(playing)
+                    console.WriteLine(message);
 
                 if (inGamePackage.Command() == CommandType.END_MATCH)
                     playing = false;

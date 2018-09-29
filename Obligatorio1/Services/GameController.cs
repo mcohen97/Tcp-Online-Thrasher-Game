@@ -43,6 +43,9 @@ namespace Services
                     case CommandType.REGISTERED_USERS:
                         SendRegisteredPlayers();
                         break;
+                    case CommandType.IN_GAME_PLAYERS:
+                        SendInGamePlayers();
+                        break;
                     case CommandType.LOG_OUT:
                         Current.Close();
                         endGame = true;
@@ -54,6 +57,16 @@ namespace Services
             }
         }
 
+        private void SendInGamePlayers()
+        {
+            ICollection<string> names = slasher.GetPlayers().Select(p => p.ToString()).ToList();
+            string concat = ConcatAllNames(names);
+            Header packageInfo = new Header();
+            packageInfo.Command = CommandType.IN_GAME_PLAYERS;
+            packageInfo.Type = HeaderType.RESPONSE;
+            Package playersList = new Package(packageInfo, concat);
+            Current.SendMessage(playersList);
+        }
 
         private void SendRegisteredPlayers()
         {
@@ -86,7 +99,7 @@ namespace Services
                 Role selectedRole = ChoosePlayer();
                 Player player = PlayerFactory.CreatePlayer(justLogged.Logged.Nickname, SendNotificationToClient, selectedRole);
                 slasher.AddPlayer(player);
-                Current.SendOkMessage("You've been added to the game");
+                Current.SendOkMessage("You've been added to the game at position " + player.ActualPosition);
                 PlayerController userPlayer = new PlayerController(justLogged, slasher, player);
                 TryToPlay(userPlayer);
             }
@@ -103,7 +116,6 @@ namespace Services
                 Current.SendErrorMessage(gameException.Message);
             }
         }
-
 
         private Session Login(IConnection current, IUserRepository users)
         {

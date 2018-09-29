@@ -50,6 +50,8 @@ namespace GameLogic
         }
         public Action PlayerRemovedEvent { get; set; }
 
+        public readonly object mapEditionLock;
+
 
         public GameMap()
         {
@@ -60,6 +62,7 @@ namespace GameLogic
             this.monsterCount = 0;
             this.survivorCount = 0;
             this.PlayerRemovedEvent += () => { }; //Do nothing
+            this.mapEditionLock = new object();
         }
         public GameMap(int length, int height)
         {
@@ -70,45 +73,55 @@ namespace GameLogic
             this.monsterCount = 0;
             this.survivorCount = 0;
             this.PlayerRemovedEvent += () => { }; //Do nothing
-
+            this.mapEditionLock = new object();
         }
 
         public void AddPlayerToPosition(Player player, Position initialPosition)
         {
-            if (!IsValidPosition(initialPosition))
-                throw new InvalidPositionException();
+            lock (mapEditionLock)
+            {
+                if (!IsValidPosition(initialPosition))
+                    throw new InvalidPositionException();
 
-            if (!IsEmptyPosition(initialPosition))
-                throw new OccupiedPositionException();
+                if (!IsEmptyPosition(initialPosition))
+                    throw new OccupiedPositionException();
 
-            map[initialPosition.Row, initialPosition.Column] = player;
-            player.Map = this;
-            player.ActualPosition = initialPosition;
+                map[initialPosition.Row, initialPosition.Column] = player;
+                player.Map = this;
+                player.ActualPosition = initialPosition;
+            }
         }
 
         public void MovePlayer(Position from, Position to)
         {
-            if (!IsEmptyPosition(from))
+            lock (mapEditionLock)
             {
-                if (!IsValidPosition(to))
-                    throw new InvalidPositionException("| Invalid move - map ends here |");
+                if (!IsEmptyPosition(from))
+                {
+                    if (!IsValidPosition(to))
+                        throw new InvalidPositionException("| Invalid move - map ends here |");
 
-                if (!IsEmptyPosition(to))
-                    throw new OccupiedPositionException("| Invalid move - there's another player in that position ");
+                    if (!IsEmptyPosition(to))
+                        throw new OccupiedPositionException("| Invalid move - there's another player in that position ");
 
-                Player playerMoved = map[from.Row, from.Column];
-                map[to.Row, to.Column] = playerMoved;
-                playerMoved.ActualPosition = to;
-                map[from.Row, from.Column] = null;
+                    Player playerMoved = map[from.Row, from.Column];
+                    map[to.Row, to.Column] = playerMoved;
+                    playerMoved.ActualPosition = to;
+                    map[from.Row, from.Column] = null;
+                }
             }
+            
         }
 
         public void RemovePlayer(Position position)
         {
-            if (!IsValidPosition(position))
-                throw new InvalidPositionException();
+            lock (mapEditionLock)
+            {
+                if (!IsValidPosition(position))
+                    throw new InvalidPositionException();
 
-            map[position.Row, position.Column] = null;
+                map[position.Row, position.Column] = null;
+            }
         }
 
         public Player GetPlayer(Position position)
@@ -162,6 +175,11 @@ namespace GameLogic
             return PlayerCount == PlayerCapacity;
         }
 
+        public bool IsPlayerInMap(Player player)
+        {
+            return GetPlayers().Contains(player);
+        }
+
         public Position GetEmptyPosition()
         {
             if (IsFull())
@@ -175,7 +193,7 @@ namespace GameLogic
                     if(IsEmptyPosition(i,j))
                     {
                         emptyPosition = new Position(i, j);
-                        break;
+                        return emptyPosition;
                     }
                 }
             }
@@ -188,9 +206,7 @@ namespace GameLogic
             foreach (Player player in map)
             {
                 if(player != null)
-                {
                     players.Add(player);
-                }
             }
             return players;
         }

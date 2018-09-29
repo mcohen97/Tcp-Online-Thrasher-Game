@@ -127,7 +127,7 @@ namespace GameLogic
             if (!(obj is Player))
                 return false;
             Player parameter = (Player)obj;
-            return this.ToString() == parameter.ToString();
+            return this.Name == parameter.Name;
         }
     }
 

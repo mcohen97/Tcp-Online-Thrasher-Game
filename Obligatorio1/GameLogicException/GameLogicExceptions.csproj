@@ -46,6 +46,7 @@
     <Compile Include="MatchAlreadyStartedException.cs" />
     <Compile Include="NotPlayableRoleException.cs" />
     <Compile Include="OccupiedPositionException.cs" />
+    <Compile Include="PlayerAlreadyInMatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnfinishedMatchException.cs" />
   </ItemGroup>
