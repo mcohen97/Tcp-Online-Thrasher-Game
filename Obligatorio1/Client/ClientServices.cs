@@ -75,5 +75,17 @@ namespace Client
             connection.SendLogOutMessage();
         }
 
+        public List<string> ListOfInGamePlayers()
+        {
+            Header packageInfo = new Header();
+            packageInfo.Command = CommandType.IN_GAME_PLAYERS;
+            packageInfo.Type = HeaderType.REQUEST;
+            Package askForPlayers = new Package(packageInfo);
+            connection.SendMessage(askForPlayers);
+            Package answer = connection.WaitForMessage();
+            string rawList = answer.Message();
+            List<string> list = MakeList(rawList);
+            return list;
+        }
     }
 }

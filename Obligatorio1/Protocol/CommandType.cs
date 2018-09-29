@@ -21,6 +21,7 @@ namespace Protocol
         REGISTERED_USERS,
         IMG_JPG,
         END_MATCH,
-        NOTIFICATION
+        NOTIFICATION,
+        IN_GAME_PLAYERS
     };
 }
