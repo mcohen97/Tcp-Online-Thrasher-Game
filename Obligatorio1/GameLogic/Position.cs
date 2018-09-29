@@ -44,5 +44,10 @@ namespace GameLogic
             return result;
         }
 
+        public override string ToString()
+        {
+            return "("+ row + ", " + column + ")"; 
+        }
+
     }
 }

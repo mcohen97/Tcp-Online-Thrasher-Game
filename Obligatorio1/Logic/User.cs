@@ -1,5 +1,6 @@
 ﻿using System;
 using LogicExceptions;
+using Protocol;
 
 namespace Logic
 {
@@ -21,7 +22,10 @@ namespace Logic
         private void SetNickname(string aNickname)
         {
             if (String.IsNullOrWhiteSpace(aNickname)) {
-                throw new InvalidUserDataException("Invalid nickname");
+                throw new InvalidUserDataException("Nickname invalido");
+            }
+            if (aNickname.Contains(Package.LIST_SEPARATOR_SIMBOL)) {
+                throw new InvalidUserDataException("El nickname no puede contener el caracter ';'");
             }
             nickname = aNickname;   
         }
@@ -49,6 +53,9 @@ namespace Logic
             return equals;
         }
 
-
+        public override string ToString()
+        {
+            return nickname;
+        }
     }
 }

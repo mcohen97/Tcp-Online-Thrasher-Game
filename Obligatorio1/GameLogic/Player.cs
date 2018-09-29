@@ -8,11 +8,16 @@ namespace GameLogic
 {
     public abstract class Player
     {
+        protected string name;
+        public string Name {
+            get { return name; }
+            set { name = value; }
+        }
         public abstract Role Role { get; protected set; }
         public abstract int Health { get; protected set; }
         public virtual int HitPoints {
             get {
-                return AttackTechnique.HitPoints;
+                return Technique.HitPoints;
             }
             protected set {
 
@@ -25,15 +30,17 @@ namespace GameLogic
             private set {
             }
         }
-        public abstract Position Position { get; set; }
+        public abstract Position ActualPosition { get; set; }
         protected IPlayerController playerController;
-        protected abstract AttackTechnique AttackTechnique { get; set; }
+        protected abstract AttackTechnique Technique { get; set; }
         public abstract GameMap Map { get; set; }
+        public Action<string> Notify { get; set; }
 
         public Player()
         {
             playerController = new TankMovementController(CardinalPoint.NORTH);
             Map = new GameMap(1, 1);
+            name = "Unidentified Player";
         }
 
         protected virtual void Damage(int hitPoints)
@@ -42,21 +49,24 @@ namespace GameLogic
             if(Health <= 0)
             {
                 Health = 0;
-                Map.RemovePlayer(Position);
+                Map.RemovePlayer(ActualPosition);
+                this.Notify("RIP - you are dead");
             }
         }
 
         public virtual void Attack(Player target)
         {
-            if (AttackTechnique.CanAttack(target.Role))
+            if (Technique.CanAttack(target.Role))
             {
-                target.Damage(AttackTechnique.HitPoints);
+                target.Damage(Technique.HitPoints);
+                target.Notify("You are being ATTACKED by this MOTHERFUCKER " + this.ToString() + "!!! Your HP: " + target.Health + " / Enemy HP: " + this.Health);
+                this.Notify("Enemy " + target.ToString() + " has been hit. Enemy HP: " + target.Health);
             }
         }
 
         public void AttackZone()
         {
-            ICollection<Player> targets = Map.GetPlayersNearPosition(Position);
+            ICollection<Player> targets = Map.GetPlayersNearPosition(ActualPosition);
             foreach (Player target in targets)
             {
                 Attack(target);
@@ -75,20 +85,52 @@ namespace GameLogic
 
         public void Move(Movement movement)
         {
-            Position newPosition = playerController.Move(this.Position, movement, 1);
-            Map.MovePlayer(this.Position, newPosition);
+            Position newPosition = playerController.Move(this.ActualPosition, movement, 1);
+            Map.MovePlayer(this.ActualPosition, newPosition);
+            Notify("You moved to " + this.ActualPosition);
+            SpotNearbyPlayers();
         }
 
         public void Turn(CardinalPoint direction)
         {
             playerController.Turn(direction);
+            Notify("You are looking at " + Enum.GetName(typeof(CardinalPoint), direction));
         }
 
         public void MoveFast(Movement movement)
         {
-            Position newPosition = playerController.Move(this.Position, movement, 2);
-            Map.MovePlayer(this.Position, newPosition);
+            Position newPosition = playerController.Move(this.ActualPosition, movement, 2);
+            Map.MovePlayer(this.ActualPosition, newPosition);
+            Notify("You moved to " + this.ActualPosition);
+            SpotNearbyPlayers();
         }
 
+        public abstract void Join(Game game, Position initialPosition);
+
+        public void SpotNearbyPlayers()
+        {
+            ICollection<Player> playersSpotted = Map.GetPlayersNearPosition(ActualPosition);
+            foreach (Player player in playersSpotted)
+            {
+                player.Notify("You've been SPOTTED by "+this.ToString());
+                this.Notify(player+ " is close to you");
+            }
+        }
+
+        public override string ToString()
+        {
+            return name + " ("+RoleMethods.RoleToString(this.Role)+")";
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+            if (!(obj is Player))
+                return false;
+            Player parameter = (Player)obj;
+            return this.ToString() == parameter.ToString();
+        }
     }
+
 }

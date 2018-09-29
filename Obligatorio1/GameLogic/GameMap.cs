@@ -10,6 +10,7 @@ namespace GameLogic
         private int length;
         private Player[,] map;
         private int playerCount;
+        private int playerCapacity;
 
         public int PlayerCount {
             get {
@@ -20,10 +21,21 @@ namespace GameLogic
             }
         }
 
+        public int PlayerCapacity {
+            get {
+                return playerCapacity;
+            }
+
+            private set {
+                playerCapacity = value;
+            }
+        }
+
         public GameMap()
         {
             this.length = 8;
             this.height = 8;
+            this.playerCapacity = length * height;
             this.map = new Player[length, height];
             this.PlayerCount = 0;
         }
@@ -32,6 +44,7 @@ namespace GameLogic
         {
             this.length = length;
             this.height = height;
+            this.playerCapacity = length * height;
             this.map = new Player[length, height];
             this.PlayerCount = 0;
         }
@@ -45,8 +58,8 @@ namespace GameLogic
                 throw new OccupiedPositionException();
 
             map[initialPosition.Row, initialPosition.Column] = player;
-            player.Position = initialPosition;
             player.Map = this;
+            player.ActualPosition = initialPosition;
             playerCount++;
 
         }
@@ -56,14 +69,14 @@ namespace GameLogic
             if (!IsEmptyPosition(from))
             {
                 if (!IsValidPosition(to))
-                    throw new InvalidPositionException();
+                    throw new InvalidPositionException("| Invalid move - map ends here |");
 
                 if (!IsEmptyPosition(to))
-                    throw new OccupiedPositionException();
+                    throw new OccupiedPositionException("| Invalid move - there's another player in that position ");
 
                 Player playerMoved = map[from.Row, from.Column];
                 map[to.Row, to.Column] = playerMoved;
-                playerMoved.Position = to;
+                playerMoved.ActualPosition = to;
                 map[from.Row, from.Column] = null;
             }
         }
@@ -90,9 +103,12 @@ namespace GameLogic
 
         public bool IsEmptyPosition(Position position)
         {
-            if (!IsValidPosition(position)) return false;
+            return IsValidPosition(position) && IsEmptyPosition(position.Row, position.Column);
+        }
 
-            return map[position.Row, position.Column] == null;
+        private bool IsEmptyPosition(int i, int j)
+        {
+            return map[i, j] == null;
         }
 
         private bool IsValidPosition(Position position)
@@ -121,6 +137,44 @@ namespace GameLogic
             }
 
             return playersNearPosition;
+        }
+
+        public bool IsFull()
+        {
+            return playerCount == playerCapacity;
+        }
+
+        public Position GetEmptyPosition()
+        {
+            if (IsFull())
+                throw new MapIsFullException();
+
+            Position emptyPosition = new Position(-1,-1);
+            for (int i = 0; i < length; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    if(IsEmptyPosition(i,j))
+                    {
+                        emptyPosition = new Position(i, j);
+                        break;
+                    }
+                }
+            }
+            return emptyPosition;
+        }
+
+        public ICollection<Player> GetPlayers()
+        {
+            ICollection<Player> players = new List<Player>();
+            foreach (Player player in map)
+            {
+                if(player != null)
+                {
+                    players.Add(player);
+                }
+            }
+            return players;
         }
     }
 }

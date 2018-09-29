@@ -9,7 +9,8 @@ namespace GameLogic
     public enum Role
     {
         MONSTER,
-        SURVIVOR
+        SURVIVOR,
+        NEUTRAL
     }
 
 
