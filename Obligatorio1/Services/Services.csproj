@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Authenticator.cs" />
     <Compile Include="GameController.cs" />
+    <Compile Include="ImageManager.cs" />
     <Compile Include="PlayerController.cs" />
     <Compile Include="PlayerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

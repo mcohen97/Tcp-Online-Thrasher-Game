@@ -7,6 +7,7 @@ using Protocol;
 using Logic;
 using DataAccessInterface;
 using GameLogic;
+using GameLogicException;
 using Logic.Exceptions;
 
 namespace Services
@@ -53,6 +54,7 @@ namespace Services
             }
         }
 
+
         private void SendRegisteredPlayers()
         {
             ICollection<string> names = users.GetAllUsers().Select(u => u.ToString()).ToList();
@@ -82,7 +84,10 @@ namespace Services
                 Session justLogged = Login(Current, users);
                 Current.SendOkMessage("ingresado correctamente, seleccione rol");
                 Role selectedRole = ChoosePlayer();
-                PlayerController userPlayer = new PlayerController(justLogged, slasher, selectedRole);
+                Player player = PlayerFactory.CreatePlayer(justLogged.Logged.Nickname, SendNotificationToClient, selectedRole);
+                slasher.AddPlayer(player);
+                Current.SendOkMessage("You've been added to the game");
+                PlayerController userPlayer = new PlayerController(justLogged, slasher, player);
                 TryToPlay(userPlayer);
             }
             catch (UserNotFoundException e1)
@@ -93,7 +98,12 @@ namespace Services
             {
                 Current.SendErrorMessage(e2.Message);
             }
+            catch (GameException gameException)
+            {
+                Current.SendErrorMessage(gameException.Message);
+            }
         }
+
 
         private Session Login(IConnection current, IUserRepository users)
         {
@@ -107,6 +117,7 @@ namespace Services
             try
             {
                 userPlayer.Play();
+                SendEndMatch();
             }
             catch (ConnectionLostException e) {
                 //connection lost with the client, thread finishes
@@ -125,6 +136,7 @@ namespace Services
                     case CommandType.CHOOSE_MONSTER:
                         roleReturned = Role.MONSTER;
                         optionEntered = true;
+
                         break;
                     case CommandType.CHOOSE_SURVIVOR:
                         roleReturned = Role.SURVIVOR;
@@ -145,17 +157,51 @@ namespace Services
         private void AddUser(Package command)
         {
             string nickname = command.Message();
-            User toAdd = new User(nickname, "path");
+            User toAdd = new User(nickname,"");
             try
             {
                 users.AddUser(toAdd);
                 Current.SendOkMessage("agregado exitosamente");
+                ReceiveImg(nickname);
             }
             catch (UserAlreadyExistsException ex)
             {
                 Current.SendErrorMessage(ex.Message);
             }
             
+        }
+
+        private void SendEndMatch()
+        {
+            string message = "Thanks for playing!";
+            Header info = new Header();
+            info.Type = HeaderType.RESPONSE;
+            info.Command = CommandType.END_MATCH;
+            info.DataLength = message.Length;
+            Package toSend = new Package(info);
+            toSend.Data = Encoding.Default.GetBytes(message);
+            Current.SendMessage(toSend);
+        }
+
+        private void SendNotificationToClient(string notification)
+        {
+            Header info = new Header();
+            info.Type = HeaderType.RESPONSE;
+            info.Command = CommandType.NOTIFICATION;
+            info.DataLength = notification.Length;
+            Package toSend = new Package(info);
+            toSend.Data = Encoding.Default.GetBytes(notification);
+            Current.SendMessage(toSend);
+        }
+
+        private void ReceiveImg(string nickname)
+        {
+            Package firstPart = Current.WaitForMessage();
+            if (firstPart.Command().Equals(CommandType.IMG_JPG)) {
+                ImageManager manager = new ImageManager();
+                manager.StoreImageStreaming(Current,nickname, firstPart);
+                Current.SendOkMessage("Imagen enviada correctamente");
+            }
         }
 
     }

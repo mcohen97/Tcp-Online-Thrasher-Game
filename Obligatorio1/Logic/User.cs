@@ -1,6 +1,7 @@
 ﻿using System;
 using LogicExceptions;
 using Protocol;
+using System.Drawing;
 
 namespace Logic
 {
@@ -11,12 +12,12 @@ namespace Logic
         public string Nickname { get { return nickname; } set { SetNickname(value); } }
 
         private string path;
-        public string Path { get { return path; }  set { SetPath(value); } }
+        public string Path { get; private set; }
 
         public User(string aNickname, string aPath)
         {
             Nickname = aNickname;
-            Path = aPath;
+            path = aPath;
         }
         
         private void SetNickname(string aNickname)
@@ -28,15 +29,6 @@ namespace Logic
                 throw new InvalidUserDataException("El nickname no puede contener el caracter ';'");
             }
             nickname = aNickname;   
-        }
-
-        private void SetPath(string aPath)
-        {
-            if (String.IsNullOrWhiteSpace(aPath))
-            {
-                throw new InvalidUserDataException("Invalid photo path");
-            }
-            path = aPath;
         }
 
         public override bool Equals(object obj)

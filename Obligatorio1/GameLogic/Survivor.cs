@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameLogicException;
+using System;
 
 namespace GameLogic
 {
@@ -10,6 +11,7 @@ namespace GameLogic
         private Position actualPosition;
         private AttackTechnique technique;
         private GameMap map;
+        private bool enabledAttackAction;
 
         public Survivor()
         {
@@ -77,11 +79,40 @@ namespace GameLogic
             }
         }
 
-        public override void Join(Game game, Position initialPosition)
+        public override bool EnabledAttackAction {
+            get {
+                return enabledAttackAction;
+            }
+
+            set {
+                enabledAttackAction = value;
+            }
+        }
+
+        protected override void Damage(int hitPoints)
         {
+            Health -= hitPoints;
+            if (Health <= 0)
+            {
+                Health = 0;
+                Map.RemovePlayer(ActualPosition);
+                Map.SurvivorCount--;
+                Map.PlayerRemovedEvent();
+                this.Notify("RIP - you are dead");
+            }
+        }
+
+        
+
+        public override void Join(Game game)
+        {
+            if (game.TooManySurvivors())
+                throw new MapIsFullException("There are too many survivors, join as monster or wait");
+
             Map = game.Map;
-            ActualPosition = initialPosition;
-            game.SurvivorCount++;
+            ActualPosition = Map.GetEmptyPosition();
+            Map.AddPlayerToPosition(this, ActualPosition);
+            Map.SurvivorCount++;
         }
     }
 }

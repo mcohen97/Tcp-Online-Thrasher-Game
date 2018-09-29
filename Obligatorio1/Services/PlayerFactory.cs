@@ -10,19 +10,26 @@ namespace Services
 {
     public class PlayerFactory
     {
-        public static Player CreatePlayer(Role role)
+        public static Player CreatePlayer(string name, Action<string> notifier, Role role)
         {
+            Player newPlayer;
             switch (role)
             {
                 case Role.MONSTER:
-                    return new Monster();
+                    newPlayer =  new Monster();
+                    break;
                 case Role.SURVIVOR:
-                    return new Survivor();
+                    newPlayer =  new Survivor();
+                    break;
                 case Role.NEUTRAL:
                     throw new NotPlayableRoleException();
                 default:
                     throw new NotPlayableRoleException();
             }
+            newPlayer.Name = name;
+            newPlayer.Notify += notifier;
+
+            return newPlayer;
         }
     }
 }

@@ -17,5 +17,6 @@ namespace Logic
         void SendLogOutMessage();
 
         void StartGame();
+        void SendImage(string path);
     }
 }

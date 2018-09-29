@@ -16,22 +16,21 @@ namespace Services
         private Session clientSession;
         private Player player;
         private Game game;
+        private bool matchEnded;
 
-        public PlayerController(Session session, Game gameJoined, Role selectedRole)
+        public PlayerController(Session session, Game gameJoined, Player playerToControl)
         {
             clientSession = session;
             game = gameJoined;
-            player = PlayerFactory.CreatePlayer(selectedRole);
-            player.Name = session.Logged.Nickname;
-            player.Notify = SendNotificationToClient;
-            game.AddPlayer(player);
+            player = playerToControl;
+            matchEnded = false;
+            gameJoined.EndMatchEvent += MatchEnded;
         }
 
         public void Play()
         {
             Package command;
-            SendNotificationToClient("You are in the game! play or die!");
-            while (game.ActiveMatch)
+            while (!matchEnded && game.ActiveGame && !player.IsDead)
             {
                 command = clientSession.WaitForClientMessage();
                 switch (command.Command())
@@ -45,17 +44,18 @@ namespace Services
                             }
                             catch (GameException actionException)
                             {
-                                SendNotificationToClient(actionException.Message);
+                                player.Notify(actionException.Message);
                             }
                         else
                         {
-                            SendNotificationToClient("You are dead, sorry dude, wait for next match!");
+                            player.Notify("You are dead, sorry dude, wait for next match!");
                         }
                         break;
                     default:
                         break;
                 }
             }
+
         }
 
         private void PerformAction(string action)
@@ -90,19 +90,16 @@ namespace Services
                     player.AttackZone();
                     break;
                 default:
-                    throw new NotPlayerCommandException();
+                    player.Notify("Invalid command");
+                    break;
             }
         }
 
-        private void SendNotificationToClient(string notification)
+        private void MatchEnded()
         {
-            Header info = new Header();
-            info.Type = HeaderType.RESPONSE;
-            info.Command = CommandType.PLAYER_ACTION;
-            info.DataLength = notification.Length;
-            Package toSend = new Package(info);
-            toSend.Data = Encoding.Default.GetBytes(notification);
-            clientSession.SendToClient(toSend);
+            matchEnded = true;
         }
+
+        
     }
 }

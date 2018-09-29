@@ -12,6 +12,7 @@ using System.Threading;
 using Protocol;
 using Services;
 using GameLogic;
+using System.Configuration;
 
 namespace Network
 {
@@ -25,12 +26,16 @@ namespace Network
         public Server()
         {
             listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            System.Net.IPEndPoint address = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 1234);
+            var settings = new AppSettingsReader();
+            string serverIp = (string)settings.GetValue("ServerIp", typeof(string));
+            string serverPort = (string)settings.GetValue("ServerPort", typeof(string));
+            System.Net.IPEndPoint address = new IPEndPoint(IPAddress.Parse(serverIp), int.Parse(serverPort));
             listener.Bind(address);
             slasher = new Game();
-            slasher.StartMatch();
+            slasher.StartPreMatchTimer();
             serverWorking = true;
             clientConnections = new List<Socket>();
+            GenerateTestUsers();
         }
 
         public void ListenToRequests()
@@ -76,7 +81,7 @@ namespace Network
         {
             Console.WriteLine("hay conexion");
             IConnection somebodyUnknown = new TCPConnection(connection);
-            IUserRepository users = UsersInMemory.instance.Value;
+            IUserRepository users = UsersInMemory.instance.Value;         
             GameController toLunch = new GameController(somebodyUnknown, slasher, users);
             ExecuteService(toLunch);                      
         }
@@ -88,9 +93,7 @@ namespace Network
                 toLunch.Start();
             }
             catch (ConnectionLostException e) {
-                Console.Clear();
-                Console.WriteLine(e.Message);
-                Console.ReadKey();
+              //connection with the client was lost.
             }
         }
 
@@ -131,6 +134,19 @@ namespace Network
                 active.Shutdown(SocketShutdown.Both);
                 active.Close();
             }
+        }
+
+        private void GenerateTestUsers()
+        {
+            IUserRepository repo = UsersInMemory.instance.Value;
+            User testUser;
+            for (int i = 0; i < 20; i++)
+            {
+                testUser = new User("p" + i, "photo");
+                repo.AddUser(testUser);
+            }
+            repo.AddUser(new User("cantu", "photo"));
+            repo.AddUser(new User("marcel", "photo"));
         }
     }
 }
