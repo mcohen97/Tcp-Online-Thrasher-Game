@@ -12,6 +12,7 @@ using System.Threading;
 using Protocol;
 using Services;
 using GameLogic;
+using System.Configuration;
 
 namespace Network
 {
@@ -25,7 +26,10 @@ namespace Network
         public Server()
         {
             listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            System.Net.IPEndPoint address = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 1234);
+            var settings = new AppSettingsReader();
+            string serverIp = (string)settings.GetValue("ServerIp", typeof(string));
+            string serverPort = (string)settings.GetValue("ServerPort", typeof(string));
+            System.Net.IPEndPoint address = new IPEndPoint(IPAddress.Parse(serverIp), int.Parse(serverPort));
             listener.Bind(address);
             slasher = new Game();
             slasher.StartPreMatchTimer();

@@ -13,6 +13,8 @@ using Logic.Exceptions;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+using System.Configuration;
+
 
 namespace Client
 {
@@ -37,11 +39,15 @@ namespace Client
         private void TryToConnect()
         {
             Socket toConnect = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            Random randomGenerator = new Random();
-            int randomPort = randomGenerator.Next(6000, 7000);
-            IPEndPoint myAddress = new IPEndPoint(IPAddress.Parse("172.29.1.185"), randomPort);
+            var settings = new AppSettingsReader();
+            string serverIp = (string)settings.GetValue("ServerIp", typeof(string));
+            string clientIp = (string)settings.GetValue("ClientIp", typeof(string));
+            string serverPort = (string)settings.GetValue("ServerPort", typeof(string));
+            string clientPort = (string)settings.GetValue("ClientPort", typeof(string));
+
+            IPEndPoint myAddress = new IPEndPoint(IPAddress.Parse(clientIp), int.Parse(clientPort));
             toConnect.Bind(myAddress);
-            IPEndPoint serverAddress = new IPEndPoint(IPAddress.Parse("172.29.3.111"), 6666);
+            IPEndPoint serverAddress = new IPEndPoint(IPAddress.Parse(serverIp), int.Parse(serverPort));
             toConnect.Connect(serverAddress);
             connection = new TCPConnection(toConnect);
             functionalities = new ClientServices(connection);
@@ -261,7 +267,7 @@ namespace Client
             }
             else
             {
-                Console.WriteLine(nickResponse);
+                Console.WriteLine(nickResponse.Message());
             }
             
             Console.WriteLine("Presione una tecla para continuar");
