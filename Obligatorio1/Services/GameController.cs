@@ -9,6 +9,7 @@ using DataAccessInterface;
 using GameLogic;
 using GameLogicException;
 using UsersLogic.Exceptions;
+using LogicExceptions;
 
 namespace Services
 {
@@ -169,18 +170,34 @@ namespace Services
         private void AddUser(Package command)
         {
             string nickname = command.Message();
-            User toAdd = new User(nickname,"");
+            TryToCreateAndAdd(nickname);
+        }
+
+        private void TryToCreateAndAdd(string nickname)
+        {
+            try
+            {
+                User toAdd = new User(nickname, "");
+                TryToAdd(toAdd);
+            }
+            catch (InvalidUserDataException e) {
+                Current.SendErrorMessage(e.Message);
+            }
+ 
+        }
+
+        private void TryToAdd(User toAdd)
+        {
             try
             {
                 users.AddUser(toAdd);
                 Current.SendOkMessage("agregado exitosamente");
-                ReceiveImg(nickname);
+                ReceiveImg(toAdd.Nickname);
             }
             catch (UserAlreadyExistsException ex)
             {
                 Current.SendErrorMessage(ex.Message);
             }
-            
         }
 
         private void SendEndMatch()
