@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Logic.Exceptions
+namespace UsersLogic.Exceptions
 {
     public class ConnectionLostException:Exception
     {

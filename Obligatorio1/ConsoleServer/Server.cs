@@ -5,14 +5,13 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using DataAccessInterface;
-using Logic;
-using Logic.Exceptions;
 using System.Threading;
-using Protocol;
-using Services;
-using GameLogic;
 using System.Configuration;
+using GameLogic;
+using UsersLogic;
+using DataAccessInterface;
+using UsersLogic.Exceptions;
+using Services;
 
 namespace Network
 {

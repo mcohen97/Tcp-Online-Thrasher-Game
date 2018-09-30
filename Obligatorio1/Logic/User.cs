@@ -3,7 +3,7 @@ using LogicExceptions;
 using Protocol;
 using System.Drawing;
 
-namespace Logic
+namespace UsersLogic
 {
     public class User
     {

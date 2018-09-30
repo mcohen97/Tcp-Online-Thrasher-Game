@@ -1,4 +1,4 @@
-﻿using Logic;
+﻿using UsersLogic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Protocol;
 
-namespace Logic
+namespace UsersLogic
 {
     public class Session
     {

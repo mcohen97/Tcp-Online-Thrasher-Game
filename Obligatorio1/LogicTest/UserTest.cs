@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Logic;
+using UsersLogic;
 using LogicExceptions;
 namespace LogicTest
 {

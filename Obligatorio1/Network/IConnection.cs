@@ -1,6 +1,6 @@
-﻿using Logic;
+﻿using UsersLogic;
 using Protocol;
-namespace Logic
+namespace UsersLogic
 {
     public interface IConnection
     {

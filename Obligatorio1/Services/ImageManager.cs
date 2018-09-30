@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Logic;
+using UsersLogic;
 using Protocol;
 
 namespace Services

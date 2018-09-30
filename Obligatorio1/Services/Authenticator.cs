@@ -2,7 +2,7 @@
 using System.Net.Sockets;
 using DataAccessInterface;
 using Protocol;
-using Logic;
+using UsersLogic;
 using ServiceExceptions;
 
 namespace Services
@@ -28,7 +28,7 @@ namespace Services
                 fetched = storage.GetUser(authentication.Message());
             }
             else {
-                throw new NotExistingUserException("No se encontro el usuario");
+                throw new UserNotFoundException("No se encontro el usuario");
             }
             return new Session(connection, fetched);
         }
