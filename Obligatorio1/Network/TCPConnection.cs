@@ -24,9 +24,13 @@ namespace Network
             {
                 TryToSend(message);
             }
-            catch (SocketException e) {
+            catch (SocketException)
+            {
                 throw new ConnectionLostException("Se perdio la conexion");
-            }      
+            }
+            catch (ObjectDisposedException) {
+                throw new ConnectionLostException("Se perdio la conexion");
+            }
         }
 
         private void TryToSend(Package message)
@@ -51,7 +55,11 @@ namespace Network
             {
                 received = TryToReceive();
             }
-            catch (SocketException e) {
+            catch (SocketException)
+            {
+                throw new ConnectionLostException("Se perdio la conexion");
+            }
+            catch (ObjectDisposedException) {
                 throw new ConnectionLostException("Se perdio la conexion");
             }
             return received;
