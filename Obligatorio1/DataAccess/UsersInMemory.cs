@@ -22,9 +22,9 @@ namespace DataAccessInterface
         public void AddUser(User newUser)
         {
             
-            bool repeated = instance.Value.Users.Any(u => u.Nickname.Equals(newUser.Nickname));
             lock (synAddLock)
             {
+                bool repeated = instance.Value.Users.Any(u => u.Nickname.Equals(newUser.Nickname));
                 if (repeated)
                 {
                     throw new UserAlreadyExistsException("El nombre de usuario ya fue tomado");
