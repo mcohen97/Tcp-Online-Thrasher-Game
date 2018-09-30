@@ -76,6 +76,7 @@ namespace Client
                 console.Clear();
                 ShowMenu(menu);
                 int opcion = ReadInteger(1, menu.Length);
+                console.Clear();
                 switch (opcion)
                 {
                     case 1:
@@ -150,9 +151,14 @@ namespace Client
             Package ok = connection.WaitForMessage();
             console.WriteLine(ok.Message());
             bool authenticateSuccess = Authenticate();
-            bool roleSelectionSuccess = ChooseRole();
-            if(authenticateSuccess && roleSelectionSuccess)
-                PlayMatch();
+            
+            if (authenticateSuccess) {
+                bool roleSelectionSuccess = ChooseRole();
+                if (roleSelectionSuccess) {
+                    PlayMatch();
+                }
+            }
+                
             console.WriteLine("Press any key to continue");
             console.ReadKey();
         }
@@ -214,6 +220,7 @@ namespace Client
 
         private void PlayMatch()
         {
+            console.Clear();
             playing = true;
             Thread thread = new Thread(new ThreadStart(() => {
                 try
@@ -330,7 +337,6 @@ namespace Client
             {
                 console.WriteLine("Digite el numero de opcion:");
                 string line = console.ReadLine();
-                console.Clear();
                 try
                 {
                     input = int.Parse(line);
