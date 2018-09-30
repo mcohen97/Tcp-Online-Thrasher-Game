@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Network;
-using Logic;
+using UsersLogic;
 using Protocol;
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
-using Logic.Exceptions;
+using UsersLogic.Exceptions;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
@@ -131,13 +131,7 @@ namespace Client
 
         private void Play()
         {
-            /* Header info = new Header();
-             info.Type = HeaderType.REQUEST;
-             info.Command = CommandType.ENTER_OR_CREATE_MATCH;
 
-             Package wantToPlay = new Package(info);
-             connection.SendMessage(wantToPlay);
-             */
             functionalities.Play();
             Package ok = connection.WaitForMessage();
             console.WriteLine(ok.Message());
@@ -193,13 +187,6 @@ namespace Client
         private bool Authenticate()
         {
             string nick =GetInput("Ingrese nickname del jugador");
-            /*Header info = new Header();
-            info.Command = CommandType.AUTHENTICATE;
-            info.Type = HeaderType.REQUEST;
-            Package login = new Package(info);
-            login.Data = Encoding.Default.GetBytes(nick);
-
-            connection.SendMessage(login);*/
             bool success = true;
             functionalities.Authenticate(nick);
             Package response = connection.WaitForMessage();
@@ -262,18 +249,9 @@ namespace Client
 
         private void Register()
         {
-           // console.WriteLine("Ingrese nickname del usuario");
             string nickname = GetInput("Ingrese nickname del jugador");
             functionalities.SendNickname(nickname);
 
-            /*Header info = new Header();
-            info.Type = HeaderType.REQUEST;
-            info.Command = CommandType.ADD_USER;
-            info.DataLength = nickname.Length;
-            Package toSend = new Package(info);
-            toSend.Data = Encoding.Default.GetBytes(nickname);
-
-            connection.SendMessage(toSend);*/
             Package nickResponse = connection.WaitForMessage();
             if (nickResponse.Command().Equals(CommandType.OK))
             {
@@ -293,12 +271,24 @@ namespace Client
         }
 
         private string GetPath() {
+            string path = GetFromFileChooser();
+
+            while (string.IsNullOrEmpty(path))
+            {
+                Console.WriteLine("Debe seleccionar una imagen");
+                Console.ReadKey();
+                path = GetFromFileChooser();
+            }
+            return path;
+        }
+
+        private string GetFromFileChooser()
+        {
             string path;
             using (OpenFileDialog dlg = new OpenFileDialog())
             {
                 dlg.Title = "Open Image";
-                //dlg.Filter = "bmp files (*.bmp)|*.bmp";
-                dlg.Filter = "Image Files(*.BMP; *.JPG; *.GIF)| *.BMP; *.JPG; *.GIF | All files(*.*) | *.*";
+                dlg.Filter = "Image Files(*.BMP; *.JPG; *.JPEG ;*.GIF)| *.BMP; *.JPG; *.JPEG;  *.GIF | All files(*.*) | *.*";
 
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
