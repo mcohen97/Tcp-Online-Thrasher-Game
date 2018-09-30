@@ -103,15 +103,29 @@ namespace Client
 
         private void ShowConnectedPlayers()
         {
+            Console.WriteLine("Jugadores en partida:");
             List<string> playersList = functionalities.ListOfInGamePlayers();
-            ShowList(playersList);
+            if (playersList.Any())
+            {
+                ShowList(playersList);
+            }
+            else {
+                Console.WriteLine("No hay usuarios jugando");
+            }
             console.ReadKey();
         }
 
         private void ShowRegisteredPlayers()
         {
+            Console.WriteLine("Jugadores registrados:");
             List<string> usersList = functionalities.ListOfRegisteredUsers();
-            ShowList(usersList);
+            if (usersList.Any())
+            {
+                ShowList(usersList);
+            }
+            else {
+                Console.WriteLine("No hay jugadores registrados");
+            }
             console.ReadKey();
         }
 
