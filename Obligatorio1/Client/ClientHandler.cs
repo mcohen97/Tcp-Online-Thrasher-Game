@@ -175,7 +175,7 @@ namespace Client
                     }
                     break;
                 case 3:
-                    Disconnect();
+                response = SendRequestPackage(CommandType.RETURN_TO_MENU, "");
                     break;
                 default:
                     break;
