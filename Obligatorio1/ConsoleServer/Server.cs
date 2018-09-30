@@ -78,7 +78,6 @@ namespace Network
 
         private void HandleClient(Socket connection)
         {
-            Console.WriteLine("hay conexion");
             IConnection somebodyUnknown = new TCPConnection(connection);
             IUserRepository users = UsersInMemory.instance.Value;         
             GameController toLunch = new GameController(somebodyUnknown, slasher, users);
