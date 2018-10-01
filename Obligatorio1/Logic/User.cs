@@ -12,7 +12,7 @@ namespace UsersLogic
         public string Nickname { get { return nickname; } set { SetNickname(value); } }
 
         private string path;
-        public string Path { get; private set; }
+        public string Path { get; set; }
 
         public User(string aNickname, string aPath)
         {
