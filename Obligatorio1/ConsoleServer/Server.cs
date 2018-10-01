@@ -20,7 +20,7 @@ namespace Network
         private ICollection<Socket> clientConnections;
         private Socket listener;
         private static readonly int MAX_SIMULTANEOUS_REQUESTS = 5;
-        private bool serverWorking;
+        public bool serverWorking;
         private Game slasher;
         public Server()
         {
@@ -36,6 +36,7 @@ namespace Network
             clientConnections = new List<Socket>();
             GenerateTestUsers();
         }
+
 
         public void ListenToRequests()
         {
@@ -96,12 +97,10 @@ namespace Network
         }
 
         public void ServerManagement() {
-            bool shutDown = false;
-            while (!shutDown) {
+            while (serverWorking) {
                 WaitForX();
                 ShutDownEveryConnection();
                 serverWorking = false;
-                shutDown = true;
             }
 
         }
