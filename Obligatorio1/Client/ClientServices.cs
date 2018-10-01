@@ -67,7 +67,10 @@ namespace Client
 
         private List<string> MakeList(string rawList)
         {
-            return rawList.Split(new[] { Package.LIST_SEPARATOR_SIMBOL }, StringSplitOptions.None).ToList();
+            if (rawList == "")
+                return new List<string>();
+            else
+                return rawList.Split(new[] { Package.LIST_SEPARATOR_SIMBOL }, StringSplitOptions.None).ToList();
         }
 
         public void Disconnect()

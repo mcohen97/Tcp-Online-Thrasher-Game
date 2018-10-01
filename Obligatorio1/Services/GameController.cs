@@ -220,7 +220,14 @@ namespace Services
             info.DataLength = notification.Length;
             Package toSend = new Package(info);
             toSend.Data = Encoding.Default.GetBytes(notification);
-            Current.SendMessage(toSend);
+            try
+            {
+                Current.SendMessage(toSend);
+            }
+            catch (ConnectionLostException e)
+            {
+                //do nothing, no connection
+            }
         }
 
         private void ReceiveImg(string nickname)

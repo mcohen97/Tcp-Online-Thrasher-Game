@@ -117,6 +117,7 @@ namespace GameLogic
             ActualPosition = Map.GetEmptyPosition();
             Map.AddPlayerToPosition(this, ActualPosition);
             Map.MonsterCount++;
+            SpotNearbyPlayers();
         }
     }
 }
