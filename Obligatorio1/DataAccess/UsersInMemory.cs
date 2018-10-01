@@ -12,17 +12,15 @@ namespace DataAccessInterface
         public static readonly Lazy<UsersInMemory> instance = new Lazy<UsersInMemory>(() => new UsersInMemory());
         private ICollection<User> Users;
         
-        public readonly object synAddLock;
 
         private UsersInMemory()
         {
             Users = new List<User>();
-            synAddLock = new object();
         }
         public void AddUser(User newUser)
         {
             
-            lock (synAddLock)
+            lock (Users)
             {
                 bool repeated = instance.Value.Users.Any(u => u.Nickname.Equals(newUser.Nickname));
                 if (repeated)
@@ -35,6 +33,14 @@ namespace DataAccessInterface
 
         public User GetUser(string nickname)
         {
+            User query;
+            lock (Users) {
+                query = TryGet(nickname);
+            }
+            return query;
+        }
+
+        public User TryGet(string nickname) {
             User query;
             try
             {
