@@ -192,7 +192,8 @@ namespace Services
             {
                 users.AddUser(toAdd);
                 Current.SendOkMessage("agregado exitosamente");
-                ReceiveImg(toAdd.Nickname);
+                string img = ReceiveImg(toAdd.Nickname);
+                toAdd.Path = img;
             }
             catch (UserAlreadyExistsException ex)
             {
@@ -223,14 +224,20 @@ namespace Services
             Current.SendMessage(toSend);
         }
 
-        private void ReceiveImg(string nickname)
+        private string ReceiveImg(string nickname)
         {
+            string pathCreated;
             Package firstPart = Current.WaitForMessage();
-            if (firstPart.Command().Equals(CommandType.IMG_JPG)) {
+            if (firstPart.Command().Equals(CommandType.IMG_JPG))
+            {
                 ImageManager manager = new ImageManager();
-                manager.StoreImageStreaming(Current,nickname, firstPart);
+                pathCreated =manager.StoreImageStreaming(Current, nickname, firstPart);
                 Current.SendOkMessage("Imagen enviada correctamente");
             }
+            else {
+                pathCreated = "";
+            }
+            return pathCreated;
         }
 
     }

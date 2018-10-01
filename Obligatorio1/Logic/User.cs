@@ -14,9 +14,12 @@ namespace UsersLogic
         private string path;
         public string Path { get; set; }
 
-        public User(string aNickname, string aPath)
-        {
+        public User(string aNickname) {
             Nickname = aNickname;
+            Path = string.Empty;
+        }
+        public User(string aNickname, string aPath):this(aNickname)
+        {
             path = aPath;
         }
         
