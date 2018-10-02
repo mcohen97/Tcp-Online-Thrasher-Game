@@ -177,7 +177,7 @@ namespace Services
         {
             try
             {
-                User toAdd = new User(nickname, "");
+                User toAdd = new User(nickname);
                 TryToAdd(toAdd);
             }
             catch (InvalidUserDataException e) {
