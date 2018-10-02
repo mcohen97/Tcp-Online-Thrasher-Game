@@ -2,15 +2,16 @@
 using System.IO;
 using UsersLogic;
 using Protocol;
+using System.Configuration;
 
 namespace Services
 {
     internal class ImageManager
     {
-        internal void StoreImageStreaming(IConnection sender,string nickname, Package firstPart)
+        internal string StoreImageStreaming(IConnection sender,string nickname, Package firstPart)
         {
-
-            string directory = "../../Avatars";
+            var settings = new AppSettingsReader();
+            string directory = (string)settings.GetValue("AvatarsFolderPath", typeof(string));
             Directory.CreateDirectory(directory);
             string path = directory + "/" + nickname+ ".jpg";
 
@@ -18,8 +19,6 @@ namespace Services
 
             using (FileStream fs = File.Create(path))
             {
-
-                //byte[] buffer = new byte[Package.DATA_SIZE_MAX];
 
                 while (IsImgPackage(currentFragment) && IsMaxSize(currentFragment))
                 {
@@ -31,6 +30,7 @@ namespace Services
                     fs.Write(currentFragment.Data, 0, currentFragment.DataLength());
                 }
             }
+            return path;
         }
 
         private bool IsImgPackage(Package aPackage) {
