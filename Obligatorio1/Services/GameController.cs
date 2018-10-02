@@ -243,13 +243,8 @@ namespace Services
             if (firstPart.Command().Equals(CommandType.IMG_JPG))
             {
                 ImageManager manager = new ImageManager();
-<<<<<<< HEAD
-                manager.StoreImageStreaming(Current,nickname, firstPart);
-                Current.SendOkMessage("Imagen successfuly sent");
-=======
                 pathCreated =manager.StoreImageStreaming(Current, nickname, firstPart);
-                Current.SendOkMessage("Imagen enviada correctamente");
->>>>>>> 12f7adcd75cca31e56cd734083c64b16ee4b491f
+                Current.SendOkMessage("Imagen successfuly sent");
             }
             else {
                 pathCreated = "";
