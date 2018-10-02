@@ -28,9 +28,11 @@ namespace Network
             var settings = new AppSettingsReader();
             string serverIp = (string)settings.GetValue("ServerIp", typeof(string));
             string serverPort = (string)settings.GetValue("ServerPort", typeof(string));
-            System.Net.IPEndPoint address = new IPEndPoint(IPAddress.Parse(serverIp), int.Parse(serverPort));
+            string matchTime = (string)settings.GetValue("MatchTime", typeof(string));
+            string preMatchTime = (string)settings.GetValue("PreMatchTime", typeof(string));
+            IPEndPoint address = new IPEndPoint(IPAddress.Parse(serverIp), int.Parse(serverPort));
             listener.Bind(address);
-            slasher = new Game();
+            slasher = new Game(int.Parse(preMatchTime), int.Parse(matchTime));
             slasher.StartPreMatchTimer();
             serverWorking = true;
             clientConnections = new List<Socket>();

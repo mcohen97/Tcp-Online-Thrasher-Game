@@ -80,7 +80,7 @@ namespace GameLogicTest
             Position position = new Position(1, 1);
             Monster monster = new Monster(position);
             GameMap map = new GameMap(8, 8);
-            map.AddPlayerToPosition(monster, position);
+            map.AddPlayerToEmptyPosition(monster, position);
             monster.CompassDirection = CardinalPoint.SOUTH;
             monster.Move(Movement.FORWARD);
             Assert.AreEqual(monster.ActualPosition, new Position(2, 1));
@@ -92,7 +92,7 @@ namespace GameLogicTest
             Position position = new Position(1, 1);
             Monster monster = new Monster(position);
             GameMap map = new GameMap(8, 8);
-            map.AddPlayerToPosition(monster, position);
+            map.AddPlayerToEmptyPosition(monster, position);
             monster.CompassDirection = CardinalPoint.NORTH;
             monster.Move(Movement.FORWARD);
             Assert.AreEqual(monster.ActualPosition, new Position(0, 1));
@@ -104,7 +104,7 @@ namespace GameLogicTest
             Position position = new Position(1, 1);
             Monster monster = new Monster(position);
             GameMap map = new GameMap(8, 8);
-            map.AddPlayerToPosition(monster, position);
+            map.AddPlayerToEmptyPosition(monster, position);
             monster.CompassDirection = CardinalPoint.EAST;
             monster.Move(Movement.FORWARD);
             Assert.AreEqual(monster.ActualPosition, new Position(1, 2));
@@ -116,7 +116,7 @@ namespace GameLogicTest
             Position position = new Position(1, 1);
             Monster monster = new Monster(position);
             GameMap map = new GameMap(8, 8);
-            map.AddPlayerToPosition(monster, position);
+            map.AddPlayerToEmptyPosition(monster, position);
             monster.CompassDirection = CardinalPoint.WEST;
             monster.Move(Movement.FORWARD);
             Assert.AreEqual(monster.ActualPosition, new Position(1, 0));
@@ -128,7 +128,7 @@ namespace GameLogicTest
             Position position = new Position(1, 1);
             Monster monster = new Monster(position);
             GameMap map = new GameMap(8, 8);
-            map.AddPlayerToPosition(monster, position);
+            map.AddPlayerToEmptyPosition(monster, position);
             monster.CompassDirection = CardinalPoint.SOUTH;
             monster.Move(Movement.BACKWARD);
             Assert.AreEqual(monster.ActualPosition, new Position(0, 1));
@@ -139,7 +139,7 @@ namespace GameLogicTest
         {
             Monster monster = new Monster();
             GameMap map = new GameMap(8, 8);
-            map.AddPlayerToPosition(monster, new Position(1, 1));
+            map.AddPlayerToEmptyPosition(monster, new Position(1, 1));
             monster.CompassDirection = CardinalPoint.SOUTH;
             monster.Turn(CardinalPoint.EAST);
             monster.Move(Movement.FORWARD);
@@ -151,7 +151,7 @@ namespace GameLogicTest
         {
             Monster monster = new Monster();
             GameMap map = new GameMap(8, 8);
-            map.AddPlayerToPosition(monster, new Position(1, 1));
+            map.AddPlayerToEmptyPosition(monster, new Position(1, 1));
             monster.CompassDirection = CardinalPoint.SOUTH;
             monster.Turn(CardinalPoint.WEST);
             monster.Move(Movement.FORWARD);
@@ -163,7 +163,7 @@ namespace GameLogicTest
         {
             Monster monster = new Monster();
             GameMap map = new GameMap(8, 8);
-            map.AddPlayerToPosition(monster, new Position(1, 1));
+            map.AddPlayerToEmptyPosition(monster, new Position(1, 1));
             monster.CompassDirection = CardinalPoint.SOUTH;
             monster.Turn(CardinalPoint.NORTH);
             monster.Move(Movement.FORWARD);
@@ -176,7 +176,7 @@ namespace GameLogicTest
             Position position = new Position(1, 1);
             Monster monster = new Monster(position);
             GameMap map = new GameMap(8, 8);
-            map.AddPlayerToPosition(monster, position);
+            map.AddPlayerToEmptyPosition(monster, position);
             monster.CompassDirection = CardinalPoint.SOUTH;
             monster.MoveFast(Movement.FORWARD);
             Assert.AreEqual(monster.ActualPosition, new Position(3, 1));
@@ -196,15 +196,15 @@ namespace GameLogicTest
             Player player7 = new Survivor();
             Player player8 = new Survivor();
 
-            gameMap.AddPlayerToPosition(player1, new Position(3, 3));
-            gameMap.AddPlayerToPosition(player2, new Position(3, 4));
-            gameMap.AddPlayerToPosition(player3, new Position(3, 5));
-            gameMap.AddPlayerToPosition(player4, new Position(4, 3));
-            gameMap.AddPlayerToPosition(player5, new Position(4, 5));
-            gameMap.AddPlayerToPosition(player6, new Position(5, 3));
-            gameMap.AddPlayerToPosition(player7, new Position(5, 4));
-            gameMap.AddPlayerToPosition(player8, new Position(5, 5));
-            gameMap.AddPlayerToPosition(monster, new Position(4, 4));
+            gameMap.AddPlayerToEmptyPosition(player1, new Position(3, 3));
+            gameMap.AddPlayerToEmptyPosition(player2, new Position(3, 4));
+            gameMap.AddPlayerToEmptyPosition(player3, new Position(3, 5));
+            gameMap.AddPlayerToEmptyPosition(player4, new Position(4, 3));
+            gameMap.AddPlayerToEmptyPosition(player5, new Position(4, 5));
+            gameMap.AddPlayerToEmptyPosition(player6, new Position(5, 3));
+            gameMap.AddPlayerToEmptyPosition(player7, new Position(5, 4));
+            gameMap.AddPlayerToEmptyPosition(player8, new Position(5, 5));
+            gameMap.AddPlayerToEmptyPosition(monster, new Position(4, 4));
 
             monster.AttackZone();
             monster.AttackZone();
@@ -221,10 +221,10 @@ namespace GameLogicTest
             Player player3 = new Monster(new Position(1, 1));
             Player player4 = new Survivor(new Position(0, 1));
 
-            gameMap.AddPlayerToPosition(player1, player1.ActualPosition);
-            gameMap.AddPlayerToPosition(player2, player2.ActualPosition);
-            gameMap.AddPlayerToPosition(player3, player3.ActualPosition);
-            gameMap.AddPlayerToPosition(player4, player4.ActualPosition);
+            gameMap.AddPlayerToEmptyPosition(player1, player1.ActualPosition);
+            gameMap.AddPlayerToEmptyPosition(player2, player2.ActualPosition);
+            gameMap.AddPlayerToEmptyPosition(player3, player3.ActualPosition);
+            gameMap.AddPlayerToEmptyPosition(player4, player4.ActualPosition);
 
             ICollection<Player> playersNearby = player1.SpotNearbyPlayers();
 
@@ -238,7 +238,7 @@ namespace GameLogicTest
             GameMap map = new GameMap(8, 8);
             Monster player = new Monster();
             player.ActualPosition = new Position(1, 1);
-            map.AddPlayerToPosition(player, player.ActualPosition);
+            map.AddPlayerToEmptyPosition(player, player.ActualPosition);
             player.CompassDirection = CardinalPoint.NORTH;
             player.MoveFast(Movement.FORWARD);
         }
@@ -250,8 +250,8 @@ namespace GameLogicTest
             GameMap map = new GameMap(8, 8);
             Monster player = new Monster(new Position(1,1));
             Monster player2 = new Monster(new Position(1,2));
-            map.AddPlayerToPosition(player, new Position(1, 1));
-            map.AddPlayerToPosition(player2, new Position(1, 2));
+            map.AddPlayerToEmptyPosition(player, new Position(1, 1));
+            map.AddPlayerToEmptyPosition(player2, new Position(1, 2));
             player.CompassDirection = CardinalPoint.EAST;
             player.Move(Movement.FORWARD);
         }

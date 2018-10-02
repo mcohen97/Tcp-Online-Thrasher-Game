@@ -52,7 +52,7 @@ namespace Services
                         endGame = true;
                         break;
                     default:
-                        Current.SendErrorMessage("Invalid command");
+                        Current.SendErrorMessage("Invalid option");
                         break;
                 }
             }
@@ -92,17 +92,22 @@ namespace Services
 
         private void PlayMatch()
         {
-            Current.SendOkMessage("Debe ingresar como usuario primero");
+            Current.SendOkMessage("Log in");
             try
             {
                 Session justLogged = Login(Current, users);
-                Current.SendOkMessage("ingresado correctamente, seleccione rol");
-                Role selectedRole = ChoosePlayer();
-                Player player = PlayerFactory.CreatePlayer(justLogged.Logged.Nickname, SendNotificationToClient, selectedRole);
-                slasher.AddPlayer(player);
-                Current.SendOkMessage("You've been added to the game at position " + player.ActualPosition);
-                PlayerController userPlayer = new PlayerController(justLogged, slasher, player);
-                TryToPlay(userPlayer);
+                if (slasher.GetPlayers().Any(p => p.Name == justLogged.Logged.Nickname))
+                    Current.SendErrorMessage("User already used. Log in with other user");
+                else
+                {
+                    Current.SendOkMessage("Log in successful. Select your player role:");
+                    Role selectedRole = ChoosePlayer();
+                    Player player = PlayerFactory.CreatePlayer(justLogged.Logged.Nickname, SendNotificationToClient, selectedRole);
+                    slasher.AddPlayer(player);
+                    Current.SendOkMessage("You've been added to the game at position " + player.ActualPosition);
+                    PlayerController userPlayer = new PlayerController(justLogged, slasher, player);
+                    TryToPlay(userPlayer);
+                }       
             }
             catch (UserNotFoundException e1)
             {
@@ -159,7 +164,7 @@ namespace Services
                         optionEntered = true;
                         break;
                     default:
-                        Current.SendErrorMessage("opcion incorrecta");
+                        Current.SendErrorMessage("Invalid option");
                         break;
                 }
             }
@@ -236,7 +241,7 @@ namespace Services
             if (firstPart.Command().Equals(CommandType.IMG_JPG)) {
                 ImageManager manager = new ImageManager();
                 manager.StoreImageStreaming(Current,nickname, firstPart);
-                Current.SendOkMessage("Imagen enviada correctamente");
+                Current.SendOkMessage("Imagen successfuly sent");
             }
         }
 

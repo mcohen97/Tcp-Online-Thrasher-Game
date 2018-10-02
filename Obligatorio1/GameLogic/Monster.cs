@@ -114,9 +114,9 @@ namespace GameLogic
                 throw new MapIsFullException("There are too many monsters, join as survivor or wait");
 
             Map = game.Map;
-            ActualPosition = Map.GetEmptyPosition();
-            Map.AddPlayerToPosition(this, ActualPosition);
+            Map.AddPlayerToEmptyPosition(this);
             Map.MonsterCount++;
+            Notify("Your attack action is disable until match starts. A 'Match Started' message will be shown. You can explore the map.");
             SpotNearbyPlayers();
         }
     }

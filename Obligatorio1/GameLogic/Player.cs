@@ -50,23 +50,30 @@ namespace GameLogic
 
         public virtual void Attack(Player target)
         {
-            if (!EnabledAttackAction)
-                Notify("Your attack is deactivated");
-            else if (Technique.CanAttack(target.Role))
+            if (Technique.CanAttack(target.Role))
             {
                 target.Damage(Technique.HitPoints);
-                target.Notify("You are being ATTACKED by this MOTHERFUCKER " + this.ToString() + "!!! Your HP: " + target.Health + " / Enemy HP: " + this.Health);
-                this.Notify("Enemy " + target.ToString() + " has been hit. Enemy HP: " + target.Health);
+                target.Notify("You are being ATTACKED by " + this.ToString() + "!!! Your HP: " + target.Health + " / Enemy HP: " + this.Health);
+                this.Notify("Attack hit on enemy " + target.ToString() + ". Enemy HP: " + target.Health);
             }
         }
 
         public void AttackZone()
         {
-            ICollection<Player> targets = Map.GetPlayersNearPosition(ActualPosition);
-            foreach (Player target in targets)
+            if (EnabledAttackAction)
             {
-                Attack(target);
+                ICollection<Player> targets = Map.GetPlayersNearPosition(ActualPosition);
+                foreach (Player target in targets)
+                {
+                    Attack(target);
+                }
             }
+            else
+            {
+                Notify("Your attack action is disable");
+            }
+            
+
         }
 
         public CardinalPoint CompassDirection {
@@ -108,8 +115,8 @@ namespace GameLogic
             ICollection<Player> playersSpotted = Map.GetPlayersNearPosition(ActualPosition);
             foreach (Player player in playersSpotted)
             {
-                player.Notify("You've been SPOTTED by "+this.ToString());
-                this.Notify(player+ " is close to you");
+                player.Notify("You've been SPOTTED by "+this.ToString()+" at "+ActualPosition);
+                this.Notify(player+ " is close to you at "+ player.ActualPosition);
             }
 
             return playersSpotted;
