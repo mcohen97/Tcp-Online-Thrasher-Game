@@ -116,7 +116,6 @@ namespace Client
             else {
                 Console.WriteLine("There are no players in match");
             }
-            console.ReadKey();
         }
 
         private void ShowRegisteredPlayers()
@@ -130,7 +129,6 @@ namespace Client
             else {
                 Console.WriteLine("There are no registered players");
             }
-            console.ReadKey();
         }
 
         private void ShowList(List<string> usersList)
@@ -290,8 +288,6 @@ namespace Client
                 console.WriteLine(nickResponse.Message());
             }
             
-            console.WriteLine("Press any key to continue");
-            console.ReadKey();
         }
 
         private string GetPath() {
