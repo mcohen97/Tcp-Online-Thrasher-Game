@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameLogic
 {
-    public interface IPlayerController
+    public interface IMovementController
     {
         Position Move(Position position, Movement movement, int steps);
         void Turn(CardinalPoint direction);
