@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameLogic
 {
-    public class TankMovementController : IPlayerController
+    public class TankMovementController : IMovementController
     {
         private CardinalPoint compass;
 

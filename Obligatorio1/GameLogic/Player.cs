@@ -31,7 +31,7 @@ namespace GameLogic
             }
         }
         public abstract Position ActualPosition { get; set; }
-        protected IPlayerController playerController;
+        protected IMovementController movementController;
         protected abstract AttackTechnique Technique { get; set; }
         public abstract GameMap Map { get; set; }
         public Action<string> Notify { get; set; }
@@ -40,7 +40,7 @@ namespace GameLogic
 
         public Player()
         {
-            playerController = new TankMovementController(CardinalPoint.NORTH);
+            movementController = new TankMovementController(CardinalPoint.NORTH);
             Map = new GameMap(1, 1);
             name = "Unidentified Player";
             EnabledAttackAction = true;
@@ -92,17 +92,17 @@ namespace GameLogic
 
         public CardinalPoint CompassDirection {
             get {
-                return playerController.ActualCompassDirection();
+                return movementController.ActualCompassDirection();
             }
 
             set {
-                playerController.Turn(value);
+                movementController.Turn(value);
             }
         }
 
         public void Move(Movement movement)
         {
-            Position newPosition = playerController.Move(this.ActualPosition, movement, 1);
+            Position newPosition = movementController.Move(this.ActualPosition, movement, 1);
             Map.MovePlayer(this.ActualPosition, newPosition);
             Notify("You moved to " + this.ActualPosition);
             NotifyServer(this.ToString() + " moved to " + this.ActualPosition);
@@ -111,13 +111,13 @@ namespace GameLogic
 
         public void Turn(CardinalPoint direction)
         {
-            playerController.Turn(direction);
+            movementController.Turn(direction);
             Notify("You are looking at " + Enum.GetName(typeof(CardinalPoint), direction));
         }
 
         public void MoveFast(Movement movement)
         {
-            Position newPosition = playerController.Move(this.ActualPosition, movement, 2);
+            Position newPosition = movementController.Move(this.ActualPosition, movement, 2);
             Map.MovePlayer(this.ActualPosition, newPosition);
             Notify("You moved to " + this.ActualPosition);
             NotifyServer(this.ToString() + " moved to " + this.ActualPosition);
