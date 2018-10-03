@@ -26,10 +26,10 @@ namespace UsersLogic
         private void SetNickname(string aNickname)
         {
             if (String.IsNullOrWhiteSpace(aNickname)) {
-                throw new InvalidUserDataException("Nickname invalido");
+                throw new InvalidUserDataException("Invalid nickname");
             }
             if (aNickname.Contains(Package.LIST_SEPARATOR_SIMBOL)) {
-                throw new InvalidUserDataException("El nickname no puede contener el caracter ';'");
+                throw new InvalidUserDataException("The nickname can't contain the character ';'");
             }
             nickname = aNickname;   
         }
