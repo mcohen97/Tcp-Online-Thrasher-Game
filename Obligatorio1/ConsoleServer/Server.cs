@@ -24,6 +24,18 @@ namespace Network
         private Game slasher;
         public Server()
         {
+            try
+            {
+                TryRunServer();
+            }
+            catch (SocketException) {
+                Console.WriteLine("Can not run the server, press any key to exit...");
+                Console.ReadKey();
+            }
+        }
+
+        private void TryRunServer()
+        {
             listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             var settings = new AppSettingsReader();
             string serverIp = (string)settings.GetValue("ServerIp", typeof(string));
@@ -39,19 +51,26 @@ namespace Network
             GenerateTestUsers();
         }
 
-
         public void ListenToRequests()
         {
             listener.Listen(MAX_SIMULTANEOUS_REQUESTS);
 
             while (serverWorking) {
+                //we are using this flag so that we don't create the thread (done inside CreateThread), inside catch.
+                Socket connection=null;
+                bool connectionSuccessful = false;
+
                 try
                 {
-                    Socket connection = listener.Accept();
-                    CreateThread(connection);                
+                    connection = listener.Accept();
+                    connectionSuccessful = true;
                 }
                 catch (SocketException) {
                     //couldn't open one connection
+                }
+
+                if (connectionSuccessful) {
+                    CreateThread(connection);
                 }
             }
         }
@@ -60,6 +79,7 @@ namespace Network
         {
             Thread thread = new Thread(new ThreadStart(() =>
             {
+
                 AddConnection(connection);
                 HandleClient(connection);
                 RemoveConnection(connection);
@@ -199,11 +219,11 @@ namespace Network
             User testUser;
             for (int i = 0; i < 20; i++)
             {
-                testUser = new User("p" + i, "photo");
+                testUser = new User("p" + i);
                 repo.AddUser(testUser);
             }
-            repo.AddUser(new User("cantu", "photo"));
-            repo.AddUser(new User("marcel", "photo"));
+            repo.AddUser(new User("cantu"));
+            repo.AddUser(new User("marcel"));
         }
 
         private void ShowMenu(string[] menu)
