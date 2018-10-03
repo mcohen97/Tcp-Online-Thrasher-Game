@@ -53,10 +53,10 @@
     <Compile Include="Exceptions\UnfinishedMatchException.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameMap.cs" />
+    <Compile Include="IMovementController.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="Movement.cs" />
     <Compile Include="Player.cs" />
-    <Compile Include="IPlayerController.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="MonsterAttackTechnique.cs" />
