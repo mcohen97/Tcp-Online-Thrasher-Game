@@ -102,26 +102,13 @@ namespace Services
                 {
                     Current.SendOkMessage("Log in successful. Select your player role:");
                     Role selectedRole = ChoosePlayer();
-                    Player player = PlayerFactory.CreatePlayer(justLogged.Logged.Nickname, SendNotificationToClient, selectedRole);
-                    Current.SendOkMessage("Successfuly created");
-                    SendNotificationToClient("You are in the map. Your attack action is disable until match starts.");
-                    SendNotificationToClient("A 'Match Started' message will be shown, so stay alert.");
-                    SendNotificationToClient("You can execute actions at any time. Actions:");
-                    SendNotificationToClient("Move forward - "+PlayerCommand.MOVE_FORWARD);
-                    SendNotificationToClient("Move forward fast - "+PlayerCommand.MOVE_FAST_FORWARD);
-                    SendNotificationToClient("Move backward - "+PlayerCommand.MOVE_BACKWARD);
-                    SendNotificationToClient("Move backward fast - "+PlayerCommand.MOVE_FAST_BACKWARD);
-                    SendNotificationToClient("Attack - "+PlayerCommand.ATTACK);
-                    SendNotificationToClient("Turn North - "+PlayerCommand.TURN_NORTH);
-                    SendNotificationToClient("Turn East - "+PlayerCommand.TURN_EAST);
-                    SendNotificationToClient("Turn South - "+ PlayerCommand.TURN_SOUTH);
-                    SendNotificationToClient("Turn West - "+ PlayerCommand.TURN_WEST);
-                    slasher.AddPlayer(player);
-                    SendNotificationToClient("You are at position " + player.ActualPosition + ". You can explore the map.");
-
-
-                    PlayerController userPlayer = new PlayerController(justLogged, slasher, player);
-                    TryToPlay(userPlayer);
+                    if (!selectedRole.Equals(Role.NEUTRAL))
+                    {
+                        EnterMatch(justLogged, selectedRole);
+                    }
+                    else {
+                        Current.SendOkMessage("OK");
+                    }
                 }       
             }
             catch (UserNotFoundException e1)
@@ -136,6 +123,30 @@ namespace Services
             {
                 Current.SendErrorMessage(gameException.Message);
             }
+        }
+
+        private void EnterMatch(Session justLogged, Role selectedRole)
+        {
+            Player player = PlayerFactory.CreatePlayer(justLogged.Logged.Nickname, SendNotificationToClient, selectedRole);
+            Current.SendOkMessage("Successfuly created");
+            SendNotificationToClient("You are in the map. Your attack action is disable until match starts.");
+            SendNotificationToClient("A 'Match Started' message will be shown, so stay alert.");
+            SendNotificationToClient("You can execute actions at any time. Actions:");
+            SendNotificationToClient("Move forward - " + PlayerCommand.MOVE_FORWARD);
+            SendNotificationToClient("Move forward fast - " + PlayerCommand.MOVE_FAST_FORWARD);
+            SendNotificationToClient("Move backward - " + PlayerCommand.MOVE_BACKWARD);
+            SendNotificationToClient("Move backward fast - " + PlayerCommand.MOVE_FAST_BACKWARD);
+            SendNotificationToClient("Attack - " + PlayerCommand.ATTACK);
+            SendNotificationToClient("Turn North - " + PlayerCommand.TURN_NORTH);
+            SendNotificationToClient("Turn East - " + PlayerCommand.TURN_EAST);
+            SendNotificationToClient("Turn South - " + PlayerCommand.TURN_SOUTH);
+            SendNotificationToClient("Turn West - " + PlayerCommand.TURN_WEST);
+            slasher.AddPlayer(player);
+            SendNotificationToClient("You are at position " + player.ActualPosition + ". You can explore the map.");
+
+
+            PlayerController userPlayer = new PlayerController(justLogged, slasher, player);
+            TryToPlay(userPlayer);
         }
 
         private Session Login(IConnection current, IUserRepository users)
