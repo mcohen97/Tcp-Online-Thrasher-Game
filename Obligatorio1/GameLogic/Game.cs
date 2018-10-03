@@ -11,15 +11,12 @@ namespace GameLogic
 {
     public class Game
     {
-        public static readonly int PREMATCH_MILLISECONDS = 5000;
-        public static readonly int MATCH_MILLISECONDS = 180000;
-
         private Timer matchTimer;
         private Timer preMatchTimer;
         private bool activeMatch;
         private bool activeGame;
         private GameMap map;
-        private Role lastWinner;
+        private string lastWinner;
 
         public GameMap Map {
             get {
@@ -47,7 +44,7 @@ namespace GameLogic
                 activeGame = value;
             }
         }   //ActiveGame means players are in the Map
-        public Role LastWinner {
+        public string LastWinner {
             get {
                 return lastWinner;
             }
@@ -57,20 +54,22 @@ namespace GameLogic
             }
         }
         public Action EndMatchEvent { get; set; }
+        public Action<string> Notify { get; set; }
         public readonly object gameAccess;
 
-        public Game()
+        public Game(int preMatchMiliseconds, int matchMiliseconds)
         {
             map = new GameMap(8, 8);
-            matchTimer = new Timer(MATCH_MILLISECONDS);
+            matchTimer = new Timer(matchMiliseconds);
             matchTimer.Elapsed += TimeOut;
-            preMatchTimer = new Timer(PREMATCH_MILLISECONDS);
+            preMatchTimer = new Timer(preMatchMiliseconds);
             preMatchTimer.Elapsed += PreMatchTimeOut;
             activeMatch = false;
             activeGame = true;
-            lastWinner = Role.NEUTRAL;
+            lastWinner = "None";
             map.PlayerRemovedEvent += CheckEndMatch;
             EndMatchEvent += () => { }; //Do nothing
+            Notify += (s) => { }; //Do nothing
             gameAccess = new object();
         }
 
@@ -84,10 +83,12 @@ namespace GameLogic
         {
             activeGame = true;
             preMatchTimer.Start();
+            Notify("Prematch timer started");
         }
 
         private void TimeOut(object sender, ElapsedEventArgs e)
         {
+            Notify("Match time out");
             EndMatch();
         }
         private void EndMatch()
@@ -98,11 +99,12 @@ namespace GameLogic
                 LastWinner = GetWinner();
                 foreach (Player player in Map.GetPlayers())
                 {
-                    player.Notify("END MATCH - Winner is " + RoleMethods.RoleToString(LastWinner));
+                    player.Notify("MATCH ENDED --> " + LastWinner);
                 }
                 activeMatch = false;
                 activeGame = false;
                 EndMatchEvent();
+                Notify("MATCH ENDED --> " + LastWinner);
                 RestartMap();
                 StartPreMatchTimer();
             }          
@@ -126,9 +128,13 @@ namespace GameLogic
                         player.EnabledAttackAction = true;
                     }
                     matchTimer.Start();
+                    Notify("Match started");
                 }
                 else
+                {
+                    Notify("Can't start match with actual players in map. Prematch timer restarted");
                     preMatchTimer.Start();
+                }
             }          
         }
 
@@ -145,18 +151,22 @@ namespace GameLogic
             return Map.SurvivorCount == Map.PlayerCapacity - 1;
         }
 
-        public Role GetWinner()
+        public string GetWinner()
         {
             if (matchTimer.Enabled && ActiveGameConditions(Map.MonsterCount, Map.SurvivorCount))
                 throw new UnfinishedMatchException();
 
-            Role winner = Role.SURVIVOR;
+            string winner = "";
             if (Map.SurvivorCount == 0)
             {
                 if (Map.MonsterCount == 1)
-                    winner = Role.MONSTER;
+                    winner = Map.GetPlayers().First().Name + " won the match. Congrats!";
                 else if (Map.MonsterCount > 1)
-                    winner = Role.NEUTRAL;
+                    winner = "Its a tie between monsters";
+            }
+            else
+            {
+                winner = "The survivors won the match. Congrats!";
             }
 
             return winner;
@@ -188,7 +198,6 @@ namespace GameLogic
 
                 player.EnabledAttackAction = false;
                 player.Join(this);
-                player.Notify("You are in the map. Your attack action will be unlocked when match starts. Stay alert!");
 
             }
         }

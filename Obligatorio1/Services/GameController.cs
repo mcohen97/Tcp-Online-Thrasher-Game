@@ -52,7 +52,7 @@ namespace Services
                         endGame = true;
                         break;
                     default:
-                        Current.SendErrorMessage("Invalid command");
+                        Current.SendErrorMessage("Invalid option");
                         break;
                 }
             }
@@ -92,17 +92,37 @@ namespace Services
 
         private void PlayMatch()
         {
-            Current.SendOkMessage("Debe ingresar como usuario primero");
+            Current.SendOkMessage("Log in");
             try
             {
                 Session justLogged = Login(Current, users);
-                Current.SendOkMessage("ingresado correctamente, seleccione rol");
-                Role selectedRole = ChoosePlayer();
-                Player player = PlayerFactory.CreatePlayer(justLogged.Logged.Nickname, SendNotificationToClient, selectedRole);
-                slasher.AddPlayer(player);
-                Current.SendOkMessage("You've been added to the game at position " + player.ActualPosition);
-                PlayerController userPlayer = new PlayerController(justLogged, slasher, player);
-                TryToPlay(userPlayer);
+                if (slasher.GetPlayers().Any(p => p.Name == justLogged.Logged.Nickname))
+                    Current.SendErrorMessage("User already used. Log in with other user");
+                else
+                {
+                    Current.SendOkMessage("Log in successful. Select your player role:");
+                    Role selectedRole = ChoosePlayer();
+                    Player player = PlayerFactory.CreatePlayer(justLogged.Logged.Nickname, SendNotificationToClient, selectedRole);
+                    Current.SendOkMessage("Successfuly created");
+                    SendNotificationToClient("You are in the map. Your attack action is disable until match starts.");
+                    SendNotificationToClient("A 'Match Started' message will be shown, so stay alert.");
+                    SendNotificationToClient("You can execute actions at any time. Actions:");
+                    SendNotificationToClient("Move forward - "+PlayerCommand.MOVE_FORWARD);
+                    SendNotificationToClient("Move forward fast - "+PlayerCommand.MOVE_FAST_FORWARD);
+                    SendNotificationToClient("Move backward - "+PlayerCommand.MOVE_BACKWARD);
+                    SendNotificationToClient("Move backward fast - "+PlayerCommand.MOVE_FAST_BACKWARD);
+                    SendNotificationToClient("Attack - "+PlayerCommand.ATTACK);
+                    SendNotificationToClient("Turn North - "+PlayerCommand.TURN_NORTH);
+                    SendNotificationToClient("Turn East - "+PlayerCommand.TURN_EAST);
+                    SendNotificationToClient("Turn South - "+ PlayerCommand.TURN_SOUTH);
+                    SendNotificationToClient("Turn West - "+ PlayerCommand.TURN_WEST);
+                    slasher.AddPlayer(player);
+                    SendNotificationToClient("You are at position " + player.ActualPosition + ". You can explore the map.");
+
+
+                    PlayerController userPlayer = new PlayerController(justLogged, slasher, player);
+                    TryToPlay(userPlayer);
+                }       
             }
             catch (UserNotFoundException e1)
             {
@@ -159,7 +179,7 @@ namespace Services
                         optionEntered = true;
                         break;
                     default:
-                        Current.SendErrorMessage("opcion incorrecta");
+                        Current.SendErrorMessage("Invalid option");
                         break;
                 }
             }
@@ -221,7 +241,14 @@ namespace Services
             info.DataLength = notification.Length;
             Package toSend = new Package(info);
             toSend.Data = Encoding.Default.GetBytes(notification);
-            Current.SendMessage(toSend);
+            try
+            {
+                Current.SendMessage(toSend);
+            }
+            catch (ConnectionLostException e)
+            {
+                //do nothing, no connection
+            }
         }
 
         private string ReceiveImg(string nickname)
@@ -232,7 +259,7 @@ namespace Services
             {
                 ImageManager manager = new ImageManager();
                 pathCreated =manager.StoreImageStreaming(Current, nickname, firstPart);
-                Current.SendOkMessage("Imagen enviada correctamente");
+                Current.SendOkMessage("Imagen successfuly sent");
             }
             else {
                 pathCreated = "";

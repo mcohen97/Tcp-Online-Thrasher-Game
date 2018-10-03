@@ -76,16 +76,31 @@ namespace GameLogic
             this.mapEditionLock = new object();
         }
 
-        public void AddPlayerToPosition(Player player, Position initialPosition)
+        public void AddPlayerToEmptyPosition(Player player)
         {
             lock (mapEditionLock)
             {
+                if (IsFull())
+                    throw new MapIsFullException();
+
+                Position initialPosition = GetEmptyPosition();
+                map[initialPosition.Row, initialPosition.Column] = player;
+                player.Map = this;
+                player.ActualPosition = initialPosition;
+            }
+        }
+
+        public void AddPlayerToEmptyPosition(Player player, Position initialPosition)
+        {
+            lock (mapEditionLock)
+            {
+                if (IsFull())
+                    throw new MapIsFullException();
                 if (!IsValidPosition(initialPosition))
                     throw new InvalidPositionException();
-
                 if (!IsEmptyPosition(initialPosition))
                     throw new OccupiedPositionException();
-
+                
                 map[initialPosition.Row, initialPosition.Column] = player;
                 player.Map = this;
                 player.ActualPosition = initialPosition;
@@ -185,19 +200,20 @@ namespace GameLogic
             if (IsFull())
                 throw new MapIsFullException();
 
-            Position emptyPosition = new Position(-1,-1);
+            List<Position> positions = new List<Position>();
             for (int i = 0; i < length; i++)
             {
                 for (int j = 0; j < height; j++)
                 {
                     if(IsEmptyPosition(i,j))
                     {
-                        emptyPosition = new Position(i, j);
-                        return emptyPosition;
+                        positions.Add(new Position(i, j));
                     }
                 }
             }
-            return emptyPosition;
+            Random random = new Random();
+            int randomPosition = random.Next(0, positions.Count - 1);
+            return positions[randomPosition];
         }
 
         public ICollection<Player> GetPlayers()
