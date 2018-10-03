@@ -47,10 +47,6 @@
     <Compile Include="TCPConnection.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GameLogic\GameLogic.csproj">
-      <Project>{cd382591-ec53-46e1-bd7c-c1330b456505}</Project>
-      <Name>GameLogic</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Logic\UsersLogic.csproj">
       <Project>{1d6032d2-c6da-435c-9c5d-17edf7a8d102}</Project>
       <Name>UsersLogic</Name>

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UsersLogic;
-using UsersLogic.Exceptions;
 using Protocol;
 using System.Net.Sockets;
 using System.IO;

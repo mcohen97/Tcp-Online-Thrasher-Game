@@ -2,6 +2,7 @@
 using System.IO;
 using UsersLogic;
 using Protocol;
+using Network;
 using System.Configuration;
 
 namespace Services

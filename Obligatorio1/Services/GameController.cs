@@ -8,7 +8,7 @@ using UsersLogic;
 using DataAccessInterface;
 using GameLogic;
 using GameLogicException;
-using UsersLogic.Exceptions;
+using Network;
 using LogicExceptions;
 
 namespace Services

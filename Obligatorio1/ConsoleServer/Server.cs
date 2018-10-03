@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Configuration;
 using GameLogic;
-using UsersLogic;
 using DataAccessInterface;
-using UsersLogic.Exceptions;
 using Services;
 
 namespace Network
@@ -48,7 +46,6 @@ namespace Network
             slasher.StartPreMatchTimer();
             serverWorking = true;
             clientConnections = new List<Socket>();
-            GenerateTestUsers();
         }
 
         public void ListenToRequests()
@@ -213,18 +210,7 @@ namespace Network
             }
         }
 
-        private void GenerateTestUsers()
-        {
-            IUserRepository repo = UsersInMemory.instance.Value;
-            User testUser;
-            for (int i = 0; i < 20; i++)
-            {
-                testUser = new User("p" + i);
-                repo.AddUser(testUser);
-            }
-            repo.AddUser(new User("cantu"));
-            repo.AddUser(new User("marcel"));
-        }
+        
 
         private void ShowMenu(string[] menu)
         {
