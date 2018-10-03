@@ -103,8 +103,7 @@ namespace Services
                     Current.SendOkMessage("Log in successful. Select your player role:");
                     Role selectedRole = ChoosePlayer();
                     Player player = PlayerFactory.CreatePlayer(justLogged.Logged.Nickname, SendNotificationToClient, selectedRole);
-                    slasher.AddPlayer(player);
-                    Current.SendOkMessage("Successfuly added");
+                    Current.SendOkMessage("Successfuly created");
                     SendNotificationToClient("You are in the map. Your attack action is disable until match starts.");
                     SendNotificationToClient("A 'Match Started' message will be shown, so stay alert.");
                     SendNotificationToClient("You can execute actions at any time. Actions:");
@@ -117,7 +116,9 @@ namespace Services
                     SendNotificationToClient("Turn East - "+PlayerCommand.TURN_EAST);
                     SendNotificationToClient("Turn South - "+ PlayerCommand.TURN_SOUTH);
                     SendNotificationToClient("Turn West - "+ PlayerCommand.TURN_WEST);
+                    slasher.AddPlayer(player);
                     SendNotificationToClient("You are at position " + player.ActualPosition + ". You can explore the map.");
+
 
                     PlayerController userPlayer = new PlayerController(justLogged, slasher, player);
                     TryToPlay(userPlayer);
