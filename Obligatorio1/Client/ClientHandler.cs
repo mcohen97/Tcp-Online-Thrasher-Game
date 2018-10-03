@@ -70,7 +70,7 @@ namespace Client
 
         private void ExecuteClient()
         {
-            string[] menu = { "REGIST", "PLAY", "REGISTERED PLAYERS", "IN MATCH PLAYERS", "EXIT" };
+            string[] menu = { "REGISTER", "PLAY", "REGISTERED PLAYERS", "IN MATCH PLAYERS", "EXIT" };
             console.WriteLine("Welcome to Monsters & Survivors");
             bool EndGame = false;
             while (!EndGame)
