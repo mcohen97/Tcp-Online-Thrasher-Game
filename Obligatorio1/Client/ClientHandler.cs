@@ -99,7 +99,8 @@ namespace Client
                         break;
 
                 }
-
+                console.WriteLine("Press any key to continue");
+                console.ReadKey();
             }
             console.Write("Connection ended");
         }
@@ -161,8 +162,7 @@ namespace Client
                 }
             }
                 
-            console.WriteLine("Press any key to continue");
-            console.ReadKey();
+ 
         }
 
         private bool ChooseRole()
@@ -198,6 +198,7 @@ namespace Client
                     break;
                 case 3:
                 response = SendRequestPackage(CommandType.RETURN_TO_MENU, "");
+                    okResponse = false;
                     break;
                 default:
                     break;
@@ -299,7 +300,6 @@ namespace Client
             while (string.IsNullOrEmpty(path))
             {
                 Console.WriteLine("Select an image");
-                Console.ReadKey();
                 path = GetFromFileChooser();
             }
             return path;
