@@ -98,7 +98,8 @@ namespace GameLogic
                 Map.RemovePlayer(ActualPosition);
                 Map.SurvivorCount--;
                 Map.PlayerRemovedEvent();
-                this.Notify("RIP - you are dead");
+                Notify("RIP - you are dead");
+                NotifyServer(this.ToString() + "is dead");
             }
         }
 
@@ -112,6 +113,8 @@ namespace GameLogic
             Map = game.Map;
             Map.AddPlayerToEmptyPosition(this);
             Map.SurvivorCount++;
+            NotifyServer += game.Notify;
+            NotifyServer(this.ToString() + " joined the game");
             SpotNearbyPlayers();
         }
     }

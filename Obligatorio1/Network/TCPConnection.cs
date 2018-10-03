@@ -26,10 +26,10 @@ namespace Network
             }
             catch (SocketException)
             {
-                throw new ConnectionLostException("Se perdio la conexion");
+                throw new ConnectionLostException("Connection lost");
             }
             catch (ObjectDisposedException) {
-                throw new ConnectionLostException("Se perdio la conexion");
+                throw new ConnectionLostException("Connection lost");
             }
         }
 
@@ -57,10 +57,10 @@ namespace Network
             }
             catch (SocketException)
             {
-                throw new ConnectionLostException("Se perdio la conexion");
+                throw new ConnectionLostException("Connection lost");
             }
             catch (ObjectDisposedException) {
-                throw new ConnectionLostException("Se perdio la conexion");
+                throw new ConnectionLostException("Connection lost");
             }
             return received;
           
@@ -76,7 +76,7 @@ namespace Network
                 int current = connection.Receive(fixedPart, pos, Header.HEADER_LENGTH - pos, SocketFlags.None);
                 if (current == 0)
                 {
-                    throw new ConnectionLostException("Se perdio la conexion");
+                    throw new ConnectionLostException("Connection lost");
                 }
                 pos += current;
             }

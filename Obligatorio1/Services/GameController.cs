@@ -105,6 +105,7 @@ namespace Services
                     Player player = PlayerFactory.CreatePlayer(justLogged.Logged.Nickname, SendNotificationToClient, selectedRole);
                     slasher.AddPlayer(player);
                     Current.SendOkMessage("You've been added to the game at position " + player.ActualPosition);
+                    SendNotificationToClient("Your attack action is disable until match starts. A 'Match Started' message will be shown. You can explore the map.");
                     PlayerController userPlayer = new PlayerController(justLogged, slasher, player);
                     TryToPlay(userPlayer);
                 }       

@@ -54,6 +54,7 @@ namespace GameLogic
             }
         }
         public Action EndMatchEvent { get; set; }
+        public Action<string> Notify { get; set; }
         public readonly object gameAccess;
 
         public Game(int preMatchMiliseconds, int matchMiliseconds)
@@ -68,6 +69,7 @@ namespace GameLogic
             lastWinner = "None";
             map.PlayerRemovedEvent += CheckEndMatch;
             EndMatchEvent += () => { }; //Do nothing
+            Notify += (s) => { }; //Do nothing
             gameAccess = new object();
         }
 
@@ -81,10 +83,12 @@ namespace GameLogic
         {
             activeGame = true;
             preMatchTimer.Start();
+            Notify("Prematch timer started");
         }
 
         private void TimeOut(object sender, ElapsedEventArgs e)
         {
+            Notify("Match time out");
             EndMatch();
         }
         private void EndMatch()
@@ -100,6 +104,7 @@ namespace GameLogic
                 activeMatch = false;
                 activeGame = false;
                 EndMatchEvent();
+                Notify("MATCH ENDED --> " + LastWinner);
                 RestartMap();
                 StartPreMatchTimer();
             }          
@@ -123,9 +128,13 @@ namespace GameLogic
                         player.EnabledAttackAction = true;
                     }
                     matchTimer.Start();
+                    Notify("Match started");
                 }
                 else
+                {
+                    Notify("Can't start match with actual players in map. Prematch timer restarted");
                     preMatchTimer.Start();
+                }
             }          
         }
 
@@ -189,7 +198,6 @@ namespace GameLogic
 
                 player.EnabledAttackAction = false;
                 player.Join(this);
-                player.Notify("You are in the map. Your attack action will be unlocked when match starts. Stay alert!");
 
             }
         }

@@ -63,6 +63,8 @@ namespace Client
             }
             catch (ConnectionLostException e) {
                 console.WriteLine(e.Message);
+                console.WriteLine("Press any key to end client");
+                console.ReadKey();
             }
         }
 

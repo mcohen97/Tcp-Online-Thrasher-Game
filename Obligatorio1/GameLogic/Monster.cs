@@ -103,6 +103,8 @@ namespace GameLogic
                 Map.MonsterCount--;
                 Map.PlayerRemovedEvent();
                 this.Notify("RIP - you are dead");
+                NotifyServer(this.ToString() + "is dead");
+
             }
         }
 
@@ -116,7 +118,8 @@ namespace GameLogic
             Map = game.Map;
             Map.AddPlayerToEmptyPosition(this);
             Map.MonsterCount++;
-            Notify("Your attack action is disable until match starts. A 'Match Started' message will be shown. You can explore the map.");
+            NotifyServer += game.Notify;
+            NotifyServer(this.ToString() + " joined the game");
             SpotNearbyPlayers();
         }
     }

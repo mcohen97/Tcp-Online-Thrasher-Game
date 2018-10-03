@@ -35,6 +35,7 @@ namespace GameLogic
         protected abstract AttackTechnique Technique { get; set; }
         public abstract GameMap Map { get; set; }
         public Action<string> Notify { get; set; }
+        public Action<string> NotifyServer { get; set; }
         public abstract bool EnabledAttackAction { get; set; }
 
         public Player()
@@ -44,6 +45,7 @@ namespace GameLogic
             name = "Unidentified Player";
             EnabledAttackAction = true;
             Notify += (s) => { }; //Do nothing
+            NotifyServer += (s) => { }; //Do nothing
         }
 
         protected abstract void Damage(int hitPoints);
@@ -55,6 +57,8 @@ namespace GameLogic
                 target.Damage(Technique.HitPoints);
                 target.Notify("You are being ATTACKED by " + this.ToString() + "!!! Your HP: " + target.Health + " / Enemy HP: " + this.Health);
                 this.Notify("Attack hit on enemy " + target.ToString() + ". Enemy HP: " + target.Health);
+                this.NotifyServer(this.ToString() + " attacked " + target.ToString());
+                this.NotifyServer(target.ToString() + " / HP = " + target.Health);
             }
         }
 
@@ -91,6 +95,7 @@ namespace GameLogic
             Position newPosition = playerController.Move(this.ActualPosition, movement, 1);
             Map.MovePlayer(this.ActualPosition, newPosition);
             Notify("You moved to " + this.ActualPosition);
+            NotifyServer(this.ToString() + " moved to " + this.ActualPosition);
             SpotNearbyPlayers();
         }
 
@@ -105,6 +110,7 @@ namespace GameLogic
             Position newPosition = playerController.Move(this.ActualPosition, movement, 2);
             Map.MovePlayer(this.ActualPosition, newPosition);
             Notify("You moved to " + this.ActualPosition);
+            NotifyServer(this.ToString() + " moved to " + this.ActualPosition);
             SpotNearbyPlayers();
         }
 

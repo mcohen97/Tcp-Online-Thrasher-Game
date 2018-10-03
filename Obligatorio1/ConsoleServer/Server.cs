@@ -111,22 +111,80 @@ namespace Network
         {
             bool isValid = false;
             string toReturn="";
+            string[] menu = {"REGISTERED PLAYERS", "WATCH MATCH", "EXIT" };
             //toReturn won't leave while loop without being assigned
             while (!isValid) {
                 Console.Clear();
-                Console.WriteLine("Servidor en linea, ingrese X para cerrarlo.");
-                string input = Console.ReadLine().ToUpper();
-                if (input.Equals("X"))
+                Console.WriteLine("Server On. Choose an option");
+                ShowMenu(menu);
+                int option = ReadInteger(1, menu.Length);
+                Console.Clear();
+                switch (option)
                 {
-                    isValid = true;
-                    toReturn = input;
+                    case 1:
+                        ShowRegisteredPlayers();
+                        break;
+                    case 2:
+                        WatchMatch();
+                        break;
+                    case 3:
+                        isValid = true;
+                        toReturn = "X";
+                        break;
+                    default:
+                        Console.WriteLine("Invalid Command");
+                        break;
                 }
-                else {
-                    Console.WriteLine("Comando invalido");
-                }
+               
             }
             return toReturn;
         }
+
+        private void WatchMatch()
+        {
+            Console.WriteLine("Press any key to return to menu");
+            Console.WriteLine("Players in match:");
+            ICollection<Player> playersInMatch = slasher.GetPlayers();
+
+            if (playersInMatch.Any())
+            {
+                foreach (Player player in playersInMatch)
+                {
+                    Console.WriteLine(player.ToString());
+                }
+            }
+            else
+            {
+                Console.WriteLine("Map is empty");
+            }
+
+            slasher.Notify += Console.WriteLine;
+            Console.ReadKey();
+            slasher.Notify -= Console.WriteLine;
+            
+        }
+
+        private void ShowRegisteredPlayers()
+        {
+            IUserRepository users = UsersInMemory.instance.Value;
+            ICollection<string> names = users.GetAllUsers().Select(u => u.ToString()).ToList();
+            Console.WriteLine("Registered users:");
+            if (names.Any())
+            {
+                foreach (string user in names)
+                {
+                    Console.WriteLine(user);
+                }
+            }
+            else
+            {
+                Console.WriteLine("There aren't users registered");
+            }
+           
+            Console.WriteLine("Press any key to continue");
+            Console.ReadKey();
+        }
+
         private void ShutDownEveryConnection()
         {
             foreach (Socket active in clientConnections) {
@@ -146,6 +204,42 @@ namespace Network
             }
             repo.AddUser(new User("cantu", "photo"));
             repo.AddUser(new User("marcel", "photo"));
+        }
+
+        private void ShowMenu(string[] menu)
+        {
+            for (int i = 0; i < menu.Length; i++)
+            {
+                Console.WriteLine("" + (i + 1) + "-" + menu[i]);
+            }
+        }
+
+        private int ReadInteger(int min, int max)
+        {
+            bool correct = false;
+            int input = 0;
+            while (!correct)
+            {
+                Console.WriteLine("Enter option number:");
+                string line = Console.ReadLine();
+                try
+                {
+                    input = int.Parse(line);
+                    if (input > max || input < min)
+                    {
+                        Console.WriteLine("Enter a number between " + min + " and " + max);
+                    }
+                    else
+                    {
+                        correct = true;
+                    }
+                }
+                catch (FormatException e)
+                {
+                    Console.WriteLine("Enter a number between " + min + " and " + max);
+                }
+            }
+            return input;
         }
     }
 }
