@@ -237,7 +237,7 @@ namespace Client
             thread.Start();
             while (playing)
             {
-                string command = GetInput("Command:");
+                string command = console.ReadLine();
                 if(playing)
                     SendPackage(CommandType.PLAYER_ACTION, command);
             }

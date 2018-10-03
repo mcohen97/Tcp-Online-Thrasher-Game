@@ -67,10 +67,20 @@ namespace GameLogic
             if (EnabledAttackAction)
             {
                 ICollection<Player> targets = Map.GetPlayersNearPosition(ActualPosition);
-                foreach (Player target in targets)
+                if (targets.Any())
                 {
-                    Attack(target);
+                    foreach (Player target in targets)
+                    {
+                        Attack(target);
+                    }
                 }
+                else
+                {
+                    Notify("No one is near you");
+                }
+
+               
+                
             }
             else
             {

@@ -104,8 +104,21 @@ namespace Services
                     Role selectedRole = ChoosePlayer();
                     Player player = PlayerFactory.CreatePlayer(justLogged.Logged.Nickname, SendNotificationToClient, selectedRole);
                     slasher.AddPlayer(player);
-                    Current.SendOkMessage("You've been added to the game at position " + player.ActualPosition);
-                    SendNotificationToClient("Your attack action is disable until match starts. A 'Match Started' message will be shown. You can explore the map.");
+                    Current.SendOkMessage("Successfuly added");
+                    SendNotificationToClient("You are in the map. Your attack action is disable until match starts.");
+                    SendNotificationToClient("A 'Match Started' message will be shown, so stay alert.");
+                    SendNotificationToClient("You can execute actions at any time. Actions:");
+                    SendNotificationToClient("Move forward - "+PlayerCommand.MOVE_FORWARD);
+                    SendNotificationToClient("Move forward fast - "+PlayerCommand.MOVE_FAST_FORWARD);
+                    SendNotificationToClient("Move backward - "+PlayerCommand.MOVE_BACKWARD);
+                    SendNotificationToClient("Move backward fast - "+PlayerCommand.MOVE_FAST_BACKWARD);
+                    SendNotificationToClient("Attack - "+PlayerCommand.ATTACK);
+                    SendNotificationToClient("Turn North - "+PlayerCommand.TURN_NORTH);
+                    SendNotificationToClient("Turn East - "+PlayerCommand.TURN_EAST);
+                    SendNotificationToClient("Turn South - "+ PlayerCommand.TURN_SOUTH);
+                    SendNotificationToClient("Turn West - "+ PlayerCommand.TURN_WEST);
+                    SendNotificationToClient("You are at position " + player.ActualPosition + ". You can explore the map.");
+
                     PlayerController userPlayer = new PlayerController(justLogged, slasher, player);
                     TryToPlay(userPlayer);
                 }       
