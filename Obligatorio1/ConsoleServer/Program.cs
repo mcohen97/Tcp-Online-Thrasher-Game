@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Runtime.Remoting;
+using System.Runtime.Remoting.Channels;
+using System.Runtime.Remoting.Channels.Tcp;
 using System.Threading;
-using System.Threading.Tasks;
+using DataAccessInterface;
 using Network;
 
 
@@ -27,6 +26,7 @@ namespace ConsoleServer
         }
 
         public static Server gameServer;
+        public static TcpChannel remotingUserStorage;
 
         private static bool Handler(CtrlType sig)
         {
@@ -38,15 +38,27 @@ namespace ConsoleServer
         {
             _handler += new EventHandler(Handler);
             SetConsoleCtrlHandler(_handler, true);
-
+      
             gameServer = new Server();
+            ExposeUserStorage();
             Thread listen = new Thread(new ThreadStart(() =>
             {
                 gameServer.ListenToRequests();
             }));
             listen.IsBackground = true;
             listen.Start();
-            gameServer.ServerManagement();     
-        } 
+            gameServer.ServerManagement();
+            ChannelServices.UnregisterChannel(remotingUserStorage);
+        }
+
+        private static void ExposeUserStorage()
+        {
+            remotingUserStorage = new TcpChannel(8000);
+            ChannelServices.RegisterChannel(remotingUserStorage, false);
+            RemotingConfiguration.RegisterWellKnownServiceType(
+                typeof(UsersInMemory),
+                "Obligatorio2",
+                WellKnownObjectMode.Singleton);
+        }
     }
 }
