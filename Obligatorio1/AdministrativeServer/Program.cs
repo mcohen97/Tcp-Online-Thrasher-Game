@@ -6,7 +6,10 @@ namespace AdministrativeServer
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            AdministrativeServer admin = new AdministrativeServer();
+            admin.AddFakeUser();
+            Console.WriteLine("Se agrego");
+            Console.ReadLine();
         }
     }
 }
