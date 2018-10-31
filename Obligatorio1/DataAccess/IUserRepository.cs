@@ -14,5 +14,7 @@ namespace DataAccessInterface
         User GetUser(string nickname);
 
         ICollection<User> GetAllUsers();
+        void DeleteUser(string nickname);
+        void ModifyUser(string oldNickname, User toModify);
     }
 }
