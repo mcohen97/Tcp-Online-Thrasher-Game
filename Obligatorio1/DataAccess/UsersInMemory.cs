@@ -9,30 +9,30 @@ namespace DataAccess
     public class UsersInMemory : IUserRepository
     {
         public static readonly Lazy<UsersInMemory> instance = new Lazy<UsersInMemory>(() => new UsersInMemory());
-        private ICollection<User> Users;
+        private ICollection<User> users;
 
         private UsersInMemory()
         {
-            Users = new List<User>();
+            users = new List<User>();
         }
         public void AddUser(User newUser)
         {
             
-            lock (Users)
+            lock (users)
             {
-                bool repeated = instance.Value.Users.Any(u => u.Nickname.Equals(newUser.Nickname));
+                bool repeated = instance.Value.users.Any(u => u.Nickname.Equals(newUser.Nickname));
                 if (repeated)
                 {
                     throw new UserAlreadyExistsException("Nickname already taken");
                 }
             }
-            instance.Value.Users.Add(newUser);
+            instance.Value.users.Add(newUser);
         }
 
         public User GetUser(string nickname)
         {
             User query;
-            lock (Users) {
+            lock (users) {
                 query = TryGet(nickname);
             }
             return query;
@@ -42,7 +42,7 @@ namespace DataAccess
             User query;
             try
             {
-                query = instance.Value.Users.First(u => u.Nickname.Equals(nickname));
+                query = instance.Value.users.First(u => u.Nickname.Equals(nickname));
             }
             catch (InvalidOperationException)
             {
@@ -53,7 +53,7 @@ namespace DataAccess
 
         public ICollection<User> GetAllUsers()
         {
-            return instance.Value.Users;
+            return instance.Value.users;
         }
 
         public void DeleteUser(string nickname)
@@ -61,8 +61,8 @@ namespace DataAccess
             User toDelete;
             try
             {
-              toDelete = instance.Value.Users.First(u => u.Nickname.Equals(nickname));
-              instance.Value.Users.Remove(toDelete);
+              toDelete = instance.Value.users.First(u => u.Nickname.Equals(nickname));
+              instance.Value.users.Remove(toDelete);
             }
             catch (InvalidOperationException)
             {
@@ -85,7 +85,7 @@ namespace DataAccess
         }
 
         private bool Exists(string nickName) {
-            return instance.Value.Users.Any(u => u.Nickname.Equals(nickName));
+            return instance.Value.users.Any(u => u.Nickname.Equals(nickName));
         }
     }
 }
