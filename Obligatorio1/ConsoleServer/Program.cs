@@ -40,25 +40,14 @@ namespace ConsoleServer
             SetConsoleCtrlHandler(_handler, true);
       
             gameServer = new Server();
-            ExposeUserStorage();
             Thread listen = new Thread(new ThreadStart(() =>
             {
-                gameServer.ListenToRequests();
+                gameServer.RunServer();
             }));
             listen.IsBackground = true;
             listen.Start();
             gameServer.ServerManagement();
             ChannelServices.UnregisterChannel(remotingUserStorage);
-        }
-
-        private static void ExposeUserStorage()
-        {
-            remotingUserStorage = new TcpChannel(8000);
-            ChannelServices.RegisterChannel(remotingUserStorage, false);
-            RemotingConfiguration.RegisterWellKnownServiceType(
-                typeof(UsersInMemory),
-                "Obligatorio2",
-                WellKnownObjectMode.Singleton);
         }
     }
 }

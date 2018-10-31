@@ -10,6 +10,9 @@ using System.Configuration;
 using GameLogic;
 using DataAccessInterface;
 using Services;
+using System.Runtime.Remoting.Channels.Tcp;
+using System.Runtime.Remoting.Channels;
+using System.Runtime.Remoting;
 
 namespace Network
 {
@@ -20,6 +23,8 @@ namespace Network
         private static readonly int MAX_SIMULTANEOUS_REQUESTS = 5;
         public bool serverWorking;
         private Game slasher;
+        private TcpChannel remotingUserStorage;
+
         public Server()
         {
             try
@@ -48,7 +53,23 @@ namespace Network
             clientConnections = new List<Socket>();
         }
 
-        public void ListenToRequests()
+        public void RunServer() {
+            ExposeUserStorage();
+            ListenToRequests();
+            ChannelServices.UnregisterChannel(remotingUserStorage);
+        }
+
+        private void ExposeUserStorage()
+        {
+            remotingUserStorage = new TcpChannel(8001);
+            ChannelServices.RegisterChannel(remotingUserStorage, false);
+            RemotingConfiguration.RegisterWellKnownServiceType(
+                typeof(UsersInMemory),
+                "Obligatorio2",
+                WellKnownObjectMode.Singleton);
+        }
+
+        private void ListenToRequests()
         {
             listener.Listen(MAX_SIMULTANEOUS_REQUESTS);
 
