@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
 using System.Configuration;
 using GameLogic;
@@ -13,6 +11,7 @@ using Services;
 using System.Runtime.Remoting.Channels.Tcp;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting;
+using DataAccess;
 
 namespace Network
 {
@@ -61,10 +60,10 @@ namespace Network
 
         private void ExposeUserStorage()
         {
-            remotingUserStorage = new TcpChannel(8001);
+            remotingUserStorage = new TcpChannel(8000);
             ChannelServices.RegisterChannel(remotingUserStorage, false);
             RemotingConfiguration.RegisterWellKnownServiceType(
-                typeof(UsersInMemory),
+                typeof(UserService),
                 "Obligatorio2",
                 WellKnownObjectMode.Singleton);
         }
