@@ -9,7 +9,8 @@ namespace AdministrativeServer
         static void Main(string[] args)
         {
             AdministrativeServer admin = new AdministrativeServer();
-            admin.AddFakeUser();
+            admin.RunServer();
+            /*admin.AddFakeUser();
             Console.WriteLine("Se agrego");
             Console.ReadLine();
             admin.ModifyFakeUser();
@@ -24,7 +25,7 @@ namespace AdministrativeServer
             ICollection<UserDto> dtos =admin.GetAll();
             foreach (UserDto dto in dtos) {
                 Console.WriteLine(dto.nickname);
-            }
+            }*/
             Console.ReadLine();
 
         }

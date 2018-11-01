@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Messaging;
+using System.ServiceModel;
+using System.ServiceModel.Description;
 using UserABM;
 
 namespace AdministrativeServer
 {
     public class AdministrativeServer
     {
-        IUserCRUDService remoteUserStorage;
+        ServiceHost gameServiceHost;
 
         public AdministrativeServer() {
-            remoteUserStorage = (IUserCRUDService)Activator.GetObject(typeof(IUserCRUDService), "tcp://127.0.0.1:8000/Obligatorio2");
             CreateQueueIfNotExists();
         }
 
@@ -24,25 +25,65 @@ namespace AdministrativeServer
             }
         }
 
-        internal void ModifyFakeUser()
+        public void RunServer()
         {
-           UserDto fake = new UserDto { nickname = "richard", photoPath = "test" };
-            remoteUserStorage.ModifyUser("test", fake);
+            try
+            {
+                SetUpService();
+            }
+            catch (CommunicationException ex)
+            {
+                Console.WriteLine("There is an issue with Game Service" + ex.Message);
+                gameServiceHost.Abort();
+
+            }
+
         }
 
-        internal void DeleteFakeUser()
+        private void SetUpService()
         {
-            remoteUserStorage.DeleteUser("richard");
-        }
+            //Base Address for StudentService
+            Uri httpBaseAddress = new Uri("http://localhost:4321/AdministrativeService");
 
-        internal ICollection<UserDto> GetAll()
-        {
-            return remoteUserStorage.GetAllUsers();
-        }
+            //Instantiate ServiceHost
+            gameServiceHost = new ServiceHost(
+                typeof(WebService),
+                httpBaseAddress);
 
-        public void AddFakeUser() {
-            UserDto fake = new UserDto { nickname = "test", photoPath = "test" };
-            remoteUserStorage.AddUser(fake);
+            //Add Endpoint to Host
+            gameServiceHost.AddServiceEndpoint(
+                typeof(IWebService), new WSHttpBinding(), "");
+
+            //Metadata Exchange
+            ServiceMetadataBehavior serviceBehavior =
+                new ServiceMetadataBehavior();
+            serviceBehavior.HttpGetEnabled = true;
+            gameServiceHost.Description.Behaviors.Add(serviceBehavior);
+
+            //Open
+            gameServiceHost.Open();
+            Console.WriteLine("Service is live now at: {0}", httpBaseAddress);
         }
+        /* internal void ModifyFakeUser()
+{
+   UserDto fake = new UserDto { nickname = "richard", photoPath = "test" };
+    remoteUserStorage.ModifyUser("test", fake);
+}
+
+internal void DeleteFakeUser()
+{
+    remoteUserStorage.DeleteUser("richard");
+}
+
+internal ICollection<UserDto> GetAll()
+{
+    return remoteUserStorage.GetAllUsers();
+}
+
+public void AddFakeUser() {
+    UserDto fake = new UserDto { nickname = "test", photoPath = "test" };
+    remoteUserStorage.AddUser(fake);
+}*/
+
     }
 }
