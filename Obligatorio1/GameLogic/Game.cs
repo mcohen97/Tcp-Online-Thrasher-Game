@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
-using GameLogicException;
 
 namespace GameLogic
 {
@@ -17,6 +16,7 @@ namespace GameLogic
         private bool activeGame;
         private GameMap map;
         private string lastWinner;
+        private ICollection<Score> scores;
 
         public GameMap Map {
             get {
@@ -55,7 +55,7 @@ namespace GameLogic
         }
         public Action EndMatchEvent { get; set; }
         public Action<string> Notify { get; set; }
-        public Action<ICollection<Score>> CalculatedScoresEvent { get; set; }
+        public Action<ICollection<Score>> AddScoresEvent { get; set; }
         
         public readonly object gameAccess;
 
@@ -72,6 +72,7 @@ namespace GameLogic
             map.PlayerRemovedEvent += CheckEndMatch;
             EndMatchEvent += () => { }; //Do nothing
             Notify += (s) => { }; //Do nothing
+            scores = new List<Score>();
             gameAccess = new object();
         }
 
