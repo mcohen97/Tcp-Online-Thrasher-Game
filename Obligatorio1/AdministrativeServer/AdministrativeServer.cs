@@ -43,7 +43,7 @@ namespace AdministrativeServer
         private void SetUpService()
         {
             //Base Address for StudentService
-            Uri httpBaseAddress = new Uri("http://localhost:4321/StudentService");
+            Uri httpBaseAddress = new Uri("http://localhost:4321/AdministrativeService");
 
             //Instantiate ServiceHost
             gameServiceHost = new ServiceHost(
@@ -62,6 +62,7 @@ namespace AdministrativeServer
 
             //Open
             gameServiceHost.Open();
+            Console.WriteLine("Service is live now at: {0}", httpBaseAddress);
         }
         /* internal void ModifyFakeUser()
 {
