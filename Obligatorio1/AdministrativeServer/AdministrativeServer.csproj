@@ -51,9 +51,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UserCRUDServiceContract\UserCRUDServiceContract.csproj">
+    <ProjectReference Include="..\RemoteServicesContracts\RemoteServicesContracts.csproj">
       <Project>{6953AEA9-3E26-4577-915B-83BFBB56AC08}</Project>
-      <Name>UserCRUDServiceContract</Name>
+      <Name>RemoteServicesContracts</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
