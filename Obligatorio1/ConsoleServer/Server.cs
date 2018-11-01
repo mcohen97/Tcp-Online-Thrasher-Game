@@ -28,7 +28,7 @@ namespace Network
         {
             try
             {
-                TryRunServer();
+                TrySetUpServer();
             }
             catch (SocketException) {
                 Console.WriteLine("Can not run the server, press any key to exit...");
@@ -36,7 +36,7 @@ namespace Network
             }
         }
 
-        private void TryRunServer()
+        private void TrySetUpServer()
         {
             listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             var settings = new AppSettingsReader();
