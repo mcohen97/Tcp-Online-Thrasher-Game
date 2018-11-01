@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UserABM;
 
 namespace AdministrativeServer
@@ -10,7 +7,6 @@ namespace AdministrativeServer
     public class WebService : IWebService
     {
         IUserCRUDService remoteUserStorage;
-
 
         public WebService() {
             remoteUserStorage = (IUserCRUDService)Activator.GetObject(typeof(IUserCRUDService), "tcp://127.0.0.1:8000/Obligatorio2");
