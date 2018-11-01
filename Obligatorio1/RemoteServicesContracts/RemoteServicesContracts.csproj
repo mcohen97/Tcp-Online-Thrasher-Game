@@ -45,7 +45,7 @@
     <Compile Include="IScoreService.cs" />
     <Compile Include="IUserCRUDService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Score.cs" />
+    <Compile Include="ScoreModel.cs" />
     <Compile Include="UserDto.cs" />
   </ItemGroup>
   <ItemGroup>
