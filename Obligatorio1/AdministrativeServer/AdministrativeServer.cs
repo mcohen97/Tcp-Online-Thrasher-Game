@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Messaging;
 using UserABM;
 
 namespace AdministrativeServer
@@ -10,6 +11,17 @@ namespace AdministrativeServer
 
         public AdministrativeServer() {
             remoteUserStorage = (IUserCRUDService)Activator.GetObject(typeof(IUserCRUDService), "tcp://127.0.0.1:8000/Obligatorio2");
+            CreateQueueIfNotExists();
+        }
+
+        private void CreateQueueIfNotExists()
+        {
+            string queueName = @".\private$\LogServer";
+
+            if (!MessageQueue.Exists(queueName))
+            {
+                MessageQueue.Create(queueName);
+            }
         }
 
         internal void ModifyFakeUser()
