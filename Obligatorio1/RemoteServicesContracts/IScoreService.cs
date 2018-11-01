@@ -9,6 +9,6 @@ namespace RemoteServicesContracts
 {
     public interface IScoreService
     {
-        ICollection<Score> GetLastScores();
+        ICollection<ScoreModel> GetLastScores();
     }
 }

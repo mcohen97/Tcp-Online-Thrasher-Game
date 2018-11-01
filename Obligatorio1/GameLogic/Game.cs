@@ -55,6 +55,8 @@ namespace GameLogic
         }
         public Action EndMatchEvent { get; set; }
         public Action<string> Notify { get; set; }
+        public Action<ICollection<Score>> CalculatedScoresEvent { get; set; }
+        
         public readonly object gameAccess;
 
         public Game(int preMatchMiliseconds, int matchMiliseconds)
