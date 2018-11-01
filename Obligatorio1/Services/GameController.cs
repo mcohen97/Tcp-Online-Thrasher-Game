@@ -16,11 +16,14 @@ namespace Services
         public IConnection Current { get; private set; }
         private Game slasher;
         private IUserRepository users;
-        public GameController(IConnection connection, Game aGame, IUserRepository storage)
+        private IScoreRepository scores;
+        public GameController(IConnection connection, Game aGame, 
+            IUserRepository usersStorage, IScoreRepository scoreStorage )
         {
             Current = connection;
             slasher = aGame;
-            users = storage;
+            users = usersStorage;
+            scores = scoreStorage;
         }
 
         public void Start()
@@ -240,6 +243,12 @@ namespace Services
             Package toSend = new Package(info);
             toSend.Data = Encoding.Default.GetBytes(message);
             Current.SendMessage(toSend);
+        }
+
+        private void AddScoresIfTop(ICollection<Score> someScores) {
+            foreach (Score score in someScores) {
+                scores.AddScore(score);
+            }
         }
 
         private void SendNotificationToClient(string notification)
