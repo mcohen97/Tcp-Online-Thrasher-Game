@@ -1,11 +1,10 @@
-﻿using GameLogic;
+﻿using DataAccessInterface;
+using GameLogic;
 using RemoteServicesContracts;
 using ScoreService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Properties
 {
