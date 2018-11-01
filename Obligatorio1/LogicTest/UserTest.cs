@@ -36,12 +36,6 @@ namespace LogicTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidUserDataException))]
-        public void InvalidPathTest() {
-            User fake = new User("nickname", "");
-        }
-
-        [TestMethod]
         public void EqualsTest() {
             User fake1 = new User("nickname", "path1");
             User fake2 = new User("nickname", "path2");
