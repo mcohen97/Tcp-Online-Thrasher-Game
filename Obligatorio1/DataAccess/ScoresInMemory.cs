@@ -10,30 +10,39 @@ namespace DataAccess
         public static readonly Lazy<ScoresInMemory> instance = new Lazy<ScoresInMemory>(() => new ScoresInMemory(10));
         private Score[] scoresQueue;
         private int nLastScores;
-        private int frontPos;
 
         public ScoresInMemory(int reelevantLastScores) {
             nLastScores = reelevantLastScores;
             scoresQueue = new Score[nLastScores];
-            frontPos = 0;
         }
 
         public void AddScore(Score aScore)
         {
-            int nextPos = ++frontPos % nLastScores;
-            scoresQueue[nextPos] = aScore;
+            bool placed = false;
+            for (int i = 0; i < scoresQueue.Length && !placed; i++) {
+                if (scoresQueue[i] == null)
+                {
+                    scoresQueue[i] = aScore;
+                    placed = true;
+                }
+                else if (aScore.Points >= scoresQueue[i].Points){
+                    PlaceScore(i, aScore);
+                    placed = true;
+                }
+            }
+        }
+
+        private void PlaceScore(int position, Score aScore)
+        {
+            for (int i = scoresQueue.Length - 1; i > position; i--) {
+                scoresQueue[i] = scoresQueue[i - 1];
+            }
+            scoresQueue[position] = aScore;
         }
 
         public ICollection<Score> GetScores()
         {
-            ICollection<Score> sorted = new List<Score>();
-            int auxPos = frontPos;
-            for (int i = 0; i < scoresQueue.Length; i++) {
-                sorted.Add(scoresQueue[auxPos]);
-                //adding nLastScores transform position -1 into the last one (circularity)
-                auxPos = (nLastScores + (--auxPos)) % nLastScores;
-            }
-           return sorted.Reverse().ToList();
+            return scoresQueue.ToList();
         }
     }
 }
