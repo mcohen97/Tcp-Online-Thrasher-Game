@@ -12,6 +12,7 @@ using System.Runtime.Remoting.Channels.Tcp;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting;
 using DataAccess;
+using System.Messaging;
 
 namespace Network
 {
@@ -23,6 +24,7 @@ namespace Network
         public bool serverWorking;
         private Game slasher;
         private TcpChannel remotingUserStorage;
+        private const string queueAddress = @".\private$\LogServer";
 
         public Server()
         {
@@ -119,9 +121,19 @@ namespace Network
         private void HandleClient(Socket connection)
         {
             IConnection somebodyUnknown = new TCPConnection(connection);
-            IUserRepository users = UsersInMemory.instance.Value;         
-            GameController toLunch = new GameController(somebodyUnknown, slasher, users);
+            IUserRepository users = UsersInMemory.instance.Value;
+            IScoreRepository scores = ScoresInMemory.instance.Value;
+            GameController toLunch = new GameController(somebodyUnknown, slasher, users,scores);
             ExecuteService(toLunch);                      
+        }
+
+        private void SendGameLog(ICollection<string> gameNarration) {
+            string matchLog = string.Join("\n",gameNarration);
+            using (MessageQueue logQueue = new MessageQueue(queueAddress)) {
+                Message mg = new Message();
+                mg.Body = matchLog;
+                logQueue.Send(mg);
+            }
         }
 
         private void ExecuteService(GameController toLunch)
@@ -177,6 +189,42 @@ namespace Network
             return toReturn;
         }
 
+        private void ShowMenu(string[] menu)
+        {
+            for (int i = 0; i < menu.Length; i++)
+            {
+                Console.WriteLine("" + (i + 1) + "-" + menu[i]);
+            }
+        }
+
+        private int ReadInteger(int min, int max)
+        {
+            bool correct = false;
+            int input = 0;
+            while (!correct)
+            {
+                Console.WriteLine("Enter option number:");
+                string line = Console.ReadLine();
+                try
+                {
+                    input = int.Parse(line);
+                    if (input > max || input < min)
+                    {
+                        Console.WriteLine("Enter a number between " + min + " and " + max);
+                    }
+                    else
+                    {
+                        correct = true;
+                    }
+                }
+                catch (FormatException e)
+                {
+                    Console.WriteLine("Enter a number between " + min + " and " + max);
+                }
+            }
+            return input;
+        }
+
         private void WatchMatch()
         {
             Console.WriteLine("Press any key to return to menu");
@@ -228,44 +276,6 @@ namespace Network
                 active.Shutdown(SocketShutdown.Both);
                 active.Close();
             }
-        }
-
-        
-
-        private void ShowMenu(string[] menu)
-        {
-            for (int i = 0; i < menu.Length; i++)
-            {
-                Console.WriteLine("" + (i + 1) + "-" + menu[i]);
-            }
-        }
-
-        private int ReadInteger(int min, int max)
-        {
-            bool correct = false;
-            int input = 0;
-            while (!correct)
-            {
-                Console.WriteLine("Enter option number:");
-                string line = Console.ReadLine();
-                try
-                {
-                    input = int.Parse(line);
-                    if (input > max || input < min)
-                    {
-                        Console.WriteLine("Enter a number between " + min + " and " + max);
-                    }
-                    else
-                    {
-                        correct = true;
-                    }
-                }
-                catch (FormatException e)
-                {
-                    Console.WriteLine("Enter a number between " + min + " and " + max);
-                }
-            }
-            return input;
         }
     }
 }
