@@ -54,13 +54,9 @@
     <Compile Include="UserTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LogicExceptions\LogicExceptions.csproj">
-      <Project>{d4f305e1-bda4-47a1-9712-bb19a59cbb23}</Project>
-      <Name>LogicExceptions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Logic\Logic.csproj">
+    <ProjectReference Include="..\Logic\UsersLogic.csproj">
       <Project>{1d6032d2-c6da-435c-9c5d-17edf7a8d102}</Project>
-      <Name>Logic</Name>
+      <Name>UsersLogic</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

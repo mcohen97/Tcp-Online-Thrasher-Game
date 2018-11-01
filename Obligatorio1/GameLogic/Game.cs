@@ -10,12 +10,13 @@ namespace GameLogic
 {
     public class Game
     {
-        private int monsterCount;
-        private int survivorCount;
-        private Timer time; 
-        bool activeMatch;
+        private Timer matchTimer;
+        private Timer preMatchTimer;
+        private bool activeMatch;
+        private bool activeGame;
         private GameMap map;
-        private Role lastWinner;
+        private string lastWinner;
+        private ICollection<Score> scores;
 
         public GameMap Map {
             get {
@@ -23,7 +24,7 @@ namespace GameLogic
             }
 
             private set {
-                
+                map = value;
             }
         }
         public bool ActiveMatch {
@@ -34,30 +35,16 @@ namespace GameLogic
             private set {
                 activeMatch = value;
             }
-        }
-        public int MonsterCount {
+        } //ActiveMatch means players are playing
+        public bool ActiveGame {
             get {
-                return monsterCount;
+                return activeGame;
             }
-
             set {
-                monsterCount = value;
-                if (!ActiveGameConditions())
-                    EndMatch();
+                activeGame = value;
             }
-        }
-        public int SurvivorCount {
-            get {
-                return survivorCount;
-            }
-
-            set {
-                survivorCount = value;
-                if (!ActiveGameConditions())
-                    EndMatch();
-            }
-        }
-        public Role LastWinner {
+        }   //ActiveGame means players are in the Map
+        public string LastWinner {
             get {
                 return lastWinner;
             }
@@ -66,81 +53,161 @@ namespace GameLogic
                 lastWinner = value;
             }
         }
+        public Action EndMatchEvent { get; set; }
+        public Action<string> Notify { get; set; }
+        public Action<ICollection<Score>> AddScoresEvent { get; set; }
+        
+        public readonly object gameAccess;
 
-        public Game()
+        public Game(int preMatchMiliseconds, int matchMiliseconds)
         {
             map = new GameMap(8, 8);
-            time = new Timer(180000);
-            time.Elapsed += TimeOut;
-            monsterCount = 0;
-            survivorCount = 0;
+            matchTimer = new Timer(matchMiliseconds);
+            matchTimer.Elapsed += TimeOut;
+            preMatchTimer = new Timer(preMatchMiliseconds);
+            preMatchTimer.Elapsed += PreMatchTimeOut;
             activeMatch = false;
-            lastWinner = Role.NEUTRAL;
+            activeGame = true;
+            lastWinner = "None";
+            map.PlayerRemovedEvent += CheckEndMatch;
+            EndMatchEvent += () => { }; //Do nothing
+            Notify += (s) => { }; //Do nothing
+            scores = new List<Score>();
+            gameAccess = new object();
         }
 
-        public Game(GameMap map)
+        private void RestartMap()
         {
-            this.map = map;
-            time = new Timer(180000);
-            time.Elapsed += TimeOut;
-            monsterCount = 0;
-            survivorCount = 0;
-            activeMatch = false;
-            lastWinner = Role.NEUTRAL;
+            Map = new GameMap(8,8);
+            Map.PlayerRemovedEvent += CheckEndMatch;
+        }
+
+        public void StartPreMatchTimer()
+        {
+            activeGame = true;
+            preMatchTimer.Start();
+            Notify("Prematch timer started");
         }
 
         private void TimeOut(object sender, ElapsedEventArgs e)
         {
+            Notify("Match time out");
             EndMatch();
         }
-
         private void EndMatch()
         {
-            LastWinner = GetWinner();
-            activeMatch = false;
+            lock (gameAccess)
+            {
+                matchTimer.Stop();
+                LastWinner = GetWinner();
+                foreach (Player player in Map.GetPlayers())
+                {
+                    player.Notify("MATCH ENDED --> " + LastWinner);
+                }
+                activeMatch = false;
+                activeGame = false;
+                EndMatchEvent();
+                Notify("MATCH ENDED --> " + LastWinner);
+                RestartMap();
+                StartPreMatchTimer();
+            }          
         }
 
-        public void StartMatch()
+        public void PreMatchTimeOut(object sender, ElapsedEventArgs e)
         {
-            time.Start();
-            activeMatch = true;
-            //Map.UnlockPlayersActions()
+            StartMatch();
+        }
+        private void StartMatch()
+        {
+            lock (gameAccess)
+            {
+                preMatchTimer.Stop();
+                if (ActiveGameConditions(Map.MonsterCount, Map.SurvivorCount))
+                {
+                    activeMatch = true;
+                    foreach (Player player in Map.GetPlayers())
+                    {
+                        player.Notify("Match started!");
+                        player.EnabledAttackAction = true;
+                    }
+                    matchTimer.Start();
+                    Notify("Match started");
+                }
+                else
+                {
+                    Notify("Can't start match with actual players in map. Prematch timer restarted");
+                    preMatchTimer.Start();
+                }
+            }          
         }
 
-        public Role GetWinner()
+        public bool TooManyPlayers()
         {
-            if (time.Enabled && ActiveGameConditions())
+            return Map.PlayerCount >= Map.PlayerCapacity;
+        }
+        public bool TooManyMonsters()
+        {
+            return false;
+        }
+        public bool TooManySurvivors()
+        {
+            return Map.SurvivorCount == Map.PlayerCapacity - 1;
+        }
+
+        public string GetWinner()
+        {
+            if (matchTimer.Enabled && ActiveGameConditions(Map.MonsterCount, Map.SurvivorCount))
                 throw new UnfinishedMatchException();
 
-            Role winner = Role.SURVIVOR;
-            if (SurvivorCount == 0)
+            string winner = "";
+            if (Map.SurvivorCount == 0)
             {
-                if (MonsterCount == 1)
-                    winner = Role.MONSTER;
-                else if (MonsterCount > 1)
-                    winner = Role.NEUTRAL;
+                if (Map.MonsterCount == 1)
+                    winner = Map.GetPlayers().First().Name + " won the match. Congrats!";
+                else if (Map.MonsterCount > 1)
+                    winner = "Its a tie between monsters";
+            }
+            else
+            {
+                winner = "The survivors won the match. Congrats!";
             }
 
             return winner;
         }
 
-        private bool ActiveGameConditions()
+        public bool ActiveGameConditions(int monsterCount, int survivorCount)
         {
-            bool monsterVsMonster = MonsterCount > 1;
-            bool survivorVsMosnter = MonsterCount >= 1 && SurvivorCount > 0;
+            bool monsterVsMonster = monsterCount > 1;
+            bool survivorVsMosnter = monsterCount >= 1 && survivorCount > 0;
 
             return monsterVsMonster || survivorVsMosnter;
+        }
+        public void CheckEndMatch()
+        {
+            if (matchTimer.Enabled && !ActiveGameConditions(Map.MonsterCount, Map.SurvivorCount))
+                EndMatch();
         }
 
         public void AddPlayer(Player player)
         {
-            //if (activeMatch)
-              //  throw new MatchAlreadyStartedException();
+            lock (gameAccess)
+            {
+                if (TooManyPlayers())
+                    throw new MapIsFullException("Map is full. Try next match.");
+                if (ActiveMatch)
+                    throw new MatchAlreadyStartedException("There is a match going on. Wait for next match.");
+                if (Map.IsPlayerInMap(player))
+                    throw new PlayerAlreadyInMatch("This player has already been taken, select other player");
 
-            Position initialPosition = Map.GetEmptyPosition();
-            Map.AddPlayerToPosition(player, initialPosition);
-            player.Join(this, initialPosition);
-            ActiveMatch = true;
+                player.EnabledAttackAction = false;
+                player.Join(this);
+
+            }
+        }
+
+        public ICollection<Player> GetPlayers()
+        {
+            return map.GetPlayers();
         }
     }
 }

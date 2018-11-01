@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Logic;
 using Network;
 using Protocol;
 
@@ -16,7 +15,9 @@ namespace Client
         public ClientServices(IConnection aConnection) {
             connection = aConnection;
         }
-        public void Register(string nickname)
+     
+
+        public void SendNickname(string nickname)
         {
             Header info = new Header();
             info.Type = HeaderType.REQUEST;
@@ -25,6 +26,10 @@ namespace Client
             Package toSend = new Package(info);
             toSend.Data = Encoding.Default.GetBytes(nickname);
             connection.SendMessage(toSend);
+        }
+
+        public void SendImage(string path) {
+            connection.SendImage(path);
         }
 
         public void Play()
@@ -61,7 +66,10 @@ namespace Client
 
         private List<string> MakeList(string rawList)
         {
-            return rawList.Split(new[] { Package.LIST_SEPARATOR_SIMBOL }, StringSplitOptions.None).ToList();
+            if (rawList == "")
+                return new List<string>();
+            else
+                return rawList.Split(new[] { Package.LIST_SEPARATOR_SIMBOL }, StringSplitOptions.None).ToList();
         }
 
         public void Disconnect()
@@ -69,5 +77,17 @@ namespace Client
             connection.SendLogOutMessage();
         }
 
+        public List<string> ListOfInGamePlayers()
+        {
+            Header packageInfo = new Header();
+            packageInfo.Command = CommandType.IN_GAME_PLAYERS;
+            packageInfo.Type = HeaderType.REQUEST;
+            Package askForPlayers = new Package(packageInfo);
+            connection.SendMessage(askForPlayers);
+            Package answer = connection.WaitForMessage();
+            string rawList = answer.Message();
+            List<string> list = MakeList(rawList);
+            return list;
+        }
     }
 }

@@ -18,6 +18,10 @@ namespace Protocol
         RETURN_TO_MENU,
         PLAYER_ACTION,
         OK,
-        REGISTERED_USERS
+        REGISTERED_USERS,
+        IMG_JPG,
+        END_MATCH,
+        NOTIFICATION,
+        IN_GAME_PLAYERS
     };
 }

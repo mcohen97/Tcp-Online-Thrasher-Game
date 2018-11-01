@@ -31,7 +31,7 @@ namespace GameLogicTest
             GameMap gameMap = new GameMap(8, 8);
             Player player = new Monster();
             Position initialPosition = new Position(0, 0);
-            gameMap.AddPlayerToPosition(player, initialPosition);
+            gameMap.AddPlayerToEmptyPosition(player, initialPosition);
             Assert.AreEqual(player.ActualPosition, initialPosition);
         }
 
@@ -41,7 +41,7 @@ namespace GameLogicTest
             GameMap gameMap = new GameMap(8, 8);
             Player player = new Monster();
             Position initialPosition = new Position(0, 0);
-            gameMap.AddPlayerToPosition(player, initialPosition);
+            gameMap.AddPlayerToEmptyPosition(player, initialPosition);
             Position finalPosition = new Position(1, 1);
             gameMap.MovePlayer(initialPosition, finalPosition);
             Assert.AreEqual(player.ActualPosition, finalPosition);
@@ -53,7 +53,7 @@ namespace GameLogicTest
             GameMap gameMap = new GameMap(8, 8);
             Player player = new Monster();
             Position position = new Position(0, 0);
-            gameMap.AddPlayerToPosition(player, position);
+            gameMap.AddPlayerToEmptyPosition(player, position);
             Assert.IsFalse(gameMap.IsEmptyPosition(position));
         }
 
@@ -63,7 +63,7 @@ namespace GameLogicTest
             GameMap gameMap = new GameMap(8, 8);
             Player player = new Monster();
             Position position = new Position(0, 0);
-            gameMap.AddPlayerToPosition(player, position);
+            gameMap.AddPlayerToEmptyPosition(player, position);
             gameMap.RemovePlayer(player.ActualPosition);
             Assert.IsTrue(gameMap.IsEmptyPosition(position));
         }
@@ -76,12 +76,12 @@ namespace GameLogicTest
             Player player2 = new Survivor();
             Player player3 = new Survivor();
 
-            gameMap.AddPlayerToPosition(player1, new Position(0, 0));
-            gameMap.AddPlayerToPosition(player2, new Position(0, 1));
-            gameMap.AddPlayerToPosition(player3, new Position(0, 2));
+            gameMap.AddPlayerToEmptyPosition(player1, new Position(0, 0));
+            gameMap.AddPlayerToEmptyPosition(player2, new Position(0, 1));
+            gameMap.AddPlayerToEmptyPosition(player3, new Position(0, 2));
             gameMap.RemovePlayer(player3.ActualPosition);
 
-            Assert.AreEqual(2, gameMap.PlayerCount);
+            Assert.AreEqual(2, gameMap.GetPlayers().Count);
         }
 
         [TestMethod]
@@ -97,14 +97,14 @@ namespace GameLogicTest
             Player player7 = new Monster();
             Player player8 = new Monster();
 
-            gameMap.AddPlayerToPosition(player1, new Position(3, 3));
-            gameMap.AddPlayerToPosition(player2, new Position(3, 4));
-            gameMap.AddPlayerToPosition(player3, new Position(3, 5));
-            gameMap.AddPlayerToPosition(player4, new Position(4, 3));
-            gameMap.AddPlayerToPosition(player5, new Position(4, 5));
-            gameMap.AddPlayerToPosition(player6, new Position(5, 3));
-            gameMap.AddPlayerToPosition(player7, new Position(5, 4));
-            gameMap.AddPlayerToPosition(player8, new Position(5, 5));
+            gameMap.AddPlayerToEmptyPosition(player1, new Position(3, 3));
+            gameMap.AddPlayerToEmptyPosition(player2, new Position(3, 4));
+            gameMap.AddPlayerToEmptyPosition(player3, new Position(3, 5));
+            gameMap.AddPlayerToEmptyPosition(player4, new Position(4, 3));
+            gameMap.AddPlayerToEmptyPosition(player5, new Position(4, 5));
+            gameMap.AddPlayerToEmptyPosition(player6, new Position(5, 3));
+            gameMap.AddPlayerToEmptyPosition(player7, new Position(5, 4));
+            gameMap.AddPlayerToEmptyPosition(player8, new Position(5, 5));
 
             ICollection<Player> playersNearPosition = gameMap.GetPlayersNearPosition(new Position(4, 4));
 
@@ -125,15 +125,15 @@ namespace GameLogicTest
             Player player8 = new Monster();
             Player playerInPosition = new Monster();
 
-            gameMap.AddPlayerToPosition(player1, new Position(3, 3));
-            gameMap.AddPlayerToPosition(player2, new Position(3, 4));
-            gameMap.AddPlayerToPosition(player3, new Position(3, 5));
-            gameMap.AddPlayerToPosition(player4, new Position(4, 3));
-            gameMap.AddPlayerToPosition(player5, new Position(4, 5));
-            gameMap.AddPlayerToPosition(player6, new Position(5, 3));
-            gameMap.AddPlayerToPosition(player7, new Position(5, 4));
-            gameMap.AddPlayerToPosition(player8, new Position(5, 5));
-            gameMap.AddPlayerToPosition(player8, new Position(4, 4));
+            gameMap.AddPlayerToEmptyPosition(player1, new Position(3, 3));
+            gameMap.AddPlayerToEmptyPosition(player2, new Position(3, 4));
+            gameMap.AddPlayerToEmptyPosition(player3, new Position(3, 5));
+            gameMap.AddPlayerToEmptyPosition(player4, new Position(4, 3));
+            gameMap.AddPlayerToEmptyPosition(player5, new Position(4, 5));
+            gameMap.AddPlayerToEmptyPosition(player6, new Position(5, 3));
+            gameMap.AddPlayerToEmptyPosition(player7, new Position(5, 4));
+            gameMap.AddPlayerToEmptyPosition(player8, new Position(5, 5));
+            gameMap.AddPlayerToEmptyPosition(player8, new Position(4, 4));
 
             ICollection<Player> playersNearPosition = gameMap.GetPlayersNearPosition(new Position(4, 4));
 
@@ -151,12 +151,12 @@ namespace GameLogicTest
             Player player8 = new Monster();
             Player playerInPosition = new Monster();
 
-            gameMap.AddPlayerToPosition(player2, new Position(3, 4));
-            gameMap.AddPlayerToPosition(player4, new Position(4, 3));
-            gameMap.AddPlayerToPosition(player6, new Position(5, 3));
-            gameMap.AddPlayerToPosition(player7, new Position(5, 4));
-            gameMap.AddPlayerToPosition(player8, new Position(5, 5));
-            gameMap.AddPlayerToPosition(player8, new Position(4, 4));
+            gameMap.AddPlayerToEmptyPosition(player2, new Position(3, 4));
+            gameMap.AddPlayerToEmptyPosition(player4, new Position(4, 3));
+            gameMap.AddPlayerToEmptyPosition(player6, new Position(5, 3));
+            gameMap.AddPlayerToEmptyPosition(player7, new Position(5, 4));
+            gameMap.AddPlayerToEmptyPosition(player8, new Position(5, 5));
+            gameMap.AddPlayerToEmptyPosition(player8, new Position(4, 4));
 
             ICollection<Player> playersNearPosition = gameMap.GetPlayersNearPosition(new Position(4, 4));
 
@@ -181,7 +181,7 @@ namespace GameLogicTest
         {
             GameMap gameMap = new GameMap(8, 8);
             Player player = new Monster();
-            gameMap.AddPlayerToPosition(player, new Position(-1, -1));
+            gameMap.AddPlayerToEmptyPosition(player, new Position(-1, -1));
         }
 
         [TestMethod]
@@ -190,7 +190,7 @@ namespace GameLogicTest
         {
             GameMap gameMap = new GameMap(8, 8);
             Player player = new Monster();
-            gameMap.AddPlayerToPosition(player, new Position(10, 0));
+            gameMap.AddPlayerToEmptyPosition(player, new Position(10, 0));
         }
 
         [TestMethod]
@@ -199,7 +199,7 @@ namespace GameLogicTest
         {
             GameMap gameMap = new GameMap(8, 8);
             Player player = new Monster();
-            gameMap.AddPlayerToPosition(player, new Position(2, 10));
+            gameMap.AddPlayerToEmptyPosition(player, new Position(2, 10));
         }
 
         [TestMethod]
@@ -208,7 +208,7 @@ namespace GameLogicTest
         {
             GameMap gameMap = new GameMap(8, 8);
             Player player = new Monster();
-            gameMap.AddPlayerToPosition(player, new Position(0, 0));
+            gameMap.AddPlayerToEmptyPosition(player, new Position(0, 0));
             gameMap.MovePlayer(player.ActualPosition, new Position(-1, 0));
         }
 
@@ -218,7 +218,7 @@ namespace GameLogicTest
         {
             GameMap gameMap = new GameMap(8, 8);
             Player player = new Monster();
-            gameMap.AddPlayerToPosition(player, new Position(0, 0));
+            gameMap.AddPlayerToEmptyPosition(player, new Position(0, 0));
             gameMap.MovePlayer(player.ActualPosition, new Position(10, 0)); //GameMap doesnt have the responsability of control game rules
         }
 
@@ -228,7 +228,7 @@ namespace GameLogicTest
         {
             GameMap gameMap = new GameMap(8, 8);
             Player player = new Monster();
-            gameMap.AddPlayerToPosition(player, new Position(0, 0));
+            gameMap.AddPlayerToEmptyPosition(player, new Position(0, 0));
             gameMap.MovePlayer(player.ActualPosition, new Position(2, 10));
         }
 
@@ -242,8 +242,8 @@ namespace GameLogicTest
             Position initialPosition = new Position(0, 0);
             Position finalPosition = new Position(0, 1);
 
-            gameMap.AddPlayerToPosition(playerMoved, new Position(0, 0));
-            gameMap.AddPlayerToPosition(playerInPosition, new Position(0, 1));
+            gameMap.AddPlayerToEmptyPosition(playerMoved, new Position(0, 0));
+            gameMap.AddPlayerToEmptyPosition(playerInPosition, new Position(0, 1));
 
             gameMap.MovePlayer(initialPosition, finalPosition);
 

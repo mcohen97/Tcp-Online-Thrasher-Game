@@ -31,90 +31,111 @@ namespace GameLogic
             }
         }
         public abstract Position ActualPosition { get; set; }
-        protected IPlayerController playerController;
+        protected IMovementController movementController;
         protected abstract AttackTechnique Technique { get; set; }
         public abstract GameMap Map { get; set; }
         public Action<string> Notify { get; set; }
+        public Action<string> NotifyServer { get; set; }
+        public abstract bool EnabledAttackAction { get; set; }
 
         public Player()
         {
-            playerController = new TankMovementController(CardinalPoint.NORTH);
+            movementController = new TankMovementController(CardinalPoint.NORTH);
             Map = new GameMap(1, 1);
             name = "Unidentified Player";
+            EnabledAttackAction = true;
+            Notify += (s) => { }; //Do nothing
+            NotifyServer += (s) => { }; //Do nothing
         }
 
-        protected virtual void Damage(int hitPoints)
-        {
-            Health -= hitPoints;
-            if(Health <= 0)
-            {
-                Health = 0;
-                Map.RemovePlayer(ActualPosition);
-                this.Notify("RIP - you are dead");
-            }
-        }
+        protected abstract void Damage(int hitPoints);
 
         public virtual void Attack(Player target)
         {
             if (Technique.CanAttack(target.Role))
             {
                 target.Damage(Technique.HitPoints);
-                target.Notify("You are being ATTACKED by this MOTHERFUCKER " + this.ToString() + "!!! Your HP: " + target.Health + " / Enemy HP: " + this.Health);
-                this.Notify("Enemy " + target.ToString() + " has been hit. Enemy HP: " + target.Health);
+                target.Notify("You are being ATTACKED by " + this.ToString() + "!!! Your HP: " + target.Health + " / Enemy HP: " + this.Health);
+                this.Notify("Attack hit on enemy " + target.ToString() + ". Enemy HP: " + target.Health);
+                this.NotifyServer(this.ToString() + " attacked " + target.ToString());
+                this.NotifyServer(target.ToString() + " / HP = " + target.Health);
             }
         }
 
         public void AttackZone()
         {
-            ICollection<Player> targets = Map.GetPlayersNearPosition(ActualPosition);
-            foreach (Player target in targets)
+            if (EnabledAttackAction)
             {
-                Attack(target);
+                ICollection<Player> targets = Map.GetPlayersNearPosition(ActualPosition);
+                if (targets.Any())
+                {
+                    foreach (Player target in targets)
+                    {
+                        Attack(target);
+                    }
+                }
+                else
+                {
+                    Notify("No one is near you");
+                }
+
+               
+                
             }
+            else
+            {
+                Notify("Your attack action is disable");
+            }
+            
+
         }
 
         public CardinalPoint CompassDirection {
             get {
-                return playerController.ActualCompassDirection();
+                return movementController.ActualCompassDirection();
             }
 
             set {
-                playerController.Turn(value);
+                movementController.Turn(value);
             }
         }
 
         public void Move(Movement movement)
         {
-            Position newPosition = playerController.Move(this.ActualPosition, movement, 1);
+            Position newPosition = movementController.Move(this.ActualPosition, movement, 1);
             Map.MovePlayer(this.ActualPosition, newPosition);
             Notify("You moved to " + this.ActualPosition);
+            NotifyServer(this.ToString() + " moved to " + this.ActualPosition);
             SpotNearbyPlayers();
         }
 
         public void Turn(CardinalPoint direction)
         {
-            playerController.Turn(direction);
+            movementController.Turn(direction);
             Notify("You are looking at " + Enum.GetName(typeof(CardinalPoint), direction));
         }
 
         public void MoveFast(Movement movement)
         {
-            Position newPosition = playerController.Move(this.ActualPosition, movement, 2);
+            Position newPosition = movementController.Move(this.ActualPosition, movement, 2);
             Map.MovePlayer(this.ActualPosition, newPosition);
             Notify("You moved to " + this.ActualPosition);
+            NotifyServer(this.ToString() + " moved to " + this.ActualPosition);
             SpotNearbyPlayers();
         }
 
-        public abstract void Join(Game game, Position initialPosition);
+        public abstract void Join(Game game);
 
-        public void SpotNearbyPlayers()
+        public ICollection<Player> SpotNearbyPlayers()
         {
             ICollection<Player> playersSpotted = Map.GetPlayersNearPosition(ActualPosition);
             foreach (Player player in playersSpotted)
             {
-                player.Notify("You've been SPOTTED by "+this.ToString());
-                this.Notify(player+ " is close to you");
+                player.Notify("You've been SPOTTED by "+this.ToString()+" at "+ActualPosition);
+                this.Notify(player+ " is close to you at "+ player.ActualPosition);
             }
+
+            return playersSpotted;
         }
 
         public override string ToString()
@@ -129,7 +150,7 @@ namespace GameLogic
             if (!(obj is Player))
                 return false;
             Player parameter = (Player)obj;
-            return this.ToString() == parameter.ToString();
+            return this.Name == parameter.Name;
         }
     }
 

@@ -42,38 +42,32 @@
   <ItemGroup>
     <Compile Include="Authenticator.cs" />
     <Compile Include="GameController.cs" />
+    <Compile Include="ImageManager.cs" />
+    <Compile Include="NotPlayerCommandException.cs" />
     <Compile Include="PlayerController.cs" />
     <Compile Include="PlayerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DataAccessInterface\DataAccessInterface.csproj">
-      <Project>{7ae7f470-f30a-46bb-a30f-838bee343d01}</Project>
-      <Name>DataAccessInterface</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DataAccess\DataAccess.csproj">
       <Project>{3ea50ac5-8184-4342-8f3c-848f2cab1d1a}</Project>
       <Name>DataAccess</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GameLogicException\GameLogicExceptions.csproj">
-      <Project>{2D38E395-1625-4800-A3F4-42DC7ECD1813}</Project>
-      <Name>GameLogicExceptions</Name>
     </ProjectReference>
     <ProjectReference Include="..\GameLogic\GameLogic.csproj">
       <Project>{CD382591-EC53-46E1-BD7C-C1330B456505}</Project>
       <Name>GameLogic</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Logic\Logic.csproj">
+    <ProjectReference Include="..\Logic\UsersLogic.csproj">
       <Project>{1d6032d2-c6da-435c-9c5d-17edf7a8d102}</Project>
-      <Name>Logic</Name>
+      <Name>UsersLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Network\Network.csproj">
+      <Project>{0f818e5e-8192-4678-88b4-c4d0d4e05497}</Project>
+      <Name>Network</Name>
     </ProjectReference>
     <ProjectReference Include="..\Protocol\Protocol.csproj">
       <Project>{e0f8e2af-1558-42f8-9ccd-607090283875}</Project>
       <Name>Protocol</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ServiceExceptions\ServiceExceptions.csproj">
-      <Project>{CC4CB0B3-A1C7-46A0-B9A2-FD680F3FCC2E}</Project>
-      <Name>ServiceExceptions</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

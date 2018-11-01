@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Logic;
+using UsersLogic;
 using LogicExceptions;
 namespace LogicTest
 {
@@ -33,12 +33,6 @@ namespace LogicTest
         public void PathTest() {
             User fake = new User("nickname", "path");
             Assert.AreEqual(fake.Path, "path");
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(InvalidUserDataException))]
-        public void InvalidPathTest() {
-            User fake = new User("nickname", "");
         }
 
         [TestMethod]
