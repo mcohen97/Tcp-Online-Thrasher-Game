@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AdministrativeServer
 {
-    internal interface ILogManager
+    public interface ILogManager
     {
         string GetLastMatchLog();
     }

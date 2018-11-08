@@ -10,10 +10,13 @@ namespace AdministrativeServer
     {
         IUserCRUDService remoteUserStorage;
         IScoreService remoteScoreStorage;
+        ILogManager matchLogs;
+        string queueAddress = @".\private$\LogServer";
 
-        public WebService(IMessageReciever messageReciever) {
+        public WebService() {
             remoteUserStorage = (IUserCRUDService)Activator.GetObject(typeof(IUserCRUDService), "tcp://127.0.0.1:8000/Obligatorio2/UserService");
             remoteScoreStorage = (IScoreService)Activator.GetObject(typeof(IScoreService), "tcp://127.0.0.1:8000/Obligatorio2/ScoreService");
+            matchLogs = new QueueMatchLogManager(queueAddress);
         }
 
         public void AddUser(UserDto user)
@@ -38,6 +41,7 @@ namespace AdministrativeServer
 
         public string GetLastMatchLog()
         {
+            return matchLogs.GetLastMatchLog();
         }
 
         public ICollection<ScoreDto> GetTopScores()
