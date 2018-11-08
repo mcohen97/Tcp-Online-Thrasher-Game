@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.ServiceModel;
 using AdministrativeClient.ServiceReference;
 
 namespace Client
@@ -8,18 +10,40 @@ namespace Client
     {
         private IWebService server;
         public Admin() {
-            server = new WebServiceClient();
         }
 
         internal void RunClient()
         {
+            try
+            {
+                OpenConnection();
+                HandleClient();
+            }
+            catch (CommunicationException e) {
+                Console.WriteLine("Couldn't reach the server, check your connection");
+                Console.WriteLine("Press any key to exit");
+                Console.ReadKey();
+            }
+        }
+
+        private void OpenConnection()
+        {
+            server = new WebServiceClient();
+        }
+
+        private void HandleClient()
+        {
             bool endGame = false;
-            string[] options = new string[] { "Add user", "Modify user", "Delete user",
-                "Get all users", "Get last match log", "Get top match scores" };
-            while (!endGame) {
-                ShowMenu(options);
+            string[] options = new string[] { "ADD USER", "MODIFY USER", "DELETE USER",
+                "REGISTERED USERS", "LAST MATCH LOG", "TOP MATCH SCORES" };
+            while (!endGame)
+            {
+                Console.Clear();
+                EnnumerateList(options);
                 int option = GetOption(1, options.Length);
-                switch (option) {
+                Console.Clear();
+                switch (option)
+                {
                     case 1:
                         AddUser();
                         break;
@@ -39,9 +63,10 @@ namespace Client
                         GetTopScores();
                         break;
                 }
+                Console.WriteLine("Press any key to continue");
+                Console.ReadLine();
             }
         }
-
 
         public void AddUser()
         {
@@ -73,15 +98,23 @@ namespace Client
         {
             Console.WriteLine("LAST MATCH LOG");
             string log = server.GetLastMatchLog();
+            Console.WriteLine(log);
         }
 
         private void GetTopScores()
         {
             Console.WriteLine("TOP SCORES");
-            ScoreDto[] topScores =server.GetTopScores();
-            int number = 1;
-            foreach (ScoreDto dto in topScores) {
-                Console.Write(number + dto.UserNickname);
+            ICollection<ScoreDto> topScores =server.GetTopScores();
+            if (topScores.Any())
+            {
+                int number = 1;
+                foreach (ScoreDto dto in topScores)
+                {
+                    Console.Write(number + dto.UserNickname);
+                }
+            }
+            else {
+                Console.WriteLine("No matches were played");
             }
         }
 
@@ -90,41 +123,36 @@ namespace Client
             throw new NotImplementedException();
         }
 
-        private void ShowMenu(string[] options)
+        private void EnnumerateList(string[] options)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < options.Length; i++) {
+                Console.WriteLine((i + 1) + "-" + options[i]);
+            }
         }
 
-        private int GetOption(int max, int min)
+        private int GetOption(int min, int max)
         {
             bool valid = false;
             //will never leave the method without being assinged.
             int input=0;
             while (!valid)
             {
-                Console.WriteLine("Type option");
+                Console.WriteLine("Select option:");
                 string line = Console.ReadLine();
                 try
                 {
                     input = int.Parse(line);
-                    valid = true;
+                    valid = input>= min && input<=max;
                 }
                 catch (FormatException e)
                 {
-                    continue;
+                    //valid does not change
                 }
                 if (!valid) {
                     Console.WriteLine("You must enter a number between "+min+ " and "+max);
                 }
             }
             return input;
-        }
-
-        internal void GetUser()
-        {
-            UserDto retrieved = server.Get("Richard");
-            Console.WriteLine(retrieved.nickname + " " + retrieved.photoPath);
-            Console.ReadLine();
         }
     }
 }
