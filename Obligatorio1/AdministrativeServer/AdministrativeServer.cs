@@ -64,26 +64,7 @@ namespace AdministrativeServer
             gameServiceHost.Open();
             Console.WriteLine("Service is live now at: {0}", httpBaseAddress);
         }
-        /* internal void ModifyFakeUser()
-{
-   UserDto fake = new UserDto { nickname = "richard", photoPath = "test" };
-    remoteUserStorage.ModifyUser("test", fake);
-}
-
-internal void DeleteFakeUser()
-{
-    remoteUserStorage.DeleteUser("richard");
-}
-
-internal ICollection<UserDto> GetAll()
-{
-    return remoteUserStorage.GetAllUsers();
-}
-
-public void AddFakeUser() {
-    UserDto fake = new UserDto { nickname = "test", photoPath = "test" };
-    remoteUserStorage.AddUser(fake);
-}*/
+       
 
     }
 }
