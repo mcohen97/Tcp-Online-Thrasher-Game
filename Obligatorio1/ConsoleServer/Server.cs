@@ -49,16 +49,10 @@ namespace Network
             IPEndPoint address = new IPEndPoint(IPAddress.Parse(serverIp), int.Parse(serverPort));
             listener.Bind(address);
             slasher = new Game(int.Parse(preMatchTime), int.Parse(matchTime));
+            slasher.EndMatchEvent += SendGameLog;
             slasher.StartPreMatchTimer();
             serverWorking = true;
             clientConnections = new List<Socket>();
-            //to be deleted.
-            SendTestLog();
-        }
-
-        private void SendTestLog()
-        {
-            SendGameLog(new List<string>() { "Begin match", "End match" });
         }
 
         public void RunServer() {
@@ -138,7 +132,8 @@ namespace Network
             ExecuteService(toLunch);                      
         }
 
-        private void SendGameLog(ICollection<string> gameNarration) {
+        private void SendGameLog() {
+            ICollection<string> gameNarration = slasher.GetLogs();
             string matchLog = string.Join("\n",gameNarration);
             messageInfrastructure.SendMessage(matchLog);
         }

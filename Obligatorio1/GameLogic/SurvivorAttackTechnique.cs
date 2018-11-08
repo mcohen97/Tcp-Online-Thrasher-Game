@@ -4,6 +4,7 @@
     {
         private int hitPoints;
         private bool[] isAbleToAttackRole;
+        private int killScorePoints;
         public static readonly int DEFAULT_SURVIVOR_HITPOINTS = 5;
 
         public SurvivorAttackTechnique()
@@ -32,5 +33,7 @@
         {
             return isAbleToAttackRole[(int)role];
         }
+
+
     }
 }
