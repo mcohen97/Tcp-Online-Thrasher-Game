@@ -72,6 +72,113 @@ namespace AdministrativeClient.ServiceReference {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ScoreDto", Namespace="http://schemas.datacontract.org/2004/07/ScoreService")]
+    [System.SerializableAttribute()]
+    public partial class ScoreDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.DateTime DateField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int PointsField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private AdministrativeClient.ServiceReference.Role RolePlayedField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string UserNicknameField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime Date {
+            get {
+                return this.DateField;
+            }
+            set {
+                if ((this.DateField.Equals(value) != true)) {
+                    this.DateField = value;
+                    this.RaisePropertyChanged("Date");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Points {
+            get {
+                return this.PointsField;
+            }
+            set {
+                if ((this.PointsField.Equals(value) != true)) {
+                    this.PointsField = value;
+                    this.RaisePropertyChanged("Points");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public AdministrativeClient.ServiceReference.Role RolePlayed {
+            get {
+                return this.RolePlayedField;
+            }
+            set {
+                if ((this.RolePlayedField.Equals(value) != true)) {
+                    this.RolePlayedField = value;
+                    this.RaisePropertyChanged("RolePlayed");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string UserNickname {
+            get {
+                return this.UserNicknameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.UserNicknameField, value) != true)) {
+                    this.UserNicknameField = value;
+                    this.RaisePropertyChanged("UserNickname");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Role", Namespace="http://schemas.datacontract.org/2004/07/GameLogic")]
+    public enum Role : int {
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        MONSTER = 0,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        SURVIVOR = 1,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        NEUTRAL = 2,
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference.IWebService")]
     public interface IWebService {
@@ -105,6 +212,12 @@ namespace AdministrativeClient.ServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebService/GetAllUsers", ReplyAction="http://tempuri.org/IWebService/GetAllUsersResponse")]
         System.Threading.Tasks.Task<AdministrativeClient.ServiceReference.UserDto[]> GetAllUsersAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebService/GetTopScores", ReplyAction="http://tempuri.org/IWebService/GetTopScoresResponse")]
+        AdministrativeClient.ServiceReference.ScoreDto[] GetTopScores();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebService/GetTopScores", ReplyAction="http://tempuri.org/IWebService/GetTopScoresResponse")]
+        System.Threading.Tasks.Task<AdministrativeClient.ServiceReference.ScoreDto[]> GetTopScoresAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebService/GetLastMatchLog", ReplyAction="http://tempuri.org/IWebService/GetLastMatchLogResponse")]
         string GetLastMatchLog();
@@ -178,6 +291,14 @@ namespace AdministrativeClient.ServiceReference {
         
         public System.Threading.Tasks.Task<AdministrativeClient.ServiceReference.UserDto[]> GetAllUsersAsync() {
             return base.Channel.GetAllUsersAsync();
+        }
+        
+        public AdministrativeClient.ServiceReference.ScoreDto[] GetTopScores() {
+            return base.Channel.GetTopScores();
+        }
+        
+        public System.Threading.Tasks.Task<AdministrativeClient.ServiceReference.ScoreDto[]> GetTopScoresAsync() {
+            return base.Channel.GetTopScoresAsync();
         }
         
         public string GetLastMatchLog() {
