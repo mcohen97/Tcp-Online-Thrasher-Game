@@ -12,7 +12,6 @@ using System.Runtime.Remoting.Channels.Tcp;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting;
 using DataAccess;
-using System.Messaging;
 
 namespace Network
 {
@@ -24,10 +23,11 @@ namespace Network
         public bool serverWorking;
         private Game slasher;
         private TcpChannel remotingUserStorage;
-        private const string queueAddress = @".\private$\LogServer";
+        private IMessageSender messageInfrastructure;
 
-        public Server()
+        public Server(IMessageSender sender)
         {
+            messageInfrastructure = sender;
             try
             {
                 TrySetUpServer();
@@ -52,6 +52,13 @@ namespace Network
             slasher.StartPreMatchTimer();
             serverWorking = true;
             clientConnections = new List<Socket>();
+            //to be deleted.
+            SendTestLog();
+        }
+
+        private void SendTestLog()
+        {
+            SendGameLog(new List<string>() { "Begin match", "End match" });
         }
 
         public void RunServer() {
@@ -66,7 +73,11 @@ namespace Network
             ChannelServices.RegisterChannel(remotingUserStorage, false);
             RemotingConfiguration.RegisterWellKnownServiceType(
                 typeof(UserService),
-                "Obligatorio2",
+                "Obligatorio2/UserService",
+                WellKnownObjectMode.Singleton);
+            RemotingConfiguration.RegisterWellKnownServiceType(
+                typeof(ScoreService),
+                "Obligatorio2/ScoreService",
                 WellKnownObjectMode.Singleton);
         }
 
@@ -129,11 +140,7 @@ namespace Network
 
         private void SendGameLog(ICollection<string> gameNarration) {
             string matchLog = string.Join("\n",gameNarration);
-            using (MessageQueue logQueue = new MessageQueue(queueAddress)) {
-                Message mg = new Message();
-                mg.Body = matchLog;
-                logQueue.Send(mg);
-            }
+            messageInfrastructure.SendMessage(matchLog);
         }
 
         private void ExecuteService(GameController toLunch)

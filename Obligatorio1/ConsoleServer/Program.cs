@@ -16,30 +16,19 @@ namespace ConsoleServer
         private delegate bool EventHandler(CtrlType sig);
         static EventHandler _handler;
 
-        enum CtrlType
-        {
-            CTRL_C_EVENT = 0,
-            CTRL_BREAK_EVENT = 1,
-            CTRL_CLOSE_EVENT = 2,
-            CTRL_LOGOFF_EVENT = 5,
-            CTRL_SHUTDOWN_EVENT = 6
-        }
-
         public static Server gameServer;
-        public static TcpChannel remotingUserStorage;
 
-        private static bool Handler(CtrlType sig)
-        {
-            gameServer.serverWorking = false;
-            return true;
-        }
+        private const string formatName = "Formatname:DIRECT=TCP:";
+        private const string serverIP = "172.29.3.188";
+        private const string queueAddress = formatName +serverIP +@"\private$\LogServer";
+
 
         static void Main(string[] args)
         {
             _handler += new EventHandler(Handler);
             SetConsoleCtrlHandler(_handler, true);
-      
-            gameServer = new Server();
+            IMessageSender msmq = new MSMQSender(queueAddress);
+            gameServer = new Server(msmq);
             Thread listen = new Thread(new ThreadStart(() =>
             {
                 gameServer.RunServer();
@@ -47,7 +36,12 @@ namespace ConsoleServer
             listen.IsBackground = true;
             listen.Start();
             gameServer.ServerManagement();
-            ChannelServices.UnregisterChannel(remotingUserStorage);
+        }
+
+        private static bool Handler(CtrlType sig)
+        {
+            gameServer.serverWorking = false;
+            return true;
         }
     }
 }

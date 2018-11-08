@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DataAccess.Properties
+namespace DataAccess
 {
     public class ScoreService : MarshalByRefObject, IScoreService
     {
@@ -14,15 +14,15 @@ namespace DataAccess.Properties
         public ScoreService() {
             scores = ScoresInMemory.instance.Value;
         }
-        public ICollection<ScoreModel> GetLastScores()
+        public ICollection<ScoreDto> GetLastScores()
         {
             ICollection<Score> topScores = scores.GetScores();
             return topScores.Select(s => BuildScoreDto(s)).ToList();
         }
 
-        private ScoreModel BuildScoreDto(Score s)
+        private ScoreDto BuildScoreDto(Score s)
         {
-            return new ScoreModel() { UserNickname = s.PlayerName, RolePlayed = s.PlayerRole,
+            return new ScoreDto() { UserNickname = s.PlayerName, RolePlayed = s.PlayerRole,
                 Date = s.Date, Points = s.Points };
         }
     }

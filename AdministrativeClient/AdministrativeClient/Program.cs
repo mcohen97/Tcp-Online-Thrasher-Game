@@ -11,8 +11,7 @@ namespace Client
         static void Main(string[] args)
         {
             Admin client = new Admin();
-            client.AddUser();
-            client.GetUser();
+            client.RunClient();
         }
     }
 }
