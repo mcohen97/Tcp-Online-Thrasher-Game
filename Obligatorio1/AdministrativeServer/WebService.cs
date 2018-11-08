@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using RemoteServicesContracts;
+using ScoreService;
 using UserABM;
 
 namespace AdministrativeServer
@@ -7,9 +9,11 @@ namespace AdministrativeServer
     public class WebService : IWebService
     {
         IUserCRUDService remoteUserStorage;
+        IScoreService remoteScoreStorage;
 
-        public WebService() {
-            remoteUserStorage = (IUserCRUDService)Activator.GetObject(typeof(IUserCRUDService), "tcp://127.0.0.1:8000/Obligatorio2");
+        public WebService(IMessageReciever messageReciever) {
+            remoteUserStorage = (IUserCRUDService)Activator.GetObject(typeof(IUserCRUDService), "tcp://127.0.0.1:8000/Obligatorio2/UserService");
+            remoteScoreStorage = (IScoreService)Activator.GetObject(typeof(IScoreService), "tcp://127.0.0.1:8000/Obligatorio2/ScoreService");
         }
 
         public void AddUser(UserDto user)
@@ -34,7 +38,11 @@ namespace AdministrativeServer
 
         public string GetLastMatchLog()
         {
-            throw new NotImplementedException();
+        }
+
+        public ICollection<ScoreDto> GetTopScores()
+        {
+            return remoteScoreStorage.GetLastScores();
         }
 
         public void ModifyUser(string oldNickname, UserDto modified)

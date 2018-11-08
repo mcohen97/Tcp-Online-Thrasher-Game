@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ScoreService
 {
-    public class ScoreModel
+    public class ScoreDto
     {
         public string UserNickname { get; set; }
         public DateTime Date { get; set; }
