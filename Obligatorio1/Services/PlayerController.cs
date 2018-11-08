@@ -1,6 +1,6 @@
 ﻿using GameLogic;
 using GameLogicException;
-using Logic;
+using Network;
 using Protocol;
 using ServiceExceptions;
 using System;

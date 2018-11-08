@@ -98,7 +98,8 @@ namespace GameLogic
                 Map.RemovePlayer(ActualPosition);
                 Map.SurvivorCount--;
                 Map.PlayerRemovedEvent();
-                this.Notify("RIP - you are dead");
+                Notify("RIP - you are dead");
+                NotifyServer(this.ToString() + "is dead");
             }
         }
 
@@ -110,9 +111,11 @@ namespace GameLogic
                 throw new MapIsFullException("There are too many survivors, join as monster or wait");
 
             Map = game.Map;
-            ActualPosition = Map.GetEmptyPosition();
-            Map.AddPlayerToPosition(this, ActualPosition);
+            Map.AddPlayerToEmptyPosition(this);
             Map.SurvivorCount++;
+            NotifyServer += game.Notify;
+            NotifyServer(this.ToString() + " joined the game");
+            SpotNearbyPlayers();
         }
     }
 }

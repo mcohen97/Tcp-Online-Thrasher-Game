@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Logic;
-using Logic.Exceptions;
 using Protocol;
 using System.Net.Sockets;
 using System.IO;
@@ -24,9 +22,13 @@ namespace Network
             {
                 TryToSend(message);
             }
-            catch (SocketException e) {
-                throw new ConnectionLostException("Se perdio la conexion");
-            }      
+            catch (SocketException)
+            {
+                throw new ConnectionLostException("Connection lost");
+            }
+            catch (ObjectDisposedException) {
+                throw new ConnectionLostException("Connection lost");
+            }
         }
 
         private void TryToSend(Package message)
@@ -51,8 +53,12 @@ namespace Network
             {
                 received = TryToReceive();
             }
-            catch (SocketException e) {
-                throw new ConnectionLostException("Se perdio la conexion");
+            catch (SocketException)
+            {
+                throw new ConnectionLostException("Connection lost");
+            }
+            catch (ObjectDisposedException) {
+                throw new ConnectionLostException("Connection lost");
             }
             return received;
           
@@ -68,7 +74,7 @@ namespace Network
                 int current = connection.Receive(fixedPart, pos, Header.HEADER_LENGTH - pos, SocketFlags.None);
                 if (current == 0)
                 {
-                    throw new ConnectionLostException("Se perdio la conexion");
+                    throw new ConnectionLostException("Connection lost");
                 }
                 pos += current;
             }

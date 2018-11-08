@@ -8,14 +8,14 @@ namespace Protocol
 {
     public static class PlayerCommand
     {
-        public const string MOVE_FORWARD = "mf";
-        public const string MOVE_BACKWARD = "mb";
-        public const string MOVE_FAST_FORWARD = "mmf";
-        public const string MOVE_FAST_BACKWARD = "mmb";
-        public const string TURN_NORTH = "tn";
-        public const string TURN_EAST = "te";
-        public const string TURN_SOUTH = "ts";
-        public const string TURN_WEST = "tw";
-        public const string ATTACK = "ak";
+        public const string MOVE_FORWARD = "f";
+        public const string MOVE_BACKWARD = "b";
+        public const string MOVE_FAST_FORWARD = "ff";
+        public const string MOVE_FAST_BACKWARD = "bb";
+        public const string TURN_NORTH = "w";
+        public const string TURN_EAST = "d";
+        public const string TURN_SOUTH = "s";
+        public const string TURN_WEST = "a";
+        public const string ATTACK = "e";
     }
 }

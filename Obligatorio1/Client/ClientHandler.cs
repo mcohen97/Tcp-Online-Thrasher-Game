@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Network;
-using Logic;
 using Protocol;
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
-using Logic.Exceptions;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
@@ -32,7 +30,7 @@ namespace Client
                 Start();
             }
             catch (SocketException e) {
-                console.WriteLine("No se pudo conectar al servidor");
+                console.WriteLine("Couldn't connect to server");
                 console.ReadKey();
             }
             playing = false;
@@ -63,19 +61,22 @@ namespace Client
             }
             catch (ConnectionLostException e) {
                 console.WriteLine(e.Message);
+                console.WriteLine("Press any key to end client");
+                console.ReadKey();
             }
         }
 
         private void ExecuteClient()
         {
-            string[] menu = { "REGISTRARSE", "JUGAR", "JUGADORES REGISTRADOS", "JUGADORES EN PARTIDA", "SALIR" };
-            console.WriteLine("Bienvenido al juego");
+            string[] menu = { "REGISTER", "PLAY", "REGISTERED PLAYERS", "IN MATCH PLAYERS", "EXIT" };
+            console.WriteLine("Welcome to Monsters & Survivors");
             bool EndGame = false;
             while (!EndGame)
             {
                 console.Clear();
                 ShowMenu(menu);
                 int opcion = ReadInteger(1, menu.Length);
+                console.Clear();
                 switch (opcion)
                 {
                     case 1:
@@ -96,23 +97,36 @@ namespace Client
                         break;
 
                 }
-
+                console.WriteLine("Press any key to continue");
+                console.ReadKey();
             }
-            console.Write("Conexión finalizada");
+            console.Write("Connection ended");
         }
 
         private void ShowConnectedPlayers()
         {
+            Console.WriteLine("Players in match");
             List<string> playersList = functionalities.ListOfInGamePlayers();
-            ShowList(playersList);
-            console.ReadKey();
+            if (playersList.Any())
+            {
+                ShowList(playersList);
+            }
+            else {
+                Console.WriteLine("There are no players in match");
+            }
         }
 
         private void ShowRegisteredPlayers()
         {
+            Console.WriteLine("Registered players:");
             List<string> usersList = functionalities.ListOfRegisteredUsers();
-            ShowList(usersList);
-            console.ReadKey();
+            if (usersList.Any())
+            {
+                ShowList(usersList);
+            }
+            else {
+                Console.WriteLine("There are no registered players");
+            }
         }
 
         private void ShowList(List<string> usersList)
@@ -131,28 +145,26 @@ namespace Client
 
         private void Play()
         {
-            /* Header info = new Header();
-             info.Type = HeaderType.REQUEST;
-             info.Command = CommandType.ENTER_OR_CREATE_MATCH;
 
-             Package wantToPlay = new Package(info);
-             connection.SendMessage(wantToPlay);
-             */
             functionalities.Play();
             Package ok = connection.WaitForMessage();
             console.WriteLine(ok.Message());
             bool authenticateSuccess = Authenticate();
-            bool roleSelectionSuccess = ChooseRole();
-            if(authenticateSuccess && roleSelectionSuccess)
-                PlayMatch();
-            console.WriteLine("Press any key to continue");
-            console.ReadKey();
+            
+            if (authenticateSuccess) {
+                bool roleSelectionSuccess = ChooseRole();
+                if (roleSelectionSuccess) {
+                    PlayMatch();
+                }
+            }
+                
+ 
         }
 
         private bool ChooseRole()
         {
-            string[] menu = { "Monster", "Survivor", "SALIR" };
-            console.WriteLine("Seleccione el rol");
+            string[] menu = { "Monster", "Survivor", "Exit" };
+            console.WriteLine("Select Role:");
             console.Clear();
             ShowMenu(menu);
             int opcion = ReadInteger(1, menu.Length);
@@ -165,7 +177,7 @@ namespace Client
                     console.WriteLine(response.Message());
                     if (response.Command() == CommandType.ERROR)
                     {
-                        console.WriteLine("Presione una tecla para continuar");
+                        console.WriteLine("Press any key to continue");
                         console.ReadKey();
                         okResponse = false;
                     }
@@ -175,13 +187,14 @@ namespace Client
                     console.WriteLine(response.Message());
                     if (response.Command() == CommandType.ERROR)
                     {
-                        console.WriteLine("Presione una tecla para continuar");
+                        console.WriteLine("Press any key to continue");
                         console.ReadKey();
                         okResponse = false;
                     }
                     break;
                 case 3:
-                    Disconnect();
+                response = SendRequestPackage(CommandType.RETURN_TO_MENU, "");
+                    okResponse = false;
                     break;
                 default:
                     break;
@@ -192,14 +205,7 @@ namespace Client
 
         private bool Authenticate()
         {
-            string nick =GetInput("Ingrese nickname del jugador");
-            /*Header info = new Header();
-            info.Command = CommandType.AUTHENTICATE;
-            info.Type = HeaderType.REQUEST;
-            Package login = new Package(info);
-            login.Data = Encoding.Default.GetBytes(nick);
-
-            connection.SendMessage(login);*/
+            string nick =GetInput("Enter player nickname:");
             bool success = true;
             functionalities.Authenticate(nick);
             Package response = connection.WaitForMessage();
@@ -213,6 +219,7 @@ namespace Client
 
         private void PlayMatch()
         {
+            console.Clear();
             playing = true;
             Thread thread = new Thread(new ThreadStart(() => {
                 try
@@ -227,7 +234,7 @@ namespace Client
             thread.Start();
             while (playing)
             {
-                string command = GetInput("Command:");
+                string command = console.ReadLine();
                 if(playing)
                     SendPackage(CommandType.PLAYER_ACTION, command);
             }
@@ -262,18 +269,9 @@ namespace Client
 
         private void Register()
         {
-           // console.WriteLine("Ingrese nickname del usuario");
-            string nickname = GetInput("Ingrese nickname del jugador");
+            string nickname = GetInput("Enter player nickname:");
             functionalities.SendNickname(nickname);
 
-            /*Header info = new Header();
-            info.Type = HeaderType.REQUEST;
-            info.Command = CommandType.ADD_USER;
-            info.DataLength = nickname.Length;
-            Package toSend = new Package(info);
-            toSend.Data = Encoding.Default.GetBytes(nickname);
-
-            connection.SendMessage(toSend);*/
             Package nickResponse = connection.WaitForMessage();
             if (nickResponse.Command().Equals(CommandType.OK))
             {
@@ -288,17 +286,26 @@ namespace Client
                 console.WriteLine(nickResponse.Message());
             }
             
-            console.WriteLine("Presione una tecla para continuar");
-            console.ReadKey();
         }
 
         private string GetPath() {
+            string path = GetFromFileChooser();
+
+            while (string.IsNullOrEmpty(path))
+            {
+                Console.WriteLine("Select an image");
+                path = GetFromFileChooser();
+            }
+            return path;
+        }
+
+        private string GetFromFileChooser()
+        {
             string path;
             using (OpenFileDialog dlg = new OpenFileDialog())
             {
                 dlg.Title = "Open Image";
-                //dlg.Filter = "bmp files (*.bmp)|*.bmp";
-                dlg.Filter = "Image Files(*.BMP; *.JPG; *.GIF)| *.BMP; *.JPG; *.GIF | All files(*.*) | *.*";
+                dlg.Filter = "Image Files(*.BMP; *.JPG; *.JPEG ;*.GIF)| *.BMP; *.JPG; *.JPEG;  *.GIF | All files(*.*) | *.*";
 
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
@@ -324,15 +331,14 @@ namespace Client
             int input = 0;
             while (!correct)
             {
-                console.WriteLine("Digite el numero de opcion:");
+                console.WriteLine("Enter option number:");
                 string line = console.ReadLine();
-                console.Clear();
                 try
                 {
                     input = int.Parse(line);
                     if (input > max || input < min)
                     {
-                        console.WriteLine("Debe ingresar un numero entre " + min + " y " + max);
+                        console.WriteLine("Enter a number between " + min + " and " + max);
                     }
                     else
                     {
@@ -341,7 +347,7 @@ namespace Client
                 }
                 catch (FormatException e)
                 {
-                    console.WriteLine("Debe ingresar un numero entre " + min + " y " + max);
+                    console.WriteLine("Enter a number between " + min + " and " + max);
                 }
             }
             return input;

@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DataAccess</RootNamespace>
     <AssemblyName>DataAccess</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,19 +41,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\UserAlreadyExistsException.cs" />
+    <Compile Include="Exceptions\UserNotFoundException.cs" />
+    <Compile Include="IScoreRepository.cs" />
+    <Compile Include="IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserAlreadyExistsException.cs" />
-    <Compile Include="UserNotFoundException.cs" />
+    <Compile Include="ScoreService.cs" />
+    <Compile Include="ScoresInMemory.cs" />
+    <Compile Include="UserService.cs" />
     <Compile Include="UsersInMemory.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DataAccessInterface\DataAccessInterface.csproj">
-      <Project>{7ae7f470-f30a-46bb-a30f-838bee343d01}</Project>
-      <Name>DataAccessInterface</Name>
+    <ProjectReference Include="..\GameLogic\GameLogic.csproj">
+      <Project>{CD382591-EC53-46E1-BD7C-C1330B456505}</Project>
+      <Name>GameLogic</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Logic\Logic.csproj">
+    <ProjectReference Include="..\Logic\UsersLogic.csproj">
       <Project>{1d6032d2-c6da-435c-9c5d-17edf7a8d102}</Project>
-      <Name>Logic</Name>
+      <Name>UsersLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RemoteServicesContracts\RemoteServicesContracts.csproj">
+      <Project>{6953aea9-3e26-4577-915b-83bfbb56ac08}</Project>
+      <Name>RemoteServicesContracts</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
