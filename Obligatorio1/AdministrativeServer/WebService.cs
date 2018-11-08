@@ -46,12 +46,12 @@ namespace AdministrativeServer
 
         public ICollection<ScoreDto> GetTopScores()
         {
-            return remoteScoreStorage.GetLastScores();
+            return remoteScoreStorage.GetTopScores();
         }
 
         public void ModifyUser(string oldNickname, UserDto modified)
         {
-            throw new NotImplementedException();
+            remoteUserStorage.ModifyUser(oldNickname, modified);
         }
     }
 }
