@@ -10,10 +10,13 @@ namespace GameLogic
     public class Monster : Player
     {
         public static readonly int DEFAULT_MONSTER_HEALTH = 100;
+        public static readonly int DEFAULT_MONSTER_KILLSCOREPOINTS = 20;
+
         private Role role;
         private int health;
         private Position actualPosition;
         private AttackTechnique technique;
+        private int killScorePoints;
         private GameMap map;
         private bool enabledAttackAction;
 
@@ -23,6 +26,8 @@ namespace GameLogic
             this.role = Role.MONSTER;
             this.actualPosition = new Position(0, 0);
             this.technique = new MonsterAttackTechnique();
+            killScorePoints = DEFAULT_MONSTER_KILLSCOREPOINTS;
+
         }
 
         public Monster(Position initialPosition)
@@ -42,6 +47,9 @@ namespace GameLogic
                 health = value;
             }
         }
+
+        public override int KillScorePoints { get => killScorePoints; protected set => killScorePoints = value; }
+
 
         public override Role Role {
             get {

@@ -14,7 +14,6 @@ namespace GameLogic
         private int monsterCount;
         private int survivorCount;
         private int playerCapacity;
-
         public int PlayerCount {
             get {
                 return monsterCount + survivorCount ;
@@ -226,5 +225,7 @@ namespace GameLogic
             }
             return players;
         }
+
+
     }
 }

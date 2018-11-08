@@ -6,12 +6,15 @@ namespace GameLogic
     public class Survivor:Player
     {
         public static readonly int DEFAULT_SURVIVOR_HEALTH = 20;
+        public static readonly int DEFAULT_SURVIVOR_KILLSCOREPOINTS = 50;
+
         private Role role;
         private int health;
         private Position actualPosition;
         private AttackTechnique technique;
         private GameMap map;
         private bool enabledAttackAction;
+        private int killScorePoints;
 
         public Survivor()
         {
@@ -19,6 +22,7 @@ namespace GameLogic
             this.role = Role.SURVIVOR;
             this.actualPosition = new Position(0, 0);
             this.technique = new SurvivorAttackTechnique();
+            this.killScorePoints = DEFAULT_SURVIVOR_KILLSCOREPOINTS;
 
         }
 
@@ -29,6 +33,8 @@ namespace GameLogic
             this.role = Role.SURVIVOR;
             this.actualPosition = initialPosition;
         }
+
+        public override int KillScorePoints { get => killScorePoints; protected set => killScorePoints = value; }
 
         public override int Health {
             get {

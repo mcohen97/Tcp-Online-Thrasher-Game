@@ -18,17 +18,21 @@ namespace Services
         private Player player;
         private Game game;
         private bool matchEnded;
-        private string queueName;
+        private Score playerScore;
 
         public PlayerController(Session session, Game gameJoined, Player playerToControl)
         {
             clientSession = session;
             game = gameJoined;
             player = playerToControl;
+
+            playerScore = new Score(player, 0, DateTime.Now);
+
             matchEnded = false;
-            gameJoined.EndMatchEvent += MatchEnded;
-            gameJoined.EndMatchEvent += Send;
-            playerToControl.NotifyServer += gameJoined.LogAction;
+            game.AddScore(playerScore);
+            game.EndMatchEvent += MatchEnded;
+            player.NotifyServer += gameJoined.LogAction;
+            player.AddPoints += playerScore.AddPoints;
         }
 
         public void Play()
@@ -59,6 +63,7 @@ namespace Services
                         break;
                 }
             }
+            player.Notify("Your score was: " + playerScore.Points);
 
         }
 
@@ -107,18 +112,6 @@ namespace Services
             matchEnded = true;
         }
 
-        private void Send()
-        {
-            if (!MessageQueue.Exists(queueName))
-            {
-                MessageQueue.Create(queueName);
-            }
-            using (var myQueue = new MessageQueue(queueName))
-            {
-                var logMessages = new Message(game.GetLogs());
-                myQueue.Send(logMessages);
-            }
-        }
 
     }
 }

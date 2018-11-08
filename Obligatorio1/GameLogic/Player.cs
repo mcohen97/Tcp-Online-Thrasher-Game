@@ -15,6 +15,7 @@ namespace GameLogic
         }
         public abstract Role Role { get; protected set; }
         public abstract int Health { get; protected set; }
+        public abstract int KillScorePoints { get; protected set; }
         public virtual int HitPoints {
             get {
                 return Technique.HitPoints;
@@ -37,6 +38,8 @@ namespace GameLogic
         public Action<string> Notify { get; set; }
         public Action<string> NotifyServer { get; set; }
         public abstract bool EnabledAttackAction { get; set; }
+        public Action<int> AddPoints { get; set; }
+
 
         public Player()
         {
@@ -46,6 +49,7 @@ namespace GameLogic
             EnabledAttackAction = true;
             Notify += (s) => { }; //Do nothing
             NotifyServer += (s) => { }; //Do nothing
+            AddPoints += (n) => { }; //Do nothing
         }
 
         protected abstract void Damage(int hitPoints);
@@ -55,10 +59,14 @@ namespace GameLogic
             if (Technique.CanAttack(target.Role))
             {
                 target.Damage(Technique.HitPoints);
+                if (target.IsDead)
+                    AddPoints(KillScorePoints);
+
                 target.Notify("You are being ATTACKED by " + this.ToString() + "!!! Your HP: " + target.Health + " / Enemy HP: " + this.Health);
                 this.Notify("Attack hit on enemy " + target.ToString() + ". Enemy HP: " + target.Health);
                 this.NotifyServer(this.ToString() + " attacked " + target.ToString());
                 this.NotifyServer(target.ToString() + " / HP = " + target.Health);
+                
             }
         }
 

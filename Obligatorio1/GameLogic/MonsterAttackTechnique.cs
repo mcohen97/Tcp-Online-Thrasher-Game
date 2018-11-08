@@ -6,6 +6,7 @@ namespace GameLogic
     public class MonsterAttackTechnique : AttackTechnique
     {
         private int hitPoints;
+        private int killScorePoints;
         private bool[] isAbleToAttackRole;
         public static readonly int DEFAULT_MONSTER_HITPOINTS = 10;
 
@@ -38,5 +39,6 @@ namespace GameLogic
         {
             return isAbleToAttackRole[(int) role];
         }
+
     }
 }

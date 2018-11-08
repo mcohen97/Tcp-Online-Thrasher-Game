@@ -22,6 +22,11 @@ namespace GameLogic
             }
             points = value;
         }
+
+        public void AddPoints(int pointsToAdd)
+        {
+            Points += pointsToAdd;
+        }
          
         public Score(Player player,int scored, DateTime gameDate) {
             PlayerName = player.Name;
