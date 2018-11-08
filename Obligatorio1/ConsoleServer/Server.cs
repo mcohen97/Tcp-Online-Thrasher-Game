@@ -53,13 +53,6 @@ namespace Network
             slasher.StartPreMatchTimer();
             serverWorking = true;
             clientConnections = new List<Socket>();
-            //to be deleted.
-            SendTestLog();
-        }
-
-        private void SendTestLog()
-        {
-            //SendGameLog(new List<string>() { "Begin match", "End match" });
         }
 
         public void RunServer() {
