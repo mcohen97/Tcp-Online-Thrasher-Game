@@ -1,4 +1,5 @@
 ﻿
+using ScoreService;
 using System.Collections.Generic;
 using System.ServiceModel;
 using UserABM;
@@ -22,6 +23,9 @@ namespace AdministrativeServer
 
         [OperationContract]
         ICollection<UserDto> GetAllUsers();
+
+        [OperationContract]
+        ICollection<ScoreDto> GetTopScores();
 
         [OperationContract]
         string GetLastMatchLog();
