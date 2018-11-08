@@ -14,7 +14,7 @@ namespace DataAccess
         public ScoreService() {
             scores = ScoresInMemory.instance.Value;
         }
-        public ICollection<ScoreDto> GetLastScores()
+        public ICollection<ScoreDto> GetTopScores()
         {
             ICollection<Score> topScores = scores.GetScores();
             return topScores.Select(s => BuildScoreDto(s)).ToList();
