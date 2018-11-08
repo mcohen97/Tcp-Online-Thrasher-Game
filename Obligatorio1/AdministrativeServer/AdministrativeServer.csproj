@@ -49,6 +49,7 @@
     <Compile Include="AdministrativeServer.cs" />
     <Compile Include="ILogManager.cs" />
     <Compile Include="IWebService.cs" />
+    <Compile Include="MatchLogManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebService.cs" />
