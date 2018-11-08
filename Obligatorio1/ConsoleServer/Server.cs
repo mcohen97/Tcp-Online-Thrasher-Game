@@ -59,7 +59,7 @@ namespace Network
 
         private void SendTestLog()
         {
-            SendGameLog(new List<string>() { "Begin match", "End match" });
+            //SendGameLog(new List<string>() { "Begin match", "End match" });
         }
 
         public void RunServer() {
