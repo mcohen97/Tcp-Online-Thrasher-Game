@@ -6,6 +6,7 @@ using ServiceExceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,6 +18,7 @@ namespace Services
         private Player player;
         private Game game;
         private bool matchEnded;
+        private string queueName;
 
         public PlayerController(Session session, Game gameJoined, Player playerToControl)
         {
@@ -25,6 +27,8 @@ namespace Services
             player = playerToControl;
             matchEnded = false;
             gameJoined.EndMatchEvent += MatchEnded;
+            gameJoined.EndMatchEvent += Send;
+            playerToControl.NotifyServer += gameJoined.LogAction;
         }
 
         public void Play()
@@ -103,6 +107,18 @@ namespace Services
             matchEnded = true;
         }
 
-        
+        private void Send()
+        {
+            if (!MessageQueue.Exists(queueName))
+            {
+                MessageQueue.Create(queueName);
+            }
+            using (var myQueue = new MessageQueue(queueName))
+            {
+                var logMessages = new Message(game.GetLogs());
+                myQueue.Send(logMessages);
+            }
+        }
+
     }
 }
