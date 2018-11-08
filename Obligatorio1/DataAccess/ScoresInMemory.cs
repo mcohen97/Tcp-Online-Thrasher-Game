@@ -43,7 +43,11 @@ namespace DataAccess
 
         public ICollection<Score> GetScores()
         {
-            return scoresQueue.ToList();
+            List<Score> scores = new List<Score>();
+            for (int i = 0; i < scoresQueue.Length && scoresQueue[i] != null; i++) {
+                scores.Add(scoresQueue[i]);
+            }
+            return scores;
         }
     }
 }
