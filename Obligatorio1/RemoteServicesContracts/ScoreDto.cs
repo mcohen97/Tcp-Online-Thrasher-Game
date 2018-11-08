@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ScoreService
 {
+    [Serializable]
     public class ScoreDto
     {
         public string UserNickname { get; set; }
