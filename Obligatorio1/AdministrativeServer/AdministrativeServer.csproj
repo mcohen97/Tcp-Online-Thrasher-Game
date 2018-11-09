@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdministrativeServer.cs" />
+    <Compile Include="GameServiceException.cs" />
     <Compile Include="ILogManager.cs" />
     <Compile Include="IWebService.cs" />
     <Compile Include="QueueMatchLogManager.cs" />
