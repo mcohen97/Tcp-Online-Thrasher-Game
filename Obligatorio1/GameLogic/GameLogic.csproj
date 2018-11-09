@@ -55,6 +55,8 @@
     <Compile Include="Exceptions\UnfinishedMatchException.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameMap.cs" />
+    <Compile Include="GameReport.cs" />
+    <Compile Include="PlayerReportField.cs" />
     <Compile Include="IMovementController.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="Movement.cs" />
