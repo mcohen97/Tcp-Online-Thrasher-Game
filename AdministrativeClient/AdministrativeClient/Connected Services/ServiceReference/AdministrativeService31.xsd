@@ -1,19 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/ScoreService" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/ScoreService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:4321/AdministrativeService?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/GameLogic" />
-  <xs:complexType name="ArrayOfScoreDto">
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/ActionResults" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/ActionResults" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:4321/AdministrativeService?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/UserCRUDService" />
+  <xs:import schemaLocation="http://localhost:4321/AdministrativeService?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/GamesInfoService" />
+  <xs:import schemaLocation="http://localhost:4321/AdministrativeService?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/UserCRUDServiceContract" />
+  <xs:complexType name="UserActionResult">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ActionResult">
+        <xs:sequence>
+          <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/UserCRUDService" minOccurs="0" name="User" nillable="true" type="q1:UserDto" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="UserActionResult" nillable="true" type="tns:UserActionResult" />
+  <xs:complexType name="ActionResult">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="ScoreDto" nillable="true" type="tns:ScoreDto" />
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Success" type="xs:boolean" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ArrayOfScoreDto" nillable="true" type="tns:ArrayOfScoreDto" />
-  <xs:complexType name="ScoreDto">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Date" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="Points" type="xs:int" />
-      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/GameLogic" minOccurs="0" name="RolePlayed" type="q1:Role" />
-      <xs:element minOccurs="0" name="UserNickname" nillable="true" type="xs:string" />
-    </xs:sequence>
+  <xs:element name="ActionResult" nillable="true" type="tns:ActionResult" />
+  <xs:complexType name="UserListActionResult">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ActionResult">
+        <xs:sequence>
+          <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/UserCRUDService" minOccurs="0" name="UsersList" nillable="true" type="q2:ArrayOfUserDto" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
-  <xs:element name="ScoreDto" nillable="true" type="tns:ScoreDto" />
+  <xs:element name="UserListActionResult" nillable="true" type="tns:UserListActionResult" />
+  <xs:complexType name="ScoreListActionResult">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ActionResult">
+        <xs:sequence>
+          <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/GamesInfoService" minOccurs="0" name="ScoreList" nillable="true" type="q3:ArrayOfScoreDto" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ScoreListActionResult" nillable="true" type="tns:ScoreListActionResult" />
+  <xs:complexType name="GamesStatisticsActionResult">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ActionResult">
+        <xs:sequence>
+          <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/UserCRUDServiceContract" minOccurs="0" name="GamesStatistics" nillable="true" type="q4:ArrayOfGameReportDto" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="GamesStatisticsActionResult" nillable="true" type="tns:GamesStatisticsActionResult" />
 </xs:schema>

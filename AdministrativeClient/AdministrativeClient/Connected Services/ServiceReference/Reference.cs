@@ -15,7 +15,7 @@ namespace AdministrativeClient.ServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="UserDto", Namespace="http://schemas.datacontract.org/2004/07/UserABM")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="UserDto", Namespace="http://schemas.datacontract.org/2004/07/UserCRUDService")]
     [System.SerializableAttribute()]
     public partial class UserDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
@@ -74,24 +74,22 @@ namespace AdministrativeClient.ServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ScoreDto", Namespace="http://schemas.datacontract.org/2004/07/ScoreService")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ActionResult", Namespace="http://schemas.datacontract.org/2004/07/ActionResults")]
     [System.SerializableAttribute()]
-    public partial class ScoreDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AdministrativeClient.ServiceReference.UserListActionResult))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AdministrativeClient.ServiceReference.ScoreListActionResult))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AdministrativeClient.ServiceReference.GamesStatisticsActionResult))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(AdministrativeClient.ServiceReference.UserActionResult))]
+    public partial class ActionResult : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.DateTime DateField;
+        private string MessageField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int PointsField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private AdministrativeClient.ServiceReference.Role RolePlayedField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string UserNicknameField;
+        private bool SuccessField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -104,53 +102,208 @@ namespace AdministrativeClient.ServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.DateTime Date {
+        public string Message {
             get {
-                return this.DateField;
+                return this.MessageField;
             }
             set {
-                if ((this.DateField.Equals(value) != true)) {
-                    this.DateField = value;
-                    this.RaisePropertyChanged("Date");
+                if ((object.ReferenceEquals(this.MessageField, value) != true)) {
+                    this.MessageField = value;
+                    this.RaisePropertyChanged("Message");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int Points {
+        public bool Success {
             get {
-                return this.PointsField;
+                return this.SuccessField;
             }
             set {
-                if ((this.PointsField.Equals(value) != true)) {
-                    this.PointsField = value;
-                    this.RaisePropertyChanged("Points");
+                if ((this.SuccessField.Equals(value) != true)) {
+                    this.SuccessField = value;
+                    this.RaisePropertyChanged("Success");
                 }
             }
         }
         
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="UserListActionResult", Namespace="http://schemas.datacontract.org/2004/07/ActionResults")]
+    [System.SerializableAttribute()]
+    public partial class UserListActionResult : AdministrativeClient.ServiceReference.ActionResult {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private AdministrativeClient.ServiceReference.UserDto[] UsersListField;
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public AdministrativeClient.ServiceReference.Role RolePlayed {
+        public AdministrativeClient.ServiceReference.UserDto[] UsersList {
             get {
-                return this.RolePlayedField;
+                return this.UsersListField;
             }
             set {
-                if ((this.RolePlayedField.Equals(value) != true)) {
-                    this.RolePlayedField = value;
-                    this.RaisePropertyChanged("RolePlayed");
+                if ((object.ReferenceEquals(this.UsersListField, value) != true)) {
+                    this.UsersListField = value;
+                    this.RaisePropertyChanged("UsersList");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ScoreListActionResult", Namespace="http://schemas.datacontract.org/2004/07/ActionResults")]
+    [System.SerializableAttribute()]
+    public partial class ScoreListActionResult : AdministrativeClient.ServiceReference.ActionResult {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private AdministrativeClient.ServiceReference.ScoreDto[] ScoreListField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public AdministrativeClient.ServiceReference.ScoreDto[] ScoreList {
+            get {
+                return this.ScoreListField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ScoreListField, value) != true)) {
+                    this.ScoreListField = value;
+                    this.RaisePropertyChanged("ScoreList");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="GamesStatisticsActionResult", Namespace="http://schemas.datacontract.org/2004/07/ActionResults")]
+    [System.SerializableAttribute()]
+    public partial class GamesStatisticsActionResult : AdministrativeClient.ServiceReference.ActionResult {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private AdministrativeClient.ServiceReference.GameReportDto[] GamesStatisticsField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public AdministrativeClient.ServiceReference.GameReportDto[] GamesStatistics {
+            get {
+                return this.GamesStatisticsField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.GamesStatisticsField, value) != true)) {
+                    this.GamesStatisticsField = value;
+                    this.RaisePropertyChanged("GamesStatistics");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="UserActionResult", Namespace="http://schemas.datacontract.org/2004/07/ActionResults")]
+    [System.SerializableAttribute()]
+    public partial class UserActionResult : AdministrativeClient.ServiceReference.ActionResult {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private AdministrativeClient.ServiceReference.UserDto UserField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public AdministrativeClient.ServiceReference.UserDto User {
+            get {
+                return this.UserField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.UserField, value) != true)) {
+                    this.UserField = value;
+                    this.RaisePropertyChanged("User");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ScoreDto", Namespace="http://schemas.datacontract.org/2004/07/GamesInfoService")]
+    [System.SerializableAttribute()]
+    public partial class ScoreDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        private System.DateTime Datek__BackingFieldField;
+        
+        private int Pointsk__BackingFieldField;
+        
+        private AdministrativeClient.ServiceReference.Role RolePlayedk__BackingFieldField;
+        
+        private string UserNicknamek__BackingFieldField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Name="<Date>k__BackingField", IsRequired=true)]
+        public System.DateTime Datek__BackingField {
+            get {
+                return this.Datek__BackingFieldField;
+            }
+            set {
+                if ((this.Datek__BackingFieldField.Equals(value) != true)) {
+                    this.Datek__BackingFieldField = value;
+                    this.RaisePropertyChanged("Datek__BackingField");
                 }
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string UserNickname {
+        [System.Runtime.Serialization.DataMemberAttribute(Name="<Points>k__BackingField", IsRequired=true)]
+        public int Pointsk__BackingField {
             get {
-                return this.UserNicknameField;
+                return this.Pointsk__BackingFieldField;
             }
             set {
-                if ((object.ReferenceEquals(this.UserNicknameField, value) != true)) {
-                    this.UserNicknameField = value;
-                    this.RaisePropertyChanged("UserNickname");
+                if ((this.Pointsk__BackingFieldField.Equals(value) != true)) {
+                    this.Pointsk__BackingFieldField = value;
+                    this.RaisePropertyChanged("Pointsk__BackingField");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Name="<RolePlayed>k__BackingField", IsRequired=true)]
+        public AdministrativeClient.ServiceReference.Role RolePlayedk__BackingField {
+            get {
+                return this.RolePlayedk__BackingFieldField;
+            }
+            set {
+                if ((this.RolePlayedk__BackingFieldField.Equals(value) != true)) {
+                    this.RolePlayedk__BackingFieldField = value;
+                    this.RaisePropertyChanged("RolePlayedk__BackingField");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Name="<UserNickname>k__BackingField", IsRequired=true)]
+        public string UserNicknamek__BackingField {
+            get {
+                return this.UserNicknamek__BackingFieldField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.UserNicknamek__BackingFieldField, value) != true)) {
+                    this.UserNicknamek__BackingFieldField = value;
+                    this.RaisePropertyChanged("UserNicknamek__BackingField");
                 }
             }
         }
@@ -179,45 +332,189 @@ namespace AdministrativeClient.ServiceReference {
         NEUTRAL = 2,
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="GameReportDto", Namespace="http://schemas.datacontract.org/2004/07/UserCRUDServiceContract")]
+    [System.SerializableAttribute()]
+    public partial class GameReportDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.DateTime DateField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private AdministrativeClient.ServiceReference.PlayerFieldDto[] PlayersReportsField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime Date {
+            get {
+                return this.DateField;
+            }
+            set {
+                if ((this.DateField.Equals(value) != true)) {
+                    this.DateField = value;
+                    this.RaisePropertyChanged("Date");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public AdministrativeClient.ServiceReference.PlayerFieldDto[] PlayersReports {
+            get {
+                return this.PlayersReportsField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.PlayersReportsField, value) != true)) {
+                    this.PlayersReportsField = value;
+                    this.RaisePropertyChanged("PlayersReports");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="PlayerFieldDto", Namespace="http://schemas.datacontract.org/2004/07/UserCRUDServiceContract")]
+    [System.SerializableAttribute()]
+    public partial class PlayerFieldDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string PlayerNameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string RolePlayedField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool WonField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string PlayerName {
+            get {
+                return this.PlayerNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.PlayerNameField, value) != true)) {
+                    this.PlayerNameField = value;
+                    this.RaisePropertyChanged("PlayerName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string RolePlayed {
+            get {
+                return this.RolePlayedField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.RolePlayedField, value) != true)) {
+                    this.RolePlayedField = value;
+                    this.RaisePropertyChanged("RolePlayed");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool Won {
+            get {
+                return this.WonField;
+            }
+            set {
+                if ((this.WonField.Equals(value) != true)) {
+                    this.WonField = value;
+                    this.RaisePropertyChanged("Won");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference.IWebService")]
     public interface IWebService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebService/AddUser", ReplyAction="http://tempuri.org/IWebService/AddUserResponse")]
-        void AddUser(AdministrativeClient.ServiceReference.UserDto user);
+        string AddUser(AdministrativeClient.ServiceReference.UserDto user);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebService/AddUser", ReplyAction="http://tempuri.org/IWebService/AddUserResponse")]
-        System.Threading.Tasks.Task AddUserAsync(AdministrativeClient.ServiceReference.UserDto user);
+        System.Threading.Tasks.Task<string> AddUserAsync(AdministrativeClient.ServiceReference.UserDto user);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebService/DeleteUser", ReplyAction="http://tempuri.org/IWebService/DeleteUserResponse")]
-        void DeleteUser(string nickname);
+        string DeleteUser(string nickname);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebService/DeleteUser", ReplyAction="http://tempuri.org/IWebService/DeleteUserResponse")]
-        System.Threading.Tasks.Task DeleteUserAsync(string nickname);
+        System.Threading.Tasks.Task<string> DeleteUserAsync(string nickname);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebService/ModifyUser", ReplyAction="http://tempuri.org/IWebService/ModifyUserResponse")]
-        void ModifyUser(string oldNickname, AdministrativeClient.ServiceReference.UserDto modified);
+        string ModifyUser(string oldNickname, AdministrativeClient.ServiceReference.UserDto modified);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebService/ModifyUser", ReplyAction="http://tempuri.org/IWebService/ModifyUserResponse")]
-        System.Threading.Tasks.Task ModifyUserAsync(string oldNickname, AdministrativeClient.ServiceReference.UserDto modified);
+        System.Threading.Tasks.Task<string> ModifyUserAsync(string oldNickname, AdministrativeClient.ServiceReference.UserDto modified);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebService/Get", ReplyAction="http://tempuri.org/IWebService/GetResponse")]
-        AdministrativeClient.ServiceReference.UserDto Get(string userName);
+        AdministrativeClient.ServiceReference.UserActionResult Get(string userName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebService/Get", ReplyAction="http://tempuri.org/IWebService/GetResponse")]
-        System.Threading.Tasks.Task<AdministrativeClient.ServiceReference.UserDto> GetAsync(string userName);
+        System.Threading.Tasks.Task<AdministrativeClient.ServiceReference.UserActionResult> GetAsync(string userName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebService/GetAllUsers", ReplyAction="http://tempuri.org/IWebService/GetAllUsersResponse")]
-        AdministrativeClient.ServiceReference.UserDto[] GetAllUsers();
+        AdministrativeClient.ServiceReference.UserListActionResult GetAllUsers();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebService/GetAllUsers", ReplyAction="http://tempuri.org/IWebService/GetAllUsersResponse")]
-        System.Threading.Tasks.Task<AdministrativeClient.ServiceReference.UserDto[]> GetAllUsersAsync();
+        System.Threading.Tasks.Task<AdministrativeClient.ServiceReference.UserListActionResult> GetAllUsersAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebService/GetTopScores", ReplyAction="http://tempuri.org/IWebService/GetTopScoresResponse")]
-        AdministrativeClient.ServiceReference.ScoreDto[] GetTopScores();
+        AdministrativeClient.ServiceReference.ScoreListActionResult GetTopScores();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebService/GetTopScores", ReplyAction="http://tempuri.org/IWebService/GetTopScoresResponse")]
-        System.Threading.Tasks.Task<AdministrativeClient.ServiceReference.ScoreDto[]> GetTopScoresAsync();
+        System.Threading.Tasks.Task<AdministrativeClient.ServiceReference.ScoreListActionResult> GetTopScoresAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebService/GetLastGamesStatistics", ReplyAction="http://tempuri.org/IWebService/GetLastGamesStatisticsResponse")]
+        AdministrativeClient.ServiceReference.GamesStatisticsActionResult GetLastGamesStatistics();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebService/GetLastGamesStatistics", ReplyAction="http://tempuri.org/IWebService/GetLastGamesStatisticsResponse")]
+        System.Threading.Tasks.Task<AdministrativeClient.ServiceReference.GamesStatisticsActionResult> GetLastGamesStatisticsAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebService/GetLastMatchLog", ReplyAction="http://tempuri.org/IWebService/GetLastMatchLogResponse")]
         string GetLastMatchLog();
@@ -253,52 +550,60 @@ namespace AdministrativeClient.ServiceReference {
                 base(binding, remoteAddress) {
         }
         
-        public void AddUser(AdministrativeClient.ServiceReference.UserDto user) {
-            base.Channel.AddUser(user);
+        public string AddUser(AdministrativeClient.ServiceReference.UserDto user) {
+            return base.Channel.AddUser(user);
         }
         
-        public System.Threading.Tasks.Task AddUserAsync(AdministrativeClient.ServiceReference.UserDto user) {
+        public System.Threading.Tasks.Task<string> AddUserAsync(AdministrativeClient.ServiceReference.UserDto user) {
             return base.Channel.AddUserAsync(user);
         }
         
-        public void DeleteUser(string nickname) {
-            base.Channel.DeleteUser(nickname);
+        public string DeleteUser(string nickname) {
+            return base.Channel.DeleteUser(nickname);
         }
         
-        public System.Threading.Tasks.Task DeleteUserAsync(string nickname) {
+        public System.Threading.Tasks.Task<string> DeleteUserAsync(string nickname) {
             return base.Channel.DeleteUserAsync(nickname);
         }
         
-        public void ModifyUser(string oldNickname, AdministrativeClient.ServiceReference.UserDto modified) {
-            base.Channel.ModifyUser(oldNickname, modified);
+        public string ModifyUser(string oldNickname, AdministrativeClient.ServiceReference.UserDto modified) {
+            return base.Channel.ModifyUser(oldNickname, modified);
         }
         
-        public System.Threading.Tasks.Task ModifyUserAsync(string oldNickname, AdministrativeClient.ServiceReference.UserDto modified) {
+        public System.Threading.Tasks.Task<string> ModifyUserAsync(string oldNickname, AdministrativeClient.ServiceReference.UserDto modified) {
             return base.Channel.ModifyUserAsync(oldNickname, modified);
         }
         
-        public AdministrativeClient.ServiceReference.UserDto Get(string userName) {
+        public AdministrativeClient.ServiceReference.UserActionResult Get(string userName) {
             return base.Channel.Get(userName);
         }
         
-        public System.Threading.Tasks.Task<AdministrativeClient.ServiceReference.UserDto> GetAsync(string userName) {
+        public System.Threading.Tasks.Task<AdministrativeClient.ServiceReference.UserActionResult> GetAsync(string userName) {
             return base.Channel.GetAsync(userName);
         }
         
-        public AdministrativeClient.ServiceReference.UserDto[] GetAllUsers() {
+        public AdministrativeClient.ServiceReference.UserListActionResult GetAllUsers() {
             return base.Channel.GetAllUsers();
         }
         
-        public System.Threading.Tasks.Task<AdministrativeClient.ServiceReference.UserDto[]> GetAllUsersAsync() {
+        public System.Threading.Tasks.Task<AdministrativeClient.ServiceReference.UserListActionResult> GetAllUsersAsync() {
             return base.Channel.GetAllUsersAsync();
         }
         
-        public AdministrativeClient.ServiceReference.ScoreDto[] GetTopScores() {
+        public AdministrativeClient.ServiceReference.ScoreListActionResult GetTopScores() {
             return base.Channel.GetTopScores();
         }
         
-        public System.Threading.Tasks.Task<AdministrativeClient.ServiceReference.ScoreDto[]> GetTopScoresAsync() {
+        public System.Threading.Tasks.Task<AdministrativeClient.ServiceReference.ScoreListActionResult> GetTopScoresAsync() {
             return base.Channel.GetTopScoresAsync();
+        }
+        
+        public AdministrativeClient.ServiceReference.GamesStatisticsActionResult GetLastGamesStatistics() {
+            return base.Channel.GetLastGamesStatistics();
+        }
+        
+        public System.Threading.Tasks.Task<AdministrativeClient.ServiceReference.GamesStatisticsActionResult> GetLastGamesStatisticsAsync() {
+            return base.Channel.GetLastGamesStatisticsAsync();
         }
         
         public string GetLastMatchLog() {

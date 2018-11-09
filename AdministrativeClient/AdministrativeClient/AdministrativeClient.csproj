@@ -57,10 +57,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Connected Services\ServiceReference\AdministrativeClient.ServiceReference.ScoreDto.datasource">
+    <None Include="Connected Services\ServiceReference\AdministrativeClient.ServiceReference.GamesStatisticsActionResult.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Connected Services\ServiceReference\AdministrativeClient.ServiceReference.UserDto.datasource">
+    <None Include="Connected Services\ServiceReference\AdministrativeClient.ServiceReference.ScoreListActionResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceReference\AdministrativeClient.ServiceReference.UserActionResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceReference\AdministrativeClient.ServiceReference.UserListActionResult.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Connected Services\ServiceReference\AdministrativeService.xsd">
@@ -76,6 +82,12 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\ServiceReference\AdministrativeService31.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ServiceReference\AdministrativeService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ServiceReference\AdministrativeService41.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\ServiceReference\WebService.wsdl" />
