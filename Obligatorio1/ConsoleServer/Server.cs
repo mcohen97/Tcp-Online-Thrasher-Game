@@ -24,10 +24,13 @@ namespace Network
         private Game slasher;
         private TcpChannel remotingUserStorage;
         private IMessageSender messageInfrastructure;
+        private IGamesInfoRepository scores;
 
-        public Server(IMessageSender sender)
+
+        public Server(IMessageSender sender, IGamesInfoRepository scoreStorage)
         {
             messageInfrastructure = sender;
+            scores = scoreStorage;
             try
             {
                 TrySetUpServer();
@@ -50,6 +53,7 @@ namespace Network
             listener.Bind(address);
             slasher = new Game(int.Parse(preMatchTime), int.Parse(matchTime));
             slasher.EndMatchEvent += SendGameLog;
+            slasher.EndMatchEvent += AddScoresIfTop;
             slasher.StartPreMatchTimer();
             serverWorking = true;
             clientConnections = new List<Socket>();
@@ -130,6 +134,15 @@ namespace Network
             IGamesInfoRepository scores = GamesInfoInMemory.instance.Value;
             GameController toLunch = new GameController(somebodyUnknown, slasher, users,scores);
             ExecuteService(toLunch);                      
+        }
+
+        private void AddScoresIfTop()
+        {
+            ICollection<Score> gameScores = slasher.GetLastScores();
+            foreach (Score score in gameScores)
+            {
+                scores.AddScore(score);
+            }
         }
 
         private void SendGameLog() {

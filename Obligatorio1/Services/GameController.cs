@@ -16,9 +16,8 @@ namespace Services
         public IConnection Current { get; private set; }
         private Game slasher;
         private IUserRepository users;
-        private IGamesInfoRepository scores;
         public GameController(IConnection connection, Game aGame, 
-            IUserRepository usersStorage, IGamesInfoRepository scoreStorage )
+            IUserRepository usersStorage )
         {
             Current = connection;
             slasher = aGame;
@@ -245,11 +244,6 @@ namespace Services
             Current.SendMessage(toSend);
         }
 
-        private void AddScoresIfTop(ICollection<Score> someScores) {
-            foreach (Score score in someScores) {
-                scores.AddScore(score);
-            }
-        }
 
         private void SendNotificationToClient(string notification)
         {
