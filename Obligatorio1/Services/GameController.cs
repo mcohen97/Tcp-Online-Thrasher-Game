@@ -16,9 +16,9 @@ namespace Services
         public IConnection Current { get; private set; }
         private Game slasher;
         private IUserRepository users;
-        private IScoreRepository scores;
+        private IGamesInfoRepository scores;
         public GameController(IConnection connection, Game aGame, 
-            IUserRepository usersStorage, IScoreRepository scoreStorage )
+            IUserRepository usersStorage, IGamesInfoRepository scoreStorage )
         {
             Current = connection;
             slasher = aGame;
