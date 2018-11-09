@@ -43,11 +43,11 @@
   <ItemGroup>
     <Compile Include="Exceptions\UserAlreadyExistsException.cs" />
     <Compile Include="Exceptions\UserNotFoundException.cs" />
-    <Compile Include="IScoreRepository.cs" />
+    <Compile Include="IGamesInfoRepository.cs" />
     <Compile Include="IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScoreService.cs" />
-    <Compile Include="ScoresInMemory.cs" />
+    <Compile Include="GameInfoService.cs" />
+    <Compile Include="GamesInfoInMemory.cs" />
     <Compile Include="UserService.cs" />
     <Compile Include="UsersInMemory.cs" />
   </ItemGroup>
