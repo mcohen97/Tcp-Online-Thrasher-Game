@@ -74,7 +74,8 @@ namespace Client
             Console.WriteLine("New user's name");
             string aNickname =Console.ReadLine();
             UserDto newUser = new UserDto() { nickname = aNickname };
-            server.AddUser(newUser);
+            string response = server.AddUser(newUser);
+            Console.WriteLine(response);
         }
 
         private void DeleteUser()
@@ -82,14 +83,27 @@ namespace Client
             Console.WriteLine("DELETE USER");
             Console.WriteLine("Please provide the nickname of the user");
             string aNickname = Console.ReadLine();
-            server.DeleteUser(aNickname);
+            string response = server.DeleteUser(aNickname);
+            Console.WriteLine(response);
         }
 
         private void GetAllUsers()
         {
             Console.WriteLine("REGISTERED USERS");
-            ICollection<UserDto> usersDtos = server.GetAllUsers();
-            foreach (UserDto user in usersDtos) {
+            UserListActionResult result = server.GetAllUsers();
+            if (result.Success)
+            {
+                ShowUserList(result.UsersList);
+            }
+            else {
+                Console.WriteLine(result.Message);
+            }  
+        }
+
+        private void ShowUserList(UserDto[] usersList)
+        {
+            foreach (UserDto user in usersList)
+            {
                 Console.WriteLine(user.nickname);
             }
         }
@@ -104,16 +118,28 @@ namespace Client
         private void GetTopScores()
         {
             Console.WriteLine("TOP SCORES");
-            ICollection<ScoreDto> topScores =server.GetTopScores();
+            ScoreListActionResult result =server.GetTopScores();
+            if (result.Success)
+            {
+                ShowTopScores(result.ScoreList);
+            }
+            else {
+                Console.WriteLine(result.Message);
+            }
+        }
+
+        private void ShowTopScores(ScoreDto[] topScores)
+        {
             if (topScores.Any())
             {
                 int number = 1;
                 foreach (ScoreDto dto in topScores)
                 {
-                    Console.Write(number + dto.UserNickname);
+                    Console.Write(number + dto.UserNicknamek__BackingField);
                 }
             }
-            else {
+            else
+            {
                 Console.WriteLine("No matches were played");
             }
         }
