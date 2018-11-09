@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using RemoteServicesContracts;
 using ScoreService;
-using UserABM;
+using UserCRUDService;
 
 namespace AdministrativeServer
 {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace UserABM
+namespace UserCRUDService
 {
     public interface IUserCRUDService
     {

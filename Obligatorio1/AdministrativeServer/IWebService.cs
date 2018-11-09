@@ -1,5 +1,5 @@
 ﻿
-using ScoreService;
+using GamesInfoService;
 using System.Collections.Generic;
 using System.ServiceModel;
 using UserCRUDService;

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScoreService
+namespace GamesInfoService
 {
     [Serializable]
     public class ScoreDto
