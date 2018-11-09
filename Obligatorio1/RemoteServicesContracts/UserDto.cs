@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UserABM
+namespace UserCRUDService
 {
     [Serializable]
     public class UserDto

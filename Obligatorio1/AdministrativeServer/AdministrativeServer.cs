@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Messaging;
 using System.ServiceModel;
 using System.ServiceModel.Description;
-using UserABM;
+using UserCRUDService;
 
 namespace AdministrativeServer
 {

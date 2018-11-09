@@ -2,7 +2,7 @@
 using ScoreService;
 using System.Collections.Generic;
 using System.ServiceModel;
-using UserABM;
+using UserCRUDService;
 
 namespace AdministrativeServer
 {
