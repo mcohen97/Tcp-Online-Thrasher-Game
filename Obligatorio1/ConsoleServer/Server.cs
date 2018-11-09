@@ -70,7 +70,7 @@ namespace Network
                 "Obligatorio2/UserService",
                 WellKnownObjectMode.Singleton);
             RemotingConfiguration.RegisterWellKnownServiceType(
-                typeof(ScoreService),
+                typeof(GameInfoService),
                 "Obligatorio2/ScoreService",
                 WellKnownObjectMode.Singleton);
         }
@@ -127,7 +127,7 @@ namespace Network
         {
             IConnection somebodyUnknown = new TCPConnection(connection);
             IUserRepository users = UsersInMemory.instance.Value;
-            IScoreRepository scores = ScoresInMemory.instance.Value;
+            IGamesInfoRepository scores = GamesInfoInMemory.instance.Value;
             GameController toLunch = new GameController(somebodyUnknown, slasher, users,scores);
             ExecuteService(toLunch);                      
         }
