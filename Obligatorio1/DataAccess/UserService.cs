@@ -5,6 +5,7 @@ using System.Linq;
 using UserCRUDService;
 using UsersLogic;
 using UsersLogic.Exceptions;
+using ActionResults;
 
 namespace DataAccess
 {
@@ -15,34 +16,81 @@ namespace DataAccess
             usersStorage = UsersInMemory.instance.Value;
         }
 
-        public void AddUser(UserDto userModel)
+        public string AddUser(UserDto userModel)
         {
-            User toAdd = new User(userModel.nickname, userModel.photoPath);
-            usersStorage.AddUser(toAdd);
+            string resultMessage;
+            try
+            {
+                User toAdd = new User(userModel.nickname, userModel.photoPath);
+                usersStorage.AddUser(toAdd);
+                resultMessage = "User was added succesfully";
+            }
+            catch (UserAlreadyExistsException e)
+            {
+                resultMessage = e.Message;
+            }
+            catch (InvalidUserDataException e) {
+                resultMessage = e.Message;
+            }
+            return resultMessage;
         }
 
-        public void DeleteUser(string nickname)
+        public string DeleteUser(string nickname)
         {
-            usersStorage.DeleteUser(nickname);
+            string resultMessage;
+            try
+            {
+                usersStorage.DeleteUser(nickname);
+                resultMessage = "User was deleted successfully";
+            }
+            catch (UserNotFoundException e) {
+                resultMessage = e.Message;
+            }
+            return resultMessage;
         }
 
-        public ICollection<UserDto> GetAllUsers()
+        public UserListActionResult GetAllUsers()
         {
             ICollection<User> users = usersStorage.GetAllUsers();
             IEnumerable<UserDto> dtos = users.Select(u => new UserDto() {nickname=u.Nickname, photoPath =u.Path });
-            return dtos.ToList();
+            UserListActionResult result = new UserListActionResult()
+            {
+                Success = true,
+                Message = "Users list",
+                UsersList = dtos.ToList()
+            };
+            return result;
         }
 
-        public UserDto GetUser(string nickname)
+        public UserActionResult GetUser(string nickname)
         {
             User stored = usersStorage.GetUser(nickname);
-            return new UserDto() { nickname = stored.Nickname, photoPath = stored.Path };
+            UserDto dto = new UserDto() { nickname = stored.Nickname, photoPath = stored.Path };
+            UserActionResult result = new UserActionResult()
+            {
+                Success = true,
+                Message = "User",
+                User = dto
+            };
+            return result;
         }
 
-        public void ModifyUser(string oldNickname, UserDto newData)
+        public string ModifyUser(string oldNickname, UserDto newData)
         {
-            User toModify = new User(newData.nickname, newData.photoPath);
-            usersStorage.ModifyUser(oldNickname, toModify);
+            string resultMessage;
+            try
+            {
+                User toModify = new User(newData.nickname, newData.photoPath);
+                usersStorage.ModifyUser(oldNickname, toModify);
+                resultMessage = "User modified succesfully";
+            }
+            catch (UserAlreadyExistsException e) {
+                resultMessage = e.Message;
+            }
+            catch (InvalidUserDataException e) {
+                resultMessage = e.Message;
+            }
+            return resultMessage;
         }
     }
 }

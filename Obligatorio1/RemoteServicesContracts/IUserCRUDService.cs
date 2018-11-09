@@ -1,18 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using ActionResults;
 
 namespace UserCRUDService
 {
     public interface IUserCRUDService
     {
-        void AddUser(UserDto userModel);
+        string AddUser(UserDto userModel);
 
-        void ModifyUser(string oldNickname, UserDto newData);
+        string ModifyUser(string oldNickname, UserDto newData);
 
-        void DeleteUser(string nickname);
+        string DeleteUser(string nickname);
 
-        UserDto GetUser(string nickname);
+        UserActionResult GetUser(string nickname);
 
-        ICollection<UserDto> GetAllUsers();
+        UserListActionResult GetAllUsers();
     }
 
 }
