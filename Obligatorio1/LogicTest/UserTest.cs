@@ -1,7 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UsersLogic;
-using LogicExceptions;
+using UsersLogic.Exceptions;
+
 namespace LogicTest
 {
     [TestClass]

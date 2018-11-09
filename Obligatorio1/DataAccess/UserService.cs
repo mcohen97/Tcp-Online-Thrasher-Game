@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UserABM;
 using UsersLogic;
+using UsersLogic.Exceptions;
 
 namespace DataAccess
 {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace LogicExceptions
+namespace UsersLogic.Exceptions
 {
-    internal class InvalidUserDataException:Exception
+    public class InvalidUserDataException:Exception
     {
         public InvalidUserDataException() {
         }
