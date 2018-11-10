@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Messaging;
 using System.ServiceModel;
 using System.ServiceModel.Description;
-using UserABM;
+using UserCRUDService;
 
 namespace AdministrativeServer
 {
@@ -33,9 +33,13 @@ namespace AdministrativeServer
             }
             catch (CommunicationException ex)
             {
-                Console.WriteLine("There is an issue with Game Service" + ex.Message);
+                Console.WriteLine("There is an issue with the server" + ex.Message);
                 gameServiceHost.Abort();
 
+            }
+            catch (GameServiceException ex) {
+                Console.WriteLine("There is an issue with the server" + ex.Message);
+                gameServiceHost.Abort();
             }
 
         }

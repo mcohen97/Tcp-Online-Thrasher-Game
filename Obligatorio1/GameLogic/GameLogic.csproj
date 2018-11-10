@@ -45,6 +45,7 @@
     <Compile Include="CardinalPoint.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Exceptions\GameException.cs" />
+    <Compile Include="Exceptions\InvalidGameReportException.cs" />
     <Compile Include="Exceptions\InvalidPositionException.cs" />
     <Compile Include="Exceptions\InvalidScoreException.cs" />
     <Compile Include="Exceptions\MapIsFullException.cs" />
@@ -55,6 +56,8 @@
     <Compile Include="Exceptions\UnfinishedMatchException.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameMap.cs" />
+    <Compile Include="GameReport.cs" />
+    <Compile Include="PlayerReportField.cs" />
     <Compile Include="IMovementController.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="Movement.cs" />

@@ -1,8 +1,9 @@
 ﻿
-using ScoreService;
+using GamesInfoService;
 using System.Collections.Generic;
 using System.ServiceModel;
-using UserABM;
+using UserCRUDService;
+using ActionResults;
 
 namespace AdministrativeServer
 {
@@ -10,22 +11,25 @@ namespace AdministrativeServer
     public interface IWebService
     {
         [OperationContract]
-        void AddUser(UserDto user);
+        string AddUser(UserDto user);
 
         [OperationContract]
-        void DeleteUser(string nickname);
+        string DeleteUser(string nickname);
 
         [OperationContract]
-        void ModifyUser(string oldNickname, UserDto modified);
+        string ModifyUser(string oldNickname, UserDto modified);
 
         [OperationContract]
-        UserDto Get(string userName);
+        UserActionResult Get(string userName);
 
         [OperationContract]
-        ICollection<UserDto> GetAllUsers();
+        UserListActionResult GetAllUsers();
 
         [OperationContract]
-        ICollection<ScoreDto> GetTopScores();
+        ScoreListActionResult GetTopScores();
+
+        [OperationContract]
+        GamesStatisticsActionResult GetLastGamesStatistics();
 
         [OperationContract]
         string GetLastMatchLog();

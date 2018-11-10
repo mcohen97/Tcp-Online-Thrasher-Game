@@ -1,7 +1,7 @@
 ﻿using System;
-using LogicExceptions;
 using Protocol;
 using System.Drawing;
+using UsersLogic.Exceptions;
 
 namespace UsersLogic
 {

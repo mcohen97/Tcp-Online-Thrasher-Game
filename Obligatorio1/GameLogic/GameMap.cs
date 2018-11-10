@@ -48,6 +48,7 @@ namespace GameLogic
             }
         }
         public Action PlayerRemovedEvent { get; set; }
+        public Action<Player> SendRemovedEvent { get; set; }
 
         public readonly object mapEditionLock;
 
@@ -61,6 +62,7 @@ namespace GameLogic
             this.monsterCount = 0;
             this.survivorCount = 0;
             this.PlayerRemovedEvent += () => { }; //Do nothing
+            this.SendRemovedEvent += (p) => { }; //Do nothing
             this.mapEditionLock = new object();
         }
         public GameMap(int length, int height)

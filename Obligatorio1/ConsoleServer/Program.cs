@@ -2,6 +2,7 @@
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Tcp;
 using System.Threading;
+using DataAccess;
 using DataAccessInterface;
 using Network;
 
@@ -19,7 +20,7 @@ namespace ConsoleServer
         public static Server gameServer;
 
         private const string formatName = "Formatname:DIRECT=TCP:";
-        private const string serverIP = "172.29.3.188";
+        private const string serverIP = "192.168.0.124";
         private const string queueAddress = formatName +serverIP +@"\private$\LogServer";
 
 
@@ -28,7 +29,8 @@ namespace ConsoleServer
             _handler += new EventHandler(Handler);
             SetConsoleCtrlHandler(_handler, true);
             IMessageSender msmq = new MSMQSender(queueAddress);
-            gameServer = new Server(msmq);
+            IGamesInfoRepository memoryRepo = GamesInfoInMemory.instance.Value;
+            gameServer = new Server(msmq, memoryRepo);
             Thread listen = new Thread(new ThreadStart(() =>
             {
                 gameServer.RunServer();

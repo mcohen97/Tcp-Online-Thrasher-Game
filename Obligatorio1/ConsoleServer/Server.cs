@@ -24,10 +24,13 @@ namespace Network
         private Game slasher;
         private TcpChannel remotingUserStorage;
         private IMessageSender messageInfrastructure;
+        private IGamesInfoRepository gameStats;
 
-        public Server(IMessageSender sender)
+
+        public Server(IMessageSender sender, IGamesInfoRepository scoreStorage)
         {
             messageInfrastructure = sender;
+            gameStats = scoreStorage;
             try
             {
                 TrySetUpServer();
@@ -50,6 +53,8 @@ namespace Network
             listener.Bind(address);
             slasher = new Game(int.Parse(preMatchTime), int.Parse(matchTime));
             slasher.EndMatchEvent += SendGameLog;
+            slasher.EndMatchEvent += AddScoresIfTop;
+            slasher.EndMatchEvent += SaveMatchReport;
             slasher.StartPreMatchTimer();
             serverWorking = true;
             clientConnections = new List<Socket>();
@@ -70,7 +75,7 @@ namespace Network
                 "Obligatorio2/UserService",
                 WellKnownObjectMode.Singleton);
             RemotingConfiguration.RegisterWellKnownServiceType(
-                typeof(ScoreService),
+                typeof(GameInfoService),
                 "Obligatorio2/ScoreService",
                 WellKnownObjectMode.Singleton);
         }
@@ -127,15 +132,29 @@ namespace Network
         {
             IConnection somebodyUnknown = new TCPConnection(connection);
             IUserRepository users = UsersInMemory.instance.Value;
-            IScoreRepository scores = ScoresInMemory.instance.Value;
-            GameController toLunch = new GameController(somebodyUnknown, slasher, users,scores);
+            GameController toLunch = new GameController(somebodyUnknown, slasher, users);
             ExecuteService(toLunch);                      
+        }
+
+        private void AddScoresIfTop()
+        {
+            ICollection<Score> gameScores = slasher.GetLastScores();
+            foreach (Score score in gameScores)
+            {
+                gameStats.AddScore(score);
+            }
         }
 
         private void SendGameLog() {
             ICollection<string> gameNarration = slasher.GetLogs();
             string matchLog = string.Join("\n",gameNarration);
             messageInfrastructure.SendMessage(matchLog);
+        }
+
+        private void SaveMatchReport()
+        {
+            GameReport report = slasher.PlayerRegistries;
+            gameStats.AddGameReport(report);
         }
 
         private void ExecuteService(GameController toLunch)

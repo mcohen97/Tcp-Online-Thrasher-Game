@@ -7,7 +7,7 @@ using DataAccessInterface;
 using GameLogic;
 using GameLogicException;
 using Network;
-using LogicExceptions;
+using UsersLogic.Exceptions;
 
 namespace Services
 {
@@ -16,14 +16,11 @@ namespace Services
         public IConnection Current { get; private set; }
         private Game slasher;
         private IUserRepository users;
-        private IScoreRepository scores;
-        public GameController(IConnection connection, Game aGame, 
-            IUserRepository usersStorage, IScoreRepository scoreStorage )
+        public GameController(IConnection connection, Game aGame, IUserRepository usersStorage )
         {
             Current = connection;
             slasher = aGame;
             users = usersStorage;
-            scores = scoreStorage;
         }
 
         public void Start()
@@ -245,11 +242,6 @@ namespace Services
             Current.SendMessage(toSend);
         }
 
-        private void AddScoresIfTop(ICollection<Score> someScores) {
-            foreach (Score score in someScores) {
-                scores.AddScore(score);
-            }
-        }
 
         private void SendNotificationToClient(string notification)
         {
