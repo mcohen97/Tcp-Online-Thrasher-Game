@@ -2,13 +2,8 @@
 using GameLogicException;
 using Network;
 using Protocol;
-using ServiceExceptions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Messaging;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Services
 {
@@ -111,7 +106,5 @@ namespace Services
         {
             matchEnded = true;
         }
-
-
     }
 }
