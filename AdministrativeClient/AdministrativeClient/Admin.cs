@@ -9,8 +9,7 @@ namespace Client
     public class Admin
     {
         private IWebService server;
-        public Admin() {
-        }
+        public Admin() {}
 
         internal void RunClient()
         {
@@ -95,12 +94,12 @@ namespace Client
         {
             Console.WriteLine("REGISTERED USERS");
             UserListActionResult result = server.GetAllUsers();
-            if (result.Success)
+            if (result.Successk__BackingField)
             {
-                ShowUserList(result.UsersList);
+                ShowUserList(result.UsersListk__BackingField);
             }
             else {
-                Console.WriteLine(result.Message);
+                Console.WriteLine(result.Messagek__BackingField);
             }  
         }
 
@@ -121,14 +120,14 @@ namespace Client
 
         private void GetTopScores()
         {
-            Console.WriteLine("TOP SCORES");
+            Console.WriteLine("TOP 10 GAME SCORES");
             ScoreListActionResult result =server.GetTopScores();
-            if (result.Success)
+            if (result.Successk__BackingField)
             {
-                ShowTopScores(result.ScoreList);
+                ShowTopScores(result.ScoreListk__BackingField);
             }
             else {
-                Console.WriteLine(result.Message);
+                Console.WriteLine(result.Messagek__BackingField);
             }
         }
 
@@ -139,7 +138,13 @@ namespace Client
                 int number = 1;
                 foreach (ScoreDto dto in topScores)
                 {
-                    Console.Write(number + dto.UserNicknamek__BackingField);
+                    Console.Write(number+" - ");
+                    Console.WriteLine("Name: "+dto.UserNicknamek__BackingField);
+                    Console.WriteLine("Points: " + dto.Pointsk__BackingField);
+                    Console.WriteLine("Date: " + dto.Datek__BackingField.ToShortDateString());
+                    Console.WriteLine("Role played: " + dto.RolePlayedk__BackingField.ToString());
+                    Console.WriteLine("---------------------------------------");
+                    number++;
                 }
             }
             else
@@ -150,7 +155,67 @@ namespace Client
 
         private void ModifyUser()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("MODIFY USER");
+            Console.WriteLine("nickname of the user to modify:");
+            string aNickname = Console.ReadLine();
+            Console.WriteLine("new nickname:");
+            string newNickname = Console.ReadLine();
+            UserDto newUser = new UserDto() { nickname = newNickname };
+            string response = server.ModifyUser(aNickname, newUser);
+            Console.WriteLine(response);
+        }
+
+        private void LastGamesStats()
+        {
+            Console.WriteLine("LAST 10 GAMES STATISTICS");
+            GamesStatisticsActionResult result = server.GetLastGamesStatistics();
+            if (result.Successk__BackingField)
+            {
+                ShowStatistics(result.GamesStatisticsk__BackingField);
+            }
+            else
+            {
+                Console.WriteLine(result.Messagek__BackingField);
+            }
+        }
+
+        private void ShowStatistics(GameReportDto[] stats)
+        {
+            if (stats.Any())
+            {
+                int number = 1;
+                foreach (GameReportDto dto in stats)
+                {
+                    Console.Write(number + " - ");
+                    Console.WriteLine("Match date: " + dto.Datek__BackingField.ToShortDateString());
+                    Console.WriteLine("Players: ");
+                    ShowMatchPlayers(dto.PlayersReportsk__BackingField);
+                    Console.WriteLine("---------------------------------------");
+                    number++;
+                }
+            }
+            else
+            {
+                Console.WriteLine("No matches were played");
+            }
+        }
+
+        private void ShowMatchPlayers(PlayerFieldDto[] playerStats)
+        {
+            int number = 1;
+            foreach (PlayerFieldDto dto in playerStats)
+            {
+                Console.Write(number + ")");
+                Console.WriteLine("Player's nickname: " + dto.PlayerNamek__BackingField);
+                Console.WriteLine("Player's role: "+ dto.RolePlayedk__BackingField.ToString());
+                Console.WriteLine("Won: "+boolYesNo(dto.Wonk__BackingField));
+                number++;
+            }
+        }
+
+        private string boolYesNo(bool won)
+        {
+            return won ? "Yes" : "No";
         }
 
         private void EnnumerateList(string[] options)
