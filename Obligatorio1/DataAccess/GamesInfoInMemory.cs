@@ -97,7 +97,7 @@ namespace DataAccess
         private ICollection<GameReport> GetGameReportsWithLock()
         {
             ICollection<GameReport> games = new List<GameReport>();
-            int pos = queueFront;
+            int pos = queueFront-1;
             for (int i = 0; (i < nLastGames) && (reportsQueue[pos] != null); i++)
             {
                 games.Add(reportsQueue[pos]);
