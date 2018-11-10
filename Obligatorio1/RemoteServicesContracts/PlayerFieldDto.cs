@@ -1,5 +1,8 @@
-﻿namespace UserCRUDServiceContract
+﻿using System;
+
+namespace UserCRUDServiceContract
 {
+     [Serializable]
     public class PlayerFieldDto
     {
         public string PlayerName { get; set; }
