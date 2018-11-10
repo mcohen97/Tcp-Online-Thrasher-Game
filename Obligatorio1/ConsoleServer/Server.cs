@@ -24,13 +24,13 @@ namespace Network
         private Game slasher;
         private TcpChannel remotingUserStorage;
         private IMessageSender messageInfrastructure;
-        private IGamesInfoRepository scores;
+        private IGamesInfoRepository gameStats;
 
 
         public Server(IMessageSender sender, IGamesInfoRepository scoreStorage)
         {
             messageInfrastructure = sender;
-            scores = scoreStorage;
+            gameStats = scoreStorage;
             try
             {
                 TrySetUpServer();
@@ -54,6 +54,7 @@ namespace Network
             slasher = new Game(int.Parse(preMatchTime), int.Parse(matchTime));
             slasher.EndMatchEvent += SendGameLog;
             slasher.EndMatchEvent += AddScoresIfTop;
+            slasher.EndMatchEvent += SaveMatchReport;
             slasher.StartPreMatchTimer();
             serverWorking = true;
             clientConnections = new List<Socket>();
@@ -131,8 +132,7 @@ namespace Network
         {
             IConnection somebodyUnknown = new TCPConnection(connection);
             IUserRepository users = UsersInMemory.instance.Value;
-            IGamesInfoRepository scores = GamesInfoInMemory.instance.Value;
-            GameController toLunch = new GameController(somebodyUnknown, slasher, users,scores);
+            GameController toLunch = new GameController(somebodyUnknown, slasher, users);
             ExecuteService(toLunch);                      
         }
 
@@ -141,7 +141,7 @@ namespace Network
             ICollection<Score> gameScores = slasher.GetLastScores();
             foreach (Score score in gameScores)
             {
-                scores.AddScore(score);
+                gameStats.AddScore(score);
             }
         }
 
@@ -149,6 +149,12 @@ namespace Network
             ICollection<string> gameNarration = slasher.GetLogs();
             string matchLog = string.Join("\n",gameNarration);
             messageInfrastructure.SendMessage(matchLog);
+        }
+
+        private void SaveMatchReport()
+        {
+            GameReport report = slasher.PlayerRegistries;
+            gameStats.AddGameReport(report);
         }
 
         private void ExecuteService(GameController toLunch)
