@@ -17,8 +17,8 @@ namespace AdministrativeServer
         public WebService() {
             try
             {
-                remoteUserStorage = (IUserCRUDService)Activator.GetObject(typeof(IUserCRUDService), "tcp://172.29.3.188:8000/Obligatorio2/UserService");
-                remoteScoreStorage = (IGamesInfoService)Activator.GetObject(typeof(IGamesInfoService), "tcp://172.29.3.188:8000/Obligatorio2/ScoreService");
+                remoteUserStorage = (IUserCRUDService)Activator.GetObject(typeof(IUserCRUDService), "tcp://192.168.0.124:8000/Obligatorio2/UserService");
+                remoteScoreStorage = (IGamesInfoService)Activator.GetObject(typeof(IGamesInfoService), "tcp://192.168.0.124:8000/Obligatorio2/ScoreService");
                 matchLogs = new QueueMatchLogManager(queueAddress);
             }
             catch (RemotingException e) {
