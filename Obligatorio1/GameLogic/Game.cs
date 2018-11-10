@@ -29,31 +29,45 @@ namespace GameLogic
 
         public Game(int preMatchMiliseconds, int matchMiliseconds)
         {
-            map = new GameMap(8, 8);
+            Map = new GameMap(8, 8);
             matchTimer = new Timer(matchMiliseconds);
             matchTimer.Elapsed += TimeOut;
             preMatchTimer = new Timer(preMatchMiliseconds);
             preMatchTimer.Elapsed += PreMatchTimeOut;
-            activeMatch = false;
-            activeGame = true;
+            ActiveMatch = false;
+            ActiveGame = true;
             lastWinner = "None";
-            map.PlayerRemovedEvent += CheckEndMatch;
+            Map.PlayerRemovedEvent += CheckEndMatch;
+            Map.SendRemovedEvent += RegisterDeadPlayer;
             EndMatchEvent += () => { }; //Do nothing
             Notify += (s) => { }; //Do nothing
-            scores = new List<Score>();
             gameAccess = new object();
+            RestartGameInfoRegistries();
+        }
+
+     
+        private void RestartGame()
+        {
+            RestartGameInfoRegistries();
+            RestartMap();
+        }
+
+        private void RestartGameInfoRegistries()
+        {
+            scores = new List<Score>();
+            PlayerRegistries = new GameReport();
             logs = new List<string>();
         }
 
         private void RestartMap()
         {
-            Map = new GameMap(8,8);
+            Map = new GameMap(8, 8);
             Map.PlayerRemovedEvent += CheckEndMatch;
         }
 
         public void StartPreMatchTimer()
         {
-            activeGame = true;
+            ActiveGame = true;
             preMatchTimer.Start();
             Notify("Prematch timer started");
         }
@@ -73,12 +87,11 @@ namespace GameLogic
                 {
                     player.Notify("MATCH ENDED --> " + LastWinner);
                 }
-                activeMatch = false;
-                activeGame = false;
+                ActiveMatch = false;
+                ActiveGame = false;
                 EndMatchEvent();
                 Notify("MATCH ENDED --> " + LastWinner);
-                RestartMap();
-                RestartScores();
+                RestartGame();
                 StartPreMatchTimer();
             }          
         }
@@ -94,7 +107,7 @@ namespace GameLogic
                 preMatchTimer.Stop();
                 if (ActiveGameConditions(Map.MonsterCount, Map.SurvivorCount))
                 {
-                    activeMatch = true;
+                    ActiveMatch = true;
                     foreach (Player player in Map.GetPlayers())
                     {
                         player.Notify("Match started!");
@@ -137,6 +150,7 @@ namespace GameLogic
                     Player lastPlayer = Map.GetPlayers().First();
                     winner = lastPlayer.Name + " won the match. Congrats!";
                     lastPlayer.AddPoints(200);
+                    AddReportRegistry(lastPlayer, true);
                 }
                 else if (Map.MonsterCount > 1)
                 {
@@ -144,6 +158,7 @@ namespace GameLogic
                     foreach (Player player in Map.GetPlayers())
                     {
                         player.AddPoints(100);
+                        AddReportRegistry(player, true);
                     }
                 }
             }
@@ -157,6 +172,17 @@ namespace GameLogic
             }
 
             return winner;
+        }
+
+        private void RegisterDeadPlayer(Player player)
+        {
+            AddReportRegistry(player, false);
+        }
+
+        private void AddReportRegistry(Player player, bool didWin)
+        {
+            PlayerReportField register = new PlayerReportField(player.Name, player.Role, didWin);
+            PlayerRegistries.AddPlayerField(register);
         }
 
         public bool ActiveGameConditions(int monsterCount, int survivorCount)
@@ -185,13 +211,12 @@ namespace GameLogic
 
                 player.EnabledAttackAction = false;
                 player.Join(this);
-
             }
         }
 
         public ICollection<Player> GetPlayers()
         {
-            return map.GetPlayers();
+            return Map.GetPlayers();
         }
 
         public void LogAction(string log)
@@ -212,11 +237,6 @@ namespace GameLogic
         public ICollection<Score> GetLastScores()
         {
             return new List<Score>(scores);
-        }
-
-        private void RestartScores()
-        {
-            scores = new List<Score>();
         }
     }
 }
