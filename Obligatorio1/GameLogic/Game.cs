@@ -12,49 +12,16 @@ namespace GameLogic
     {
         private Timer matchTimer;
         private Timer preMatchTimer;
-        private bool activeMatch;
-        private bool activeGame;
-        private GameMap map;
         private string lastWinner;
         private ICollection<Score> scores;
+        public GameReport PlayerRegistries { get; private set; }
         private ICollection<string> logs;
 
 
-        public GameMap Map {
-            get {
-                return map;
-            }
-
-            private set {
-                map = value;
-            }
-        }
-        public bool ActiveMatch {
-            get {
-                return activeMatch;
-            }
-
-            private set {
-                activeMatch = value;
-            }
-        } //ActiveMatch means players are playing
-        public bool ActiveGame {
-            get {
-                return activeGame;
-            }
-            set {
-                activeGame = value;
-            }
-        }   //ActiveGame means players are in the Map
-        public string LastWinner {
-            get {
-                return lastWinner;
-            }
-
-            private set {
-                lastWinner = value;
-            }
-        }
+        public GameMap Map { get;set;}
+        public bool ActiveMatch {get;set;} //ActiveMatch means players are playing
+        public bool ActiveGame {get;set;}   //ActiveGame means players are in the Map
+        public string LastWinner {get;set;}
         public Action EndMatchEvent { get; set; }
         public Action<string> Notify { get; set; }
         
