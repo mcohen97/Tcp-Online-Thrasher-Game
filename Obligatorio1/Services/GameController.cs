@@ -16,13 +16,11 @@ namespace Services
         public IConnection Current { get; private set; }
         private Game slasher;
         private IUserRepository users;
-        public GameController(IConnection connection, Game aGame, 
-            IUserRepository usersStorage )
+        public GameController(IConnection connection, Game aGame, IUserRepository usersStorage )
         {
             Current = connection;
             slasher = aGame;
             users = usersStorage;
-            scores = scoreStorage;
         }
 
         public void Start()
