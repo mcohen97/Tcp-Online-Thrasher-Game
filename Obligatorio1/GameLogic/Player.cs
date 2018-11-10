@@ -87,15 +87,13 @@ namespace GameLogic
                     Notify("No one is near you");
                 }
 
-               
-                
+
+
             }
             else
             {
                 Notify("Your attack action is disable");
             }
-            
-
         }
 
         public CardinalPoint CompassDirection {
