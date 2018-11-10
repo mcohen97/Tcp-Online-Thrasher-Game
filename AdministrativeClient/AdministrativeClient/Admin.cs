@@ -35,7 +35,7 @@ namespace Client
         {
             bool endGame = false;
             string[] options = new string[] { "ADD USER", "MODIFY USER", "DELETE USER",
-                "REGISTERED USERS", "LAST MATCH LOG", "TOP MATCH SCORES" };
+                "REGISTERED USERS", "LAST MATCH LOG", "TOP 10 GAME SCORES","LAST 10 GAMES STATISTICS" };
             while (!endGame)
             {
                 Console.Clear();
@@ -62,11 +62,15 @@ namespace Client
                     case 6:
                         GetTopScores();
                         break;
+                    case 7:
+                        LastGamesStats();
+                        break;
                 }
                 Console.WriteLine("Press any key to continue");
                 Console.ReadLine();
             }
         }
+
 
         public void AddUser()
         {
