@@ -81,13 +81,13 @@
     <None Include="Connected Services\ServiceReference\AdministrativeService3.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\ServiceReference\AdministrativeService31.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Connected Services\ServiceReference\AdministrativeService4.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\ServiceReference\AdministrativeService41.xsd">
+    <None Include="Connected Services\ServiceReference\AdministrativeService5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ServiceReference\AdministrativeService6.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\ServiceReference\WebService.wsdl" />

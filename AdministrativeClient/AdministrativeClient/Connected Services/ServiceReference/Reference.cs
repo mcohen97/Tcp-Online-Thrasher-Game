@@ -85,11 +85,9 @@ namespace AdministrativeClient.ServiceReference {
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string MessageField;
+        private string Messagek__BackingFieldField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool SuccessField;
+        private bool Successk__BackingFieldField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -101,28 +99,28 @@ namespace AdministrativeClient.ServiceReference {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Message {
+        [System.Runtime.Serialization.DataMemberAttribute(Name="<Message>k__BackingField", IsRequired=true)]
+        public string Messagek__BackingField {
             get {
-                return this.MessageField;
+                return this.Messagek__BackingFieldField;
             }
             set {
-                if ((object.ReferenceEquals(this.MessageField, value) != true)) {
-                    this.MessageField = value;
-                    this.RaisePropertyChanged("Message");
+                if ((object.ReferenceEquals(this.Messagek__BackingFieldField, value) != true)) {
+                    this.Messagek__BackingFieldField = value;
+                    this.RaisePropertyChanged("Messagek__BackingField");
                 }
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool Success {
+        [System.Runtime.Serialization.DataMemberAttribute(Name="<Success>k__BackingField", IsRequired=true)]
+        public bool Successk__BackingField {
             get {
-                return this.SuccessField;
+                return this.Successk__BackingFieldField;
             }
             set {
-                if ((this.SuccessField.Equals(value) != true)) {
-                    this.SuccessField = value;
-                    this.RaisePropertyChanged("Success");
+                if ((this.Successk__BackingFieldField.Equals(value) != true)) {
+                    this.Successk__BackingFieldField = value;
+                    this.RaisePropertyChanged("Successk__BackingField");
                 }
             }
         }
@@ -143,18 +141,17 @@ namespace AdministrativeClient.ServiceReference {
     [System.SerializableAttribute()]
     public partial class UserListActionResult : AdministrativeClient.ServiceReference.ActionResult {
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private AdministrativeClient.ServiceReference.UserDto[] UsersListField;
+        private AdministrativeClient.ServiceReference.UserDto[] UsersListk__BackingFieldField;
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public AdministrativeClient.ServiceReference.UserDto[] UsersList {
+        [System.Runtime.Serialization.DataMemberAttribute(Name="<UsersList>k__BackingField", IsRequired=true)]
+        public AdministrativeClient.ServiceReference.UserDto[] UsersListk__BackingField {
             get {
-                return this.UsersListField;
+                return this.UsersListk__BackingFieldField;
             }
             set {
-                if ((object.ReferenceEquals(this.UsersListField, value) != true)) {
-                    this.UsersListField = value;
-                    this.RaisePropertyChanged("UsersList");
+                if ((object.ReferenceEquals(this.UsersListk__BackingFieldField, value) != true)) {
+                    this.UsersListk__BackingFieldField = value;
+                    this.RaisePropertyChanged("UsersListk__BackingField");
                 }
             }
         }
@@ -166,18 +163,17 @@ namespace AdministrativeClient.ServiceReference {
     [System.SerializableAttribute()]
     public partial class ScoreListActionResult : AdministrativeClient.ServiceReference.ActionResult {
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private AdministrativeClient.ServiceReference.ScoreDto[] ScoreListField;
+        private AdministrativeClient.ServiceReference.ScoreDto[] ScoreListk__BackingFieldField;
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public AdministrativeClient.ServiceReference.ScoreDto[] ScoreList {
+        [System.Runtime.Serialization.DataMemberAttribute(Name="<ScoreList>k__BackingField", IsRequired=true)]
+        public AdministrativeClient.ServiceReference.ScoreDto[] ScoreListk__BackingField {
             get {
-                return this.ScoreListField;
+                return this.ScoreListk__BackingFieldField;
             }
             set {
-                if ((object.ReferenceEquals(this.ScoreListField, value) != true)) {
-                    this.ScoreListField = value;
-                    this.RaisePropertyChanged("ScoreList");
+                if ((object.ReferenceEquals(this.ScoreListk__BackingFieldField, value) != true)) {
+                    this.ScoreListk__BackingFieldField = value;
+                    this.RaisePropertyChanged("ScoreListk__BackingField");
                 }
             }
         }
@@ -189,18 +185,17 @@ namespace AdministrativeClient.ServiceReference {
     [System.SerializableAttribute()]
     public partial class GamesStatisticsActionResult : AdministrativeClient.ServiceReference.ActionResult {
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private AdministrativeClient.ServiceReference.GameReportDto[] GamesStatisticsField;
+        private AdministrativeClient.ServiceReference.GameReportDto[] GamesStatisticsk__BackingFieldField;
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public AdministrativeClient.ServiceReference.GameReportDto[] GamesStatistics {
+        [System.Runtime.Serialization.DataMemberAttribute(Name="<GamesStatistics>k__BackingField", IsRequired=true)]
+        public AdministrativeClient.ServiceReference.GameReportDto[] GamesStatisticsk__BackingField {
             get {
-                return this.GamesStatisticsField;
+                return this.GamesStatisticsk__BackingFieldField;
             }
             set {
-                if ((object.ReferenceEquals(this.GamesStatisticsField, value) != true)) {
-                    this.GamesStatisticsField = value;
-                    this.RaisePropertyChanged("GamesStatistics");
+                if ((object.ReferenceEquals(this.GamesStatisticsk__BackingFieldField, value) != true)) {
+                    this.GamesStatisticsk__BackingFieldField = value;
+                    this.RaisePropertyChanged("GamesStatisticsk__BackingField");
                 }
             }
         }
@@ -212,18 +207,17 @@ namespace AdministrativeClient.ServiceReference {
     [System.SerializableAttribute()]
     public partial class UserActionResult : AdministrativeClient.ServiceReference.ActionResult {
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private AdministrativeClient.ServiceReference.UserDto UserField;
+        private AdministrativeClient.ServiceReference.UserDto Userk__BackingFieldField;
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public AdministrativeClient.ServiceReference.UserDto User {
+        [System.Runtime.Serialization.DataMemberAttribute(Name="<User>k__BackingField", IsRequired=true)]
+        public AdministrativeClient.ServiceReference.UserDto Userk__BackingField {
             get {
-                return this.UserField;
+                return this.Userk__BackingFieldField;
             }
             set {
-                if ((object.ReferenceEquals(this.UserField, value) != true)) {
-                    this.UserField = value;
-                    this.RaisePropertyChanged("User");
+                if ((object.ReferenceEquals(this.Userk__BackingFieldField, value) != true)) {
+                    this.Userk__BackingFieldField = value;
+                    this.RaisePropertyChanged("Userk__BackingField");
                 }
             }
         }
@@ -341,11 +335,9 @@ namespace AdministrativeClient.ServiceReference {
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.DateTime DateField;
+        private System.DateTime Datek__BackingFieldField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private AdministrativeClient.ServiceReference.PlayerFieldDto[] PlayersReportsField;
+        private AdministrativeClient.ServiceReference.PlayerFieldDto[] PlayersReportsk__BackingFieldField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -357,28 +349,28 @@ namespace AdministrativeClient.ServiceReference {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.DateTime Date {
+        [System.Runtime.Serialization.DataMemberAttribute(Name="<Date>k__BackingField", IsRequired=true)]
+        public System.DateTime Datek__BackingField {
             get {
-                return this.DateField;
+                return this.Datek__BackingFieldField;
             }
             set {
-                if ((this.DateField.Equals(value) != true)) {
-                    this.DateField = value;
-                    this.RaisePropertyChanged("Date");
+                if ((this.Datek__BackingFieldField.Equals(value) != true)) {
+                    this.Datek__BackingFieldField = value;
+                    this.RaisePropertyChanged("Datek__BackingField");
                 }
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public AdministrativeClient.ServiceReference.PlayerFieldDto[] PlayersReports {
+        [System.Runtime.Serialization.DataMemberAttribute(Name="<PlayersReports>k__BackingField", IsRequired=true)]
+        public AdministrativeClient.ServiceReference.PlayerFieldDto[] PlayersReportsk__BackingField {
             get {
-                return this.PlayersReportsField;
+                return this.PlayersReportsk__BackingFieldField;
             }
             set {
-                if ((object.ReferenceEquals(this.PlayersReportsField, value) != true)) {
-                    this.PlayersReportsField = value;
-                    this.RaisePropertyChanged("PlayersReports");
+                if ((object.ReferenceEquals(this.PlayersReportsk__BackingFieldField, value) != true)) {
+                    this.PlayersReportsk__BackingFieldField = value;
+                    this.RaisePropertyChanged("PlayersReportsk__BackingField");
                 }
             }
         }
@@ -402,14 +394,11 @@ namespace AdministrativeClient.ServiceReference {
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string PlayerNameField;
+        private string PlayerNamek__BackingFieldField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string RolePlayedField;
+        private string RolePlayedk__BackingFieldField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool WonField;
+        private bool Wonk__BackingFieldField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -421,41 +410,41 @@ namespace AdministrativeClient.ServiceReference {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string PlayerName {
+        [System.Runtime.Serialization.DataMemberAttribute(Name="<PlayerName>k__BackingField", IsRequired=true)]
+        public string PlayerNamek__BackingField {
             get {
-                return this.PlayerNameField;
+                return this.PlayerNamek__BackingFieldField;
             }
             set {
-                if ((object.ReferenceEquals(this.PlayerNameField, value) != true)) {
-                    this.PlayerNameField = value;
-                    this.RaisePropertyChanged("PlayerName");
+                if ((object.ReferenceEquals(this.PlayerNamek__BackingFieldField, value) != true)) {
+                    this.PlayerNamek__BackingFieldField = value;
+                    this.RaisePropertyChanged("PlayerNamek__BackingField");
                 }
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string RolePlayed {
+        [System.Runtime.Serialization.DataMemberAttribute(Name="<RolePlayed>k__BackingField", IsRequired=true)]
+        public string RolePlayedk__BackingField {
             get {
-                return this.RolePlayedField;
+                return this.RolePlayedk__BackingFieldField;
             }
             set {
-                if ((object.ReferenceEquals(this.RolePlayedField, value) != true)) {
-                    this.RolePlayedField = value;
-                    this.RaisePropertyChanged("RolePlayed");
+                if ((object.ReferenceEquals(this.RolePlayedk__BackingFieldField, value) != true)) {
+                    this.RolePlayedk__BackingFieldField = value;
+                    this.RaisePropertyChanged("RolePlayedk__BackingField");
                 }
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool Won {
+        [System.Runtime.Serialization.DataMemberAttribute(Name="<Won>k__BackingField", IsRequired=true)]
+        public bool Wonk__BackingField {
             get {
-                return this.WonField;
+                return this.Wonk__BackingFieldField;
             }
             set {
-                if ((this.WonField.Equals(value) != true)) {
-                    this.WonField = value;
-                    this.RaisePropertyChanged("Won");
+                if ((this.Wonk__BackingFieldField.Equals(value) != true)) {
+                    this.Wonk__BackingFieldField = value;
+                    this.RaisePropertyChanged("Wonk__BackingField");
                 }
             }
         }
