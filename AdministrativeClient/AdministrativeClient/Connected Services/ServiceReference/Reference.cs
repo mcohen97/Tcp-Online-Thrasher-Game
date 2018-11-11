@@ -24,7 +24,7 @@ namespace AdministrativeClient.ServiceReference {
         
         private string nicknameField;
         
-        private string photoPathField;
+        private byte[] photoField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -50,14 +50,14 @@ namespace AdministrativeClient.ServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string photoPath {
+        public byte[] photo {
             get {
-                return this.photoPathField;
+                return this.photoField;
             }
             set {
-                if ((object.ReferenceEquals(this.photoPathField, value) != true)) {
-                    this.photoPathField = value;
-                    this.RaisePropertyChanged("photoPath");
+                if ((object.ReferenceEquals(this.photoField, value) != true)) {
+                    this.photoField = value;
+                    this.RaisePropertyChanged("photo");
                 }
             }
         }

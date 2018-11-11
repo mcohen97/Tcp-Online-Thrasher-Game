@@ -3,7 +3,7 @@
   <xs:complexType name="UserDto">
     <xs:sequence>
       <xs:element name="nickname" nillable="true" type="xs:string" />
-      <xs:element name="photoPath" nillable="true" type="xs:string" />
+      <xs:element name="photo" nillable="true" type="xs:base64Binary" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="UserDto" nillable="true" type="tns:UserDto" />
