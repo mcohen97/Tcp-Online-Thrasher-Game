@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.ServiceModel;
+using System.Windows.Forms;
 using AdministrativeClient.ServiceReference;
 
 namespace Client
@@ -76,7 +78,9 @@ namespace Client
             Console.WriteLine("ADD USER");
             Console.WriteLine("New user's name");
             string aNickname =Console.ReadLine();
-            UserDto newUser = new UserDto() { nickname = aNickname };
+            Console.WriteLine("New user's photo");
+            byte[] aPhoto = GetPhoto();
+            UserDto newUser = new UserDto() { nickname = aNickname, photo= aPhoto };
             string response = server.AddUser(newUser);
             Console.WriteLine(response);
         }
@@ -160,9 +164,31 @@ namespace Client
             string aNickname = Console.ReadLine();
             Console.WriteLine("new nickname:");
             string newNickname = Console.ReadLine();
-            UserDto newUser = new UserDto() { nickname = newNickname };
+            Console.WriteLine("new photo:");
+            byte[] newPhoto = GetPhoto();
+            UserDto newUser = new UserDto() { nickname = newNickname,photo = newPhoto  };
             string response = server.ModifyUser(aNickname, newUser);
             Console.WriteLine(response);
+        }
+
+        private byte[] GetPhoto()
+        {
+            string path;
+            using (OpenFileDialog dlg = new OpenFileDialog())
+            {
+                dlg.Title = "Open Image";
+                dlg.Filter = "Image Files(*.BMP; *.JPG; *.JPEG ;*.GIF)| *.BMP; *.JPG; *.JPEG;  *.GIF | All files(*.*) | *.*";
+
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    path = dlg.FileName;
+                }
+                else
+                {
+                    path = string.Empty;
+                }
+            }
+            return File.ReadAllBytes(path);
         }
 
         private void LastGamesStats()

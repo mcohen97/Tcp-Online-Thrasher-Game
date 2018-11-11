@@ -8,6 +8,7 @@ namespace Client
 {
     public class Program
     {
+        [STAThread]
         static void Main(string[] args)
         {
             Admin client = new Admin();
