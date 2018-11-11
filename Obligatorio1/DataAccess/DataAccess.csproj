@@ -44,6 +44,8 @@
     <Compile Include="Exceptions\UserAlreadyExistsException.cs" />
     <Compile Include="Exceptions\UserNotFoundException.cs" />
     <Compile Include="IGamesInfoRepository.cs" />
+    <Compile Include="IImageManager.cs" />
+    <Compile Include="ImageManager.cs" />
     <Compile Include="IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameInfoService.cs" />
