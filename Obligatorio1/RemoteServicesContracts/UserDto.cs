@@ -6,6 +6,6 @@ namespace UserCRUDService
     public class UserDto
     {
         public string nickname;
-        public string photoPath;
+        public byte[] photo;
     }
 }
