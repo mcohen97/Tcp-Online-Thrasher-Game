@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2019
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsersLogic", "Logic\UsersLogic.csproj", "{1D6032D2-C6DA-435C-9C5D-17EDF7A8D102}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsersLogic", "UsersLogic\UsersLogic.csproj", "{1D6032D2-C6DA-435C-9C5D-17EDF7A8D102}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicTest", "LogicTest\LogicTest.csproj", "{51BA2982-55EC-4776-8F82-B715A2FFB05C}"
 EndProject
