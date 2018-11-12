@@ -61,14 +61,16 @@ namespace Network
         }
 
         public void RunServer() {
-            ExposeUserStorage();
+            ExposeStorages();
             ListenToRequests();
             ChannelServices.UnregisterChannel(remotingUserStorage);
         }
 
-        private void ExposeUserStorage()
+        private void ExposeStorages()
         {
-            remotingUserStorage = new TcpChannel(8000);
+            var settings = new AppSettingsReader();
+            int port = (int)settings.GetValue("RemotingChannelPort", typeof(int));
+            remotingUserStorage = new TcpChannel(port);
             ChannelServices.RegisterChannel(remotingUserStorage, false);
             RemotingConfiguration.RegisterWellKnownServiceType(
                 typeof(UserService),

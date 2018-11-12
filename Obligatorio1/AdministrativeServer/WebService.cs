@@ -4,6 +4,7 @@ using System.Runtime.Remoting;
 using RemoteServicesContracts;
 using UserCRUDService;
 using ActionResults;
+using System.Configuration;
 
 namespace AdministrativeServer
 {
@@ -17,8 +18,11 @@ namespace AdministrativeServer
         public WebService() {
             try
             {
-                remoteUserStorage = (IUserCRUDService)Activator.GetObject(typeof(IUserCRUDService), "tcp://192.168.0.124:8000/Obligatorio2/UserService");
-                remoteScoreStorage = (IGamesInfoService)Activator.GetObject(typeof(IGamesInfoService), "tcp://192.168.0.124:8000/Obligatorio2/ScoreService");
+                var settings = new AppSettingsReader();
+                int port = (int)settings.GetValue("RemotingChannelPort", typeof(int));
+                string gameServerIp = (string)settings.GetValue("GameServerIp",typeof(string));
+                remoteUserStorage = (IUserCRUDService)Activator.GetObject(typeof(IUserCRUDService), "tcp://"+gameServerIp+":"+port+"/Obligatorio2/UserService");
+                remoteScoreStorage = (IGamesInfoService)Activator.GetObject(typeof(IGamesInfoService), "tcp://"+gameServerIp+":"+port+"/Obligatorio2/ScoreService");
                 matchLogs = new QueueMatchLogManager(queueAddress);
             }
             catch (RemotingException e) {
