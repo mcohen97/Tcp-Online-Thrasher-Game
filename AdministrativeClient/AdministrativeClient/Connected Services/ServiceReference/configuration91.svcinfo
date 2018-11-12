@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="J5nX0MNuurg9FmRU2hlAGRBJqKo=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="7ynIH5f0kVhGy1JkqzDObNMsI5o=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="BasicHttpBinding_IWebService">
       <properties>
@@ -112,10 +112,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="BasicHttpBinding_IWebService" contract="ServiceReference.IWebService" bindingType="basicHttpBinding" address="http://localhost:4321/AdministrativeService" bindingConfiguration="BasicHttpBinding_IWebService">
+    <endpoint name="BasicHttpBinding_IWebService" contract="ServiceReference.IWebService" bindingType="basicHttpBinding" address="http://127.0.0.1:4321/AdministrativeService" bindingConfiguration="BasicHttpBinding_IWebService">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://localhost:4321/AdministrativeService</serializedValue>
+          <serializedValue>http://127.0.0.1:4321/AdministrativeService</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/GamesInfoService" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/GamesInfoService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:4321/AdministrativeService?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/GameLogic" />
+  <xs:import schemaLocation="http://127.0.0.1:4321/AdministrativeService?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/GameLogic" />
   <xs:complexType name="ArrayOfScoreDto">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="ScoreDto" nillable="true" type="tns:ScoreDto" />
