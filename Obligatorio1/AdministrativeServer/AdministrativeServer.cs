@@ -54,22 +54,20 @@ namespace AdministrativeServer
                 typeof(WebService),
                 httpBaseAddress);
 
-            /*WSHttpBinding binding = new WSHttpBinding();
+            //more powerfull binding
+            BasicHttpBinding binding = new BasicHttpBinding();
+            binding.MaxBufferSize = 2147483647;
+            binding.MaxReceivedMessageSize = 2147483647;
             binding.MaxBufferPoolSize = 2147483647;
-            binding.MaxReceivedMessageSize = 2147483647;*/
-            BasicHttpBinding bind = new BasicHttpBinding();
-            bind.MaxBufferSize = 2147483647;
-            bind.MaxReceivedMessageSize = 2147483647;
-            bind.MaxBufferPoolSize = 2147483647;
-            bind.ReaderQuotas.MaxBytesPerRead = 2147483647;
-            bind.ReaderQuotas.MaxArrayLength = 2147483647;
-            bind.ReaderQuotas.MaxStringContentLength = 2147483647;
-            bind.ReaderQuotas.MaxNameTableCharCount = 2147483647;
-            bind.ReaderQuotas.MaxDepth = 64;
+            binding.ReaderQuotas.MaxBytesPerRead = 2147483647;
+            binding.ReaderQuotas.MaxArrayLength = 2147483647;
+            binding.ReaderQuotas.MaxStringContentLength = 2147483647;
+            binding.ReaderQuotas.MaxNameTableCharCount = 2147483647;
+            binding.ReaderQuotas.MaxDepth = 64;
 
             //Add Endpoint to Host
             gameServiceHost.AddServiceEndpoint(
-                typeof(IWebService), bind, "");
+                typeof(IWebService), binding, "");
 
             //Metadata Exchange
             ServiceMetadataBehavior serviceBehavior =
