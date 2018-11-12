@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Messaging;
 using System.ServiceModel;
 using System.ServiceModel.Description;
@@ -47,7 +48,10 @@ namespace AdministrativeServer
         private void SetUpService()
         {
             //Base Address for StudentService
-            Uri httpBaseAddress = new Uri("http://localhost:4321/AdministrativeService");
+            var settings = new AppSettingsReader();
+            string webServerIp = (string)settings.GetValue("WebServerIp", typeof(string));
+            int port = (int)settings.GetValue("WebServerPort", typeof(int));
+            Uri httpBaseAddress = new Uri("http://"+webServerIp+":"+port+"/AdministrativeService");
 
             //Instantiate ServiceHost
             gameServiceHost = new ServiceHost(
