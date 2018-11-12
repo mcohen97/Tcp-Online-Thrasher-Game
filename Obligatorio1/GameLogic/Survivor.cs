@@ -34,7 +34,7 @@ namespace GameLogic
             this.actualPosition = initialPosition;
         }
 
-        public override int KillScorePoints { get => killScorePoints; protected set => killScorePoints = value; }
+        public override int KillScorePoints { get { return killScorePoints; } protected set { killScorePoints = value; } }
 
         public override int Health {
             get {

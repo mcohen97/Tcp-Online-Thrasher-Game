@@ -48,7 +48,7 @@ namespace GameLogic
             }
         }
 
-        public override int KillScorePoints { get => killScorePoints; protected set => killScorePoints = value; }
+        public override int KillScorePoints { get { return killScorePoints; } protected set { killScorePoints = value; } }
 
 
         public override Role Role {
