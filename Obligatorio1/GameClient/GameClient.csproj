@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0A59714F-C81C-4FE4-B409-444A48258DF8}</ProjectGuid>
+    <ProjectGuid>{DE5A225F-46D7-4716-9879-3DCF0287DAD4}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ConsoleServer</RootNamespace>
-    <AssemblyName>ConsoleServer</AssemblyName>
+    <RootNamespace>Client</RootNamespace>
+    <AssemblyName>GameClient</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -36,7 +36,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,34 +46,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CtrlType.cs" />
+    <Compile Include="ClientHandler.cs" />
+    <Compile Include="ClientServices.cs" />
+    <Compile Include="ConsoleAccess.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Server.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DataAccess\DataAccess.csproj">
-      <Project>{3ea50ac5-8184-4342-8f3c-848f2cab1d1a}</Project>
-      <Name>DataAccess</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GameLogic\GameLogic.csproj">
-      <Project>{cd382591-ec53-46e1-bd7c-c1330b456505}</Project>
-      <Name>GameLogic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Logic\UsersLogic.csproj">
-      <Project>{1d6032d2-c6da-435c-9c5d-17edf7a8d102}</Project>
-      <Name>UsersLogic</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Network\Network.csproj">
       <Project>{0f818e5e-8192-4678-88b4-c4d0d4e05497}</Project>
       <Name>Network</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Services\Services.csproj">
-      <Project>{6826ee4d-7aae-48dd-a31d-7af6938187cc}</Project>
-      <Name>Services</Name>
+    <ProjectReference Include="..\Protocol\Protocol.csproj">
+      <Project>{e0f8e2af-1558-42f8-9ccd-607090283875}</Project>
+      <Name>Protocol</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
