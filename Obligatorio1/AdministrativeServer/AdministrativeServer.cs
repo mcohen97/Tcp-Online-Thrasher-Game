@@ -18,7 +18,9 @@ namespace AdministrativeServer
 
         private void CreateQueueIfNotExists()
         {
-            string queueName = @".\private$\LogServer";
+            var settings = new AppSettingsReader();
+            string queueName = (string)settings.GetValue("MessageQueue", typeof(string));
+            //string queueName = @".\private$\LogServer";
 
             if (!MessageQueue.Exists(queueName))
             {
