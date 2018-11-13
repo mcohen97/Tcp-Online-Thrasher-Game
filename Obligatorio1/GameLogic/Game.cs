@@ -89,8 +89,8 @@ namespace GameLogic
                 }
                 ActiveMatch = false;
                 ActiveGame = false;
-                EndMatchEvent();
                 Notify("MATCH ENDED --> " + LastWinner);
+                EndMatchEvent();
                 RestartGame();
                 StartPreMatchTimer();
             }          

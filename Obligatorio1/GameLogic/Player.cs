@@ -58,14 +58,14 @@ namespace GameLogic
         {
             if (Technique.CanAttack(target.Role))
             {
-                target.Damage(Technique.HitPoints);
-                if (target.IsDead)
-                    AddPoints(KillScorePoints);
-
                 target.Notify("You are being ATTACKED by " + this.ToString() + "!!! Your HP: " + target.Health + " / Enemy HP: " + this.Health);
                 this.Notify("Attack hit on enemy " + target.ToString() + ". Enemy HP: " + target.Health);
                 this.NotifyServer(this.ToString() + " attacked " + target.ToString());
                 this.NotifyServer(target.ToString() + " / HP = " + target.Health);
+
+                target.Damage(Technique.HitPoints);
+                if (target.IsDead)
+                    AddPoints(KillScorePoints);
                 
             }
         }
