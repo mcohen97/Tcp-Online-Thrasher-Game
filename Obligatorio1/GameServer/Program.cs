@@ -1,4 +1,5 @@
-﻿using System.Runtime.Remoting;
+﻿using System.Configuration;
+using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Tcp;
 using System.Threading;
@@ -19,17 +20,13 @@ namespace ConsoleServer
 
         public static Server gameServer;
 
-        private const string formatName = "Formatname:DIRECT=TCP:";
-        private const string serverIP = "192.168.0.124";
-        private const string queueAddress = formatName +serverIP +@"\private$\LogServer";
-
 
         static void Main(string[] args)
         {
             _handler += new EventHandler(Handler);
             SetConsoleCtrlHandler(_handler, true);
-            IMessageSender msmq = new MSMQSender(queueAddress);
             IGamesInfoRepository memoryRepo = GamesInfoInMemory.instance.Value;
+            IMessageSender msmq = CreateMessageSender();
             gameServer = new Server(msmq, memoryRepo);
             Thread listen = new Thread(new ThreadStart(() =>
             {
@@ -44,6 +41,15 @@ namespace ConsoleServer
         {
             gameServer.serverWorking = false;
             return true;
+        }
+
+        private static  IMessageSender CreateMessageSender() {
+            var settings = new AppSettingsReader();
+            string serverIP = (string)settings.GetValue("LogServerIp", typeof(string));
+            string queueName = (string)settings.GetValue("LogServerQueueName", typeof(string));
+            string formatName = "Formatname:DIRECT=TCP:";
+            string queueAddress = formatName + serverIP + @"\private$\"+queueName;
+            return new MSMQSender(queueAddress);
         }
     }
 }
