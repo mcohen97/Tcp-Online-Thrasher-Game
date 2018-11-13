@@ -101,13 +101,18 @@ namespace GameLogic
             }
         }
 
-        protected override void Damage(int hitPoints)
+        protected override void Damage(int hitPoints, Player attacker)
         {
             Health -= hitPoints;
+            attacker.Notify("Attack hit on enemy " + ToString() + ". Enemy HP: " + Health);
+            Notify("You are being ATTACKED by " + attacker.ToString() + "!!! Your HP: " + Health + " / Enemy HP: " + this.Health);
+            NotifyServer(ToString() + " / HP = " + Health);
+
             if (Health <= 0)
             {
                 this.Notify("RIP - you are dead");
                 NotifyServer(this.ToString() + "is dead");
+                attacker.AddPoints(attacker.KillScorePoints);
                 Health = 0;
                 Player attacked = Map.GetPlayer(ActualPosition);
                 Map.MonsterCount--;

@@ -52,20 +52,14 @@ namespace GameLogic
             AddPoints += (n) => { }; //Do nothing
         }
 
-        protected abstract void Damage(int hitPoints);
+        protected abstract void Damage(int hitPoints, Player attacker);
 
         public virtual void Attack(Player target)
         {
             if (Technique.CanAttack(target.Role))
             {
                 this.NotifyServer(this.ToString() + " attacked " + target.ToString());
-                target.Damage(Technique.HitPoints);
-                target.Notify("You are being ATTACKED by " + this.ToString() + "!!! Your HP: " + target.Health + " / Enemy HP: " + this.Health);
-                this.Notify("Attack hit on enemy " + target.ToString() + ". Enemy HP: " + target.Health);
-                this.NotifyServer(target.ToString() + " / HP = " + target.Health);
-                if (target.IsDead)
-                    AddPoints(KillScorePoints);
-                
+                target.Damage(Technique.HitPoints, this);           
             }
         }
 
