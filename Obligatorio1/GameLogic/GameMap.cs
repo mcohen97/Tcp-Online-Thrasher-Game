@@ -74,6 +74,7 @@ namespace GameLogic
             this.monsterCount = 0;
             this.survivorCount = 0;
             this.PlayerRemovedEvent += () => { }; //Do nothing
+            this.SendRemovedEvent += (p) => { }; //Do nothing
             this.mapEditionLock = new object();
         }
 
@@ -135,7 +136,7 @@ namespace GameLogic
             {
                 if (!IsValidPosition(position))
                     throw new InvalidPositionException();
-
+                SendRemovedEvent(map[position.Row, position.Column]);
                 map[position.Row, position.Column] = null;
             }
         }

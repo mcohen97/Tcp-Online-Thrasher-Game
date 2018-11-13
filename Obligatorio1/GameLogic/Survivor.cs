@@ -100,14 +100,13 @@ namespace GameLogic
             Health -= hitPoints;
             if (Health <= 0)
             {
-                Health = 0;
-                Player attacked = Map.GetPlayer(ActualPosition);
-                Map.RemovePlayer(ActualPosition);
-                Map.SurvivorCount--;
-                Map.SendRemovedEvent(attacked);
-                Map.PlayerRemovedEvent();
                 Notify("RIP - you are dead");
                 NotifyServer(this.ToString() + "is dead");
+                Health = 0;
+                Player attacked = Map.GetPlayer(ActualPosition);
+                Map.SurvivorCount--;
+                Map.RemovePlayer(ActualPosition);
+                Map.PlayerRemovedEvent();
             }
         }
 
