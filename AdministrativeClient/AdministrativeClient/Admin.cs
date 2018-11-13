@@ -108,9 +108,15 @@ namespace Client
 
         private void ShowUserList(UserDto[] usersList)
         {
-            foreach (UserDto user in usersList)
+            if (usersList.Any())
             {
-                Console.WriteLine(user.nickname);
+                foreach (UserDto user in usersList)
+                {
+                    Console.WriteLine(user.nickname);
+                }
+            }
+            else {
+                Console.WriteLine("There are no registered players");
             }
         }
 
@@ -144,7 +150,7 @@ namespace Client
                     Console.Write(number+" - ");
                     Console.WriteLine("Name: "+dto.UserNicknamek__BackingField);
                     Console.WriteLine("Points: " + dto.Pointsk__BackingField);
-                    Console.WriteLine("Date: " + dto.Datek__BackingField.ToShortDateString());
+                    Console.WriteLine("Date: " + dto.Datek__BackingField.ToString("MM/dd/yyyy H:mm"));
                     Console.WriteLine("Role played: " + dto.RolePlayedk__BackingField.ToString());
                     Console.WriteLine("---------------------------------------");
                     number++;
@@ -212,7 +218,7 @@ namespace Client
                 foreach (GameReportDto dto in stats)
                 {
                     Console.Write(number + " - ");
-                    Console.WriteLine("Match date: " + dto.Datek__BackingField.ToShortDateString());
+                    Console.WriteLine("Match date: " + dto.Datek__BackingField.ToString("MM/dd/yyyy H:mm"));
                     Console.WriteLine("Players: ");
                     ShowMatchPlayers(dto.PlayersReportsk__BackingField);
                     Console.WriteLine("---------------------------------------");
