@@ -112,6 +112,7 @@ namespace GameLogic
                 if (ActiveGameConditions(Map.MonsterCount, Map.SurvivorCount))
                 {
                     ActiveMatch = true;
+                    PlayerRegistries = new GameReport();
                     foreach (Player player in Map.GetPlayers())
                     {
                         player.Notify("Match started!");
