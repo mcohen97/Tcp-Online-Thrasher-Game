@@ -72,6 +72,11 @@ namespace AdministrativeServer
             binding.ReaderQuotas.MaxNameTableCharCount = 2147483647;
             binding.ReaderQuotas.MaxDepth = 64;
 
+            binding.OpenTimeout = new TimeSpan(0, 0, 4);
+            binding.CloseTimeout = new TimeSpan(0, 0, 4);
+            binding.SendTimeout = new TimeSpan(0, 0, 4);
+            binding.ReceiveTimeout = new TimeSpan(0, 0, 4);
+
             //Add Endpoint to Host
             gameServiceHost.AddServiceEndpoint(
                 typeof(IWebService), binding, "");
