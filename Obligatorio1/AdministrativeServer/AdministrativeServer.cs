@@ -13,7 +13,13 @@ namespace AdministrativeServer
         ServiceHost gameServiceHost;
 
         public AdministrativeServer() {
-            CreateQueueIfNotExists();
+            try
+            {
+                CreateQueueIfNotExists();
+            }
+            catch (InvalidOperationException e) {
+                Console.WriteLine("Couldn't access log repository");
+            }
         }
 
         private void CreateQueueIfNotExists()
