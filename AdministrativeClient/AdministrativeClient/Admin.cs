@@ -19,11 +19,20 @@ namespace Client
                 OpenConnection();
                 HandleClient();
             }
-            catch (CommunicationException e) {
-                Console.WriteLine("Couldn't reach the server, check your connection");
-                Console.WriteLine("Press any key to exit");
-                Console.ReadKey();
+            catch (CommunicationException e)
+            {
+                ErrorMessageAndLogOut();
             }
+            catch (TimeoutException e) {
+                ErrorMessageAndLogOut();
+            }
+        }
+
+        private void ErrorMessageAndLogOut()
+        {
+            Console.WriteLine("Couldn't reach the server, check your connection");
+            Console.WriteLine("Press any key to exit");
+            Console.ReadKey();
         }
 
         private void OpenConnection()
