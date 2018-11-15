@@ -100,9 +100,9 @@ namespace AdministrativeServer
             {
                 return matchLogs.GetLastMatchLog();
             }
-            catch (SocketException)
+            catch (NoLogsAccessException e)
             {
-                return "Couldn't reach game server";
+                return "Couldn't get logs";
             }
         }
 
