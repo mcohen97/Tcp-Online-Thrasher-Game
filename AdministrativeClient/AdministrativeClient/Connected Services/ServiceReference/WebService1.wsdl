@@ -7,8 +7,7 @@
       <xsd:import schemaLocation="http://127.0.0.1:4321/AdministrativeService?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/UserCRUDService" />
       <xsd:import schemaLocation="http://127.0.0.1:4321/AdministrativeService?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/ActionResults" />
       <xsd:import schemaLocation="http://127.0.0.1:4321/AdministrativeService?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/GamesInfoService" />
-      <xsd:import schemaLocation="http://127.0.0.1:4321/AdministrativeService?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/GameLogic" />
-      <xsd:import schemaLocation="http://127.0.0.1:4321/AdministrativeService?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/UserCRUDServiceContract" />
+      <xsd:import schemaLocation="http://127.0.0.1:4321/AdministrativeService?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/UserCRUDServiceContract" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IWebService_AddUser_InputMessage">

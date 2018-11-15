@@ -1,11 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/GameLogic" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/GameLogic" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:simpleType name="Role">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="MONSTER" />
-      <xs:enumeration value="SURVIVOR" />
-      <xs:enumeration value="NEUTRAL" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:element name="Role" nillable="true" type="tns:Role" />
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/UserCRUDServiceContract" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/UserCRUDServiceContract" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="ArrayOfGameReportDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="GameReportDto" nillable="true" type="tns:GameReportDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfGameReportDto" nillable="true" type="tns:ArrayOfGameReportDto" />
+  <xs:complexType name="GameReportDto">
+    <xs:sequence>
+      <xs:element name="_x003C_Date_x003E_k__BackingField" type="xs:dateTime" />
+      <xs:element name="_x003C_PlayersReports_x003E_k__BackingField" nillable="true" type="tns:ArrayOfPlayerFieldDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GameReportDto" nillable="true" type="tns:GameReportDto" />
+  <xs:complexType name="ArrayOfPlayerFieldDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PlayerFieldDto" nillable="true" type="tns:PlayerFieldDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPlayerFieldDto" nillable="true" type="tns:ArrayOfPlayerFieldDto" />
+  <xs:complexType name="PlayerFieldDto">
+    <xs:sequence>
+      <xs:element name="_x003C_PlayerName_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element name="_x003C_RolePlayed_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element name="_x003C_Won_x003E_k__BackingField" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PlayerFieldDto" nillable="true" type="tns:PlayerFieldDto" />
 </xs:schema>

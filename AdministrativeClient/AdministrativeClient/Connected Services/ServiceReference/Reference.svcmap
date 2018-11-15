@@ -23,9 +23,8 @@
   </MetadataSources>
   <Metadata>
     <MetadataFile FileName="AdministrativeService7.xsd" MetadataType="Schema" ID="defe2f05-9bab-427a-95d8-898ab95096ef" SourceId="1" SourceUrl="http://127.0.0.1:4321/AdministrativeService?xsd=xsd5" />
-    <MetadataFile FileName="AdministrativeService71.xsd" MetadataType="Schema" ID="3cfd4526-f58f-4944-a9d2-a5596b08405d" SourceId="1" SourceUrl="http://127.0.0.1:4321/AdministrativeService?xsd=xsd6" />
-    <MetadataFile FileName="AdministrativeService72.xsd" MetadataType="Schema" ID="fddef278-96da-4f77-8f21-57c714519bb9" SourceId="1" SourceUrl="http://127.0.0.1:4321/AdministrativeService?xsd=xsd2" />
     <MetadataFile FileName="AdministrativeService73.xsd" MetadataType="Schema" ID="9c2db12e-ae6a-4324-8b04-75834b17cf7e" SourceId="1" SourceUrl="http://127.0.0.1:4321/AdministrativeService?xsd=xsd1" />
+    <MetadataFile FileName="AdministrativeService72.xsd" MetadataType="Schema" ID="fddef278-96da-4f77-8f21-57c714519bb9" SourceId="1" SourceUrl="http://127.0.0.1:4321/AdministrativeService?xsd=xsd2" />
     <MetadataFile FileName="AdministrativeService74.xsd" MetadataType="Schema" ID="750196bc-c454-48de-98d1-22a4b1be02f0" SourceId="1" SourceUrl="http://127.0.0.1:4321/AdministrativeService?xsd=xsd0" />
     <MetadataFile FileName="AdministrativeService1.disco" MetadataType="Disco" ID="5ccd5f21-19fb-4fdd-a965-8d312e613838" SourceId="1" SourceUrl="http://127.0.0.1:4321/AdministrativeService?disco" />
     <MetadataFile FileName="AdministrativeService75.xsd" MetadataType="Schema" ID="54a99dc7-fdea-4c94-9bfc-f70aa0c5bd7d" SourceId="1" SourceUrl="http://127.0.0.1:4321/AdministrativeService?xsd=xsd4" />

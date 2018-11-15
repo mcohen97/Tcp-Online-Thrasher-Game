@@ -55,11 +55,5 @@
     <Compile Include="UserDto.cs" />
     <Compile Include="UserListActionResult.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GameLogic\GameLogic.csproj">
-      <Project>{CD382591-EC53-46E1-BD7C-C1330B456505}</Project>
-      <Name>GameLogic</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
