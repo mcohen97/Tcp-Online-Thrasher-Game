@@ -42,6 +42,9 @@ namespace Network
             while (pos < infoEnviar.Length)
             {
                 int current = connection.Send(infoEnviar, pos, infoEnviar.Length - pos, 0);
+                if (current == 0) {
+                    throw new ConnectionLostException("Connection lost");
+                }
                 pos += current;
             }
         }
