@@ -63,6 +63,8 @@ namespace GameLogic
         {
             Map = new GameMap(8, 8);
             Map.PlayerRemovedEvent += CheckEndMatch;
+            Map.SendRemovedEvent += RegisterDeadPlayer;
+
         }
 
         public void StartPreMatchTimer()
@@ -87,10 +89,12 @@ namespace GameLogic
                 {
                     player.Notify("MATCH ENDED --> " + LastWinner);
                 }
+                string endMessage = "MATCH ENDED --> " + LastWinner;
+                Notify(endMessage);
+                LogAction(endMessage);
                 ActiveMatch = false;
                 ActiveGame = false;
                 EndMatchEvent();
-                Notify("MATCH ENDED --> " + LastWinner);
                 RestartGame();
                 StartPreMatchTimer();
             }          
@@ -108,6 +112,7 @@ namespace GameLogic
                 if (ActiveGameConditions(Map.MonsterCount, Map.SurvivorCount))
                 {
                     ActiveMatch = true;
+                    PlayerRegistries = new GameReport();
                     foreach (Player player in Map.GetPlayers())
                     {
                         player.Notify("Match started!");
@@ -158,7 +163,7 @@ namespace GameLogic
                     foreach (Player player in Map.GetPlayers())
                     {
                         player.AddPoints(100);
-                        AddReportRegistry(player, true);
+                        AddReportRegistry(player, false);
                     }
                 }
             }
@@ -167,7 +172,9 @@ namespace GameLogic
                 winner = "The survivors won the match. Congrats!";
                 foreach (Player player in Map.GetPlayers())
                 {
-                    player.AddPoints(300);
+                    if(player.Role != Role.MONSTER)
+                        player.AddPoints(300);
+                    AddReportRegistry(player, player.Role == Role.SURVIVOR);
                 }
             }
 
@@ -181,8 +188,11 @@ namespace GameLogic
 
         private void AddReportRegistry(Player player, bool didWin)
         {
-            PlayerReportField register = new PlayerReportField(player.Name, player.Role, didWin);
-            PlayerRegistries.AddPlayerField(register);
+            lock (gameAccess)
+            {
+                PlayerReportField register = new PlayerReportField(player.Name, player.Role, didWin);
+                PlayerRegistries.AddPlayerField(register);
+            }
         }
 
         public bool ActiveGameConditions(int monsterCount, int survivorCount)

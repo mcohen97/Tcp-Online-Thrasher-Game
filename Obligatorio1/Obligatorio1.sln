@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2019
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsersLogic", "Logic\UsersLogic.csproj", "{1D6032D2-C6DA-435C-9C5D-17EDF7A8D102}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsersLogic", "UsersLogic\UsersLogic.csproj", "{1D6032D2-C6DA-435C-9C5D-17EDF7A8D102}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicTest", "LogicTest\LogicTest.csproj", "{51BA2982-55EC-4776-8F82-B715A2FFB05C}"
 EndProject
@@ -17,11 +17,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protocol", "Protocol\Protoc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Network", "Network\Network.csproj", "{0F818E5E-8192-4678-88B4-C4D0D4E05497}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{DE5A225F-46D7-4716-9879-3DCF0287DAD4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameClient", "GameClient\GameClient.csproj", "{DE5A225F-46D7-4716-9879-3DCF0287DAD4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{6826EE4D-7AAE-48DD-A31D-7AF6938187CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleServer", "ConsoleServer\ConsoleServer.csproj", "{0A59714F-C81C-4FE4-B409-444A48258DF8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameServer", "GameServer\GameServer.csproj", "{0A59714F-C81C-4FE4-B409-444A48258DF8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdministrativeServer", "AdministrativeServer\AdministrativeServer.csproj", "{5F220DF7-1B1F-4BF0-A617-3B6E61C619BB}"
 EndProject

@@ -18,10 +18,10 @@ namespace GameLogic
 
         internal void AddPlayerField(PlayerReportField field)
         {
-            if (registers.Any(r => r.PlayerName.Equals(field.PlayerName))) {
-                throw new InvalidGameReportException();
+            if (!registers.Any(r => r.PlayerName.Equals(field.PlayerName))) {
+                registers.Add(field);
             }
-            registers.Add(field);
+            
         }
     }
 }
