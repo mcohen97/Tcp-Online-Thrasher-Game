@@ -23,9 +23,9 @@ namespace DataAccess
             string resultMessage;
             try
             {
-                User toAdd = new User(userModel.nickname);
+                User toAdd = new User(userModel.Nickname);
                 usersStorage.AddUser(toAdd);
-                string fullPath =images.SaveImage(userModel.photo, userModel.nickname);
+                string fullPath =images.SaveImage(userModel.Photo, userModel.Nickname);
                 toAdd.Path = fullPath;
                 resultMessage = "User was added succesfully";
             }
@@ -56,7 +56,7 @@ namespace DataAccess
         public UserListActionResult GetAllUsers()
         {
             ICollection<User> users = usersStorage.GetAllUsers();
-            IEnumerable<UserDto> dtos = users.Select(u => new UserDto() {nickname=u.Nickname, photo =images.ReadImage(u.Path) });
+            IEnumerable<UserDto> dtos = users.Select(u => new UserDto() {Nickname=u.Nickname, Photo =images.ReadImage(u.Path) });
             UserListActionResult result = new UserListActionResult()
             {
                 Success = true,
@@ -69,7 +69,7 @@ namespace DataAccess
         public UserActionResult GetUser(string nickname)
         {
             User stored = usersStorage.GetUser(nickname);
-            UserDto dto = new UserDto() { nickname = stored.Nickname, photo = images.ReadImage(stored.Path) };
+            UserDto dto = new UserDto() { Nickname = stored.Nickname, Photo = images.ReadImage(stored.Path) };
             UserActionResult result = new UserActionResult()
             {
                 Success = true,
@@ -84,8 +84,8 @@ namespace DataAccess
             string resultMessage;
             try
             {
-                User toModify = new User(newData.nickname);
-                string fullPath = images.SaveImage(newData.photo, newData.nickname);
+                User toModify = new User(newData.Nickname);
+                string fullPath = images.SaveImage(newData.Photo, newData.Nickname);
                 toModify.Path = fullPath;
                 usersStorage.ModifyUser(oldNickname, toModify);
                 resultMessage = "User modified succesfully";
