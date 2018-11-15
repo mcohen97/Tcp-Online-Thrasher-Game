@@ -35,7 +35,7 @@ namespace DataAccess
             return new ScoreDto()
             {
                 UserNickname = s.PlayerName,
-                RolePlayed = s.PlayerRole,
+                RolePlayed = s.PlayerRole.ToString(),
                 Date = s.Date,
                 Points = s.Points
             };

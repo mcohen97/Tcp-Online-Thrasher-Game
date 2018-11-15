@@ -5,7 +5,7 @@ namespace UserCRUDService
     [Serializable]
     public class UserDto
     {
-        public string nickname;
-        public byte[] photo;
+        public string Nickname { get; set; }
+        public byte[] Photo { get; set; }
     }
 }

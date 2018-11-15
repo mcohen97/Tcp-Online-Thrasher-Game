@@ -22,9 +22,9 @@ namespace AdministrativeClient.ServiceReference {
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
-        private string nicknameField;
+        private string Nicknamek__BackingFieldField;
         
-        private byte[] photoField;
+        private byte[] Photok__BackingFieldField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -36,28 +36,28 @@ namespace AdministrativeClient.ServiceReference {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string nickname {
+        [System.Runtime.Serialization.DataMemberAttribute(Name="<Nickname>k__BackingField", IsRequired=true)]
+        public string Nicknamek__BackingField {
             get {
-                return this.nicknameField;
+                return this.Nicknamek__BackingFieldField;
             }
             set {
-                if ((object.ReferenceEquals(this.nicknameField, value) != true)) {
-                    this.nicknameField = value;
-                    this.RaisePropertyChanged("nickname");
+                if ((object.ReferenceEquals(this.Nicknamek__BackingFieldField, value) != true)) {
+                    this.Nicknamek__BackingFieldField = value;
+                    this.RaisePropertyChanged("Nicknamek__BackingField");
                 }
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public byte[] photo {
+        [System.Runtime.Serialization.DataMemberAttribute(Name="<Photo>k__BackingField", IsRequired=true)]
+        public byte[] Photok__BackingField {
             get {
-                return this.photoField;
+                return this.Photok__BackingFieldField;
             }
             set {
-                if ((object.ReferenceEquals(this.photoField, value) != true)) {
-                    this.photoField = value;
-                    this.RaisePropertyChanged("photo");
+                if ((object.ReferenceEquals(this.Photok__BackingFieldField, value) != true)) {
+                    this.Photok__BackingFieldField = value;
+                    this.RaisePropertyChanged("Photok__BackingField");
                 }
             }
         }
@@ -236,7 +236,7 @@ namespace AdministrativeClient.ServiceReference {
         
         private int Pointsk__BackingFieldField;
         
-        private AdministrativeClient.ServiceReference.Role RolePlayedk__BackingFieldField;
+        private string RolePlayedk__BackingFieldField;
         
         private string UserNicknamek__BackingFieldField;
         
@@ -277,12 +277,12 @@ namespace AdministrativeClient.ServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute(Name="<RolePlayed>k__BackingField", IsRequired=true)]
-        public AdministrativeClient.ServiceReference.Role RolePlayedk__BackingField {
+        public string RolePlayedk__BackingField {
             get {
                 return this.RolePlayedk__BackingFieldField;
             }
             set {
-                if ((this.RolePlayedk__BackingFieldField.Equals(value) != true)) {
+                if ((object.ReferenceEquals(this.RolePlayedk__BackingFieldField, value) != true)) {
                     this.RolePlayedk__BackingFieldField = value;
                     this.RaisePropertyChanged("RolePlayedk__BackingField");
                 }
@@ -310,20 +310,6 @@ namespace AdministrativeClient.ServiceReference {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Role", Namespace="http://schemas.datacontract.org/2004/07/GameLogic")]
-    public enum Role : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        MONSTER = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        SURVIVOR = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NEUTRAL = 2,
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]

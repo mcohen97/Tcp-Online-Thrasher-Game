@@ -51,6 +51,7 @@
     <Compile Include="GameServiceException.cs" />
     <Compile Include="ILogManager.cs" />
     <Compile Include="IWebService.cs" />
+    <Compile Include="NoLogsAccessException.cs" />
     <Compile Include="QueueMatchLogManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

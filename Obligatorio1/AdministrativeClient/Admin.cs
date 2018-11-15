@@ -19,11 +19,20 @@ namespace Client
                 OpenConnection();
                 HandleClient();
             }
-            catch (CommunicationException e) {
-                Console.WriteLine("Couldn't reach the server, check your connection");
-                Console.WriteLine("Press any key to exit");
-                Console.ReadKey();
+            catch (CommunicationException e)
+            {
+                ErrorMessageAndLogOut();
             }
+            catch (TimeoutException e) {
+                ErrorMessageAndLogOut();
+            }
+        }
+
+        private void ErrorMessageAndLogOut()
+        {
+            Console.WriteLine("Couldn't reach the server, check your connection");
+            Console.WriteLine("Press any key to exit");
+            Console.ReadKey();
         }
 
         private void OpenConnection()
@@ -79,7 +88,7 @@ namespace Client
             string aNickname =Console.ReadLine();
             Console.WriteLine("New user's photo");
             byte[] aPhoto = GetPhoto();
-            UserDto newUser = new UserDto() { nickname = aNickname, photo= aPhoto };
+            UserDto newUser = new UserDto() { Nicknamek__BackingField = aNickname, Photok__BackingField= aPhoto };
             string response = server.AddUser(newUser);
             Console.WriteLine(response);
         }
@@ -112,7 +121,7 @@ namespace Client
             {
                 foreach (UserDto user in usersList)
                 {
-                    Console.WriteLine(user.nickname);
+                    Console.WriteLine(user.Nicknamek__BackingField);
                 }
             }
             else {
@@ -151,7 +160,7 @@ namespace Client
                     Console.WriteLine("Name: "+dto.UserNicknamek__BackingField);
                     Console.WriteLine("Points: " + dto.Pointsk__BackingField);
                     Console.WriteLine("Date: " + dto.Datek__BackingField.ToString("MM/dd/yyyy H:mm"));
-                    Console.WriteLine("Role played: " + dto.RolePlayedk__BackingField.ToString());
+                    Console.WriteLine("Role played: " + dto.RolePlayedk__BackingField);
                     Console.WriteLine("---------------------------------------");
                     number++;
                 }
@@ -171,7 +180,7 @@ namespace Client
             string newNickname = Console.ReadLine();
             Console.WriteLine("new photo:");
             byte[] newPhoto = GetPhoto();
-            UserDto newUser = new UserDto() { nickname = newNickname,photo = newPhoto  };
+            UserDto newUser = new UserDto() { Nicknamek__BackingField = newNickname,Photok__BackingField = newPhoto  };
             string response = server.ModifyUser(aNickname, newUser);
             Console.WriteLine(response);
         }
@@ -238,7 +247,7 @@ namespace Client
             {
                 Console.Write(number + ")");
                 Console.WriteLine("Player's nickname: " + dto.PlayerNamek__BackingField);
-                Console.WriteLine("Player's role: "+ dto.RolePlayedk__BackingField.ToString());
+                Console.WriteLine("Player's role: "+ dto.RolePlayedk__BackingField);
                 Console.WriteLine("Won: "+boolYesNo(dto.Wonk__BackingField));
                 number++;
             }

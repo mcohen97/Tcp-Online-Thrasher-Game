@@ -13,14 +13,19 @@ namespace AdministrativeServer
         ServiceHost gameServiceHost;
 
         public AdministrativeServer() {
-            CreateQueueIfNotExists();
+            try
+            {
+                CreateQueueIfNotExists();
+            }
+            catch (InvalidOperationException e) {
+                Console.WriteLine("Couldn't access log repository");
+            }
         }
 
         private void CreateQueueIfNotExists()
         {
             var settings = new AppSettingsReader();
             string queueName = (string)settings.GetValue("MessageQueue", typeof(string));
-            //string queueName = @".\private$\LogServer";
 
             if (!MessageQueue.Exists(queueName))
             {
@@ -62,6 +67,8 @@ namespace AdministrativeServer
 
             //more powerfull binding
             BasicHttpBinding binding = new BasicHttpBinding();
+
+
             binding.MaxBufferSize = 2147483647;
             binding.MaxReceivedMessageSize = 2147483647;
             binding.MaxBufferPoolSize = 2147483647;
@@ -70,6 +77,11 @@ namespace AdministrativeServer
             binding.ReaderQuotas.MaxStringContentLength = 2147483647;
             binding.ReaderQuotas.MaxNameTableCharCount = 2147483647;
             binding.ReaderQuotas.MaxDepth = 64;
+
+            binding.OpenTimeout = new TimeSpan(0, 0, 4);
+            binding.CloseTimeout = new TimeSpan(0, 0, 4);
+            binding.SendTimeout = new TimeSpan(0, 0, 4);
+            binding.ReceiveTimeout = new TimeSpan(0, 0, 4);
 
             //Add Endpoint to Host
             gameServiceHost.AddServiceEndpoint(
