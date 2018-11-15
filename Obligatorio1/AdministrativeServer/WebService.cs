@@ -10,9 +10,9 @@ namespace AdministrativeServer
 {
     public class WebService : IWebService
     {
-        IUserCRUDService remoteUserStorage;
-        IGamesInfoService remoteScoreStorage;
-        ILogManager matchLogs;
+        private IUserCRUDService remoteUserStorage;
+        private IGamesInfoService remoteScoreStorage;
+        private ILogManager matchLogs;
         string queueAddress = @".\private$\LogServer";
 
         public WebService() {

@@ -20,7 +20,6 @@ namespace AdministrativeServer
         {
             var settings = new AppSettingsReader();
             string queueName = (string)settings.GetValue("MessageQueue", typeof(string));
-            //string queueName = @".\private$\LogServer";
 
             if (!MessageQueue.Exists(queueName))
             {
@@ -62,6 +61,8 @@ namespace AdministrativeServer
 
             //more powerfull binding
             BasicHttpBinding binding = new BasicHttpBinding();
+
+
             binding.MaxBufferSize = 2147483647;
             binding.MaxReceivedMessageSize = 2147483647;
             binding.MaxBufferPoolSize = 2147483647;
